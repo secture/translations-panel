@@ -1,13 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import LoginLayout from './layouts/LoginLayout';
+import DashboardLayout from './layouts/DashboardLayout';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const layoutAssignments: any = {
+    '/': LoginLayout,
+    '/login': LoginLayout,
+    '/dashboard': DashboardLayout,
+};
+
+const layoutPicker = (props: any) => {
+    let Layout = layoutAssignments[props.location.pathname];
+    return Layout ? <Layout/> : <pre>bad route</pre>;
+};
+
+class App extends React.Component {
+    render(){
+        return (
+            <Router>
+                <Route path="*" render={layoutPicker}/>
+            </Router>
+        );
+    }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+
