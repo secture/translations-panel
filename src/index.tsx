@@ -1,26 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+/* LAYOUTS */
 import FullLayout from './layouts/FullLayout';
 import Dashboard from './layouts/DashboardLayout';
+
+/* VIEWS */
 import LoginView from './views/loginView';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 import './index.css';
 
 const layoutAssignments: any = {
-    '/': FullLayout,
-    '/login': FullLayout,
-    '/dashboard': Dashboard
+    '/': {layout: FullLayout, view: LoginView},
+    '/login': {layout: FullLayout, view: LoginView},
+    '/dashboard': {layout: Dashboard, view: LoginView},
 };
 
 const layoutPicker = (props: any) => {
-    let Layout = layoutAssignments[props.location.pathname];
-    let View = layoutAssignments[props.location.pathname];
-    return Layout ? <Layout view={LoginView}/> : <pre>bad route</pre>;
+    let Layout = layoutAssignments[props.location.pathname].layout;
+    let View = layoutAssignments[props.location.pathname].view;
+    return Layout ? <Layout view={View}/> : <pre>bad route</pre>;
 };
 
 class App extends React.Component {
-    render(){
+    render() {
         return (
             <Router>
                 <Route path="*" render={layoutPicker}/>
@@ -29,7 +34,7 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 
 
 
