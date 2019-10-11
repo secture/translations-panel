@@ -46,23 +46,19 @@ const drawerStyles = makeStyles(theme => ({
     }
 }));
 
-const DrawerApp: React.FC = () => {
+const DrawerApp: React.FC<any> = ({open_state, updateOpen }: any) => {
     const classes = drawerStyles();
-    const [open, setOpen] = React.useState(true);
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
 
     return (
         <Drawer
             variant="permanent"
             classes={{
-                paper: CssConditional(classes.drawerPaper, !open && classes.drawerPaperClose),
+                paper: CssConditional(classes.drawerPaper, !open_state && classes.drawerPaperClose),
             }}
-            open={open}
+            open={open_state}
         >
             <div className={classes.toolbarIcon}>
-                <IconButton onClick={handleDrawerClose}>
+                <IconButton onClick={updateOpen}>
                     <ChevronLeftIcon />
                 </IconButton>
             </div>
