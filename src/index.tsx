@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoginLayout from './layouts/LoginLayout';
-import DashboardLayout from './layouts/DashboardLayout';
+import FullLayout from './layouts/FullLayout';
+import Dashboard from './layouts/DashboardLayout';
+import LoginView from './views/loginView';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import './index.css';
 
 const layoutAssignments: any = {
-    '/': LoginLayout,
-    '/login': LoginLayout,
-    '/dashboard': DashboardLayout,
+    '/': FullLayout,
+    '/login': FullLayout,
+    '/dashboard': Dashboard
 };
 
 const layoutPicker = (props: any) => {
     let Layout = layoutAssignments[props.location.pathname];
-    return Layout ? <Layout/> : <pre>bad route</pre>;
+    let View = layoutAssignments[props.location.pathname];
+    return Layout ? <Layout view={LoginView}/> : <pre>bad route</pre>;
 };
 
 class App extends React.Component {
