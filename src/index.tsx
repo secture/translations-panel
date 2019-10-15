@@ -10,8 +10,12 @@ import LoginView from './views/loginView';
 import DashboardView from './views/dashboardView'
 
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-
+import { Provider } from 'react-redux'
 import './index.css';
+import rootReducers from "./store";
+
+import { createStore } from 'redux';
+const store = createStore(rootReducers);
 
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
@@ -35,7 +39,12 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById('root')
+);
 
 
 

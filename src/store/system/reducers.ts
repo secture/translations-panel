@@ -8,7 +8,7 @@ const initialState: SystemState = {
     loggedIn: false,
     session: '',
     userName: ''
-}
+};
 
 export function systemReducer(
     state = initialState,
