@@ -2,9 +2,11 @@ export const GET_USER = 'GET USER';
 export const SET_USER = 'UPDATE USER';
 
 export interface UserState {
-    userName: string,
-    password: string,
-    role: string,
+    email: string,
+    id: string,
+    name: string,
+    privilege: string,
+    associatedLanguages: Array<any>
 }
 
 //Actions interface

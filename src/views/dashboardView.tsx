@@ -28,13 +28,13 @@ const DashboardView = () => {
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
-                        <div>{user.userName}</div>
+                        <div>{user.email}</div>
                     </Grid>
                     <Grid item xs={12} md={4} lg={3}>
-                        <div>{user.role}</div>
+                        <div>{user.name}</div>
                     </Grid>
                     <Grid item xs={12}>
-                        <div>Tercera columna</div>
+                        <div>{user.privilege}</div>
                     </Grid>
                 </Grid>
             </Container>

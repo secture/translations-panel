@@ -1,9 +1,11 @@
 import {SET_USER, UserActionsTypes, UserState} from "./types";
 
-const initialUserState: UserState = {
-    userName: 'Sergio Rodriguez',
-    password: '',
-    role: 'admin'
+export const initialUserState: UserState = {
+    email: '',
+    name: '',
+    privilege: '',
+    id: '',
+    associatedLanguages: []
 };
 
 export function userReducer(state = initialUserState, action: UserActionsTypes): UserState {

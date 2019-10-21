@@ -1,12 +1,11 @@
 // src/store/index.ts
 
-import { systemReducer } from './system/reducers'
-//import { chatReducer } from './chat/reducers'
+import { authReducer } from './auth/reducers'
 import { userReducer } from "./user/reducers";
 import {combineReducers} from "redux";
 
 const rootReducers = combineReducers({
-    system: systemReducer,
+    auth: authReducer,
     user: userReducer
 });
 

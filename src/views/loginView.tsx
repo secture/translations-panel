@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import {useDispatch} from "react-redux";
-import { setUser } from '../store/user/actions';
+import {connect} from "react-redux";
+import {getExample, login} from '../services/auth'
+import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction } from 'redux';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,6 +15,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import {UserLoginDTO} from "../store/auth/types";
+import {TranslationsStore} from "../store/types";
 
 const loginViewStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -43,17 +47,26 @@ const loginViewStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const LoginView = () => {
-    const [user, setValues] = useState({userName: '', password: '', role: 'user'});
-    const dispatch = useDispatch();
+type AppStateProps = ReturnType<typeof mapStateToProps>;
+type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type AppProps = AppStateProps & AppDispatchProps;
+
+const LoginView: React.FC<any> = (props: AppProps) => {
+    const initialState: UserLoginDTO = {
+        email: '',
+        password: ''
+    };
+    const [user, setValues] = useState(initialState);
+    //const dispatch = useDispatch();
     const classes = loginViewStyles();
 
-    const signIn= (e: any) => {
-        console.log('values form', e);
-        console.log('user', user);
-        dispatch(setUser(user));
+    const handleSubmit = (e: any) => {
+        props.loginAction(user).then((response: any) => {
+            console.log(response);
+        });
         e.preventDefault();
     };
+
 
     const handleInputChange = (e: any) => {
         const {name, value} = e.target;
@@ -71,7 +84,7 @@ const LoginView = () => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate onSubmit={signIn}>
+                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -79,8 +92,8 @@ const LoginView = () => {
                             fullWidth
                             id="email"
                             label="Email Address"
-                            name="userName"
-                            value={user.userName}
+                            name="email"
+                            value={user.email}
                             onChange={handleInputChange}
                             autoComplete="email"
                             autoFocus
@@ -130,4 +143,20 @@ const LoginView = () => {
     )
 };
 
-export default LoginView;
+const mapStateToProps = (store: TranslationsStore) => {
+    return {
+        auth: store.auth
+    };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+    return {
+        loginAction: (user: UserLoginDTO) => dispatch(login(user)),
+        getExample: () => dispatch(getExample())
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LoginView);

@@ -14,8 +14,12 @@ import { Provider } from 'react-redux'
 import './index.css';
 import rootReducers from "./store";
 
-import { createStore } from 'redux';
-const store = createStore(rootReducers);
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+
+const middleWares = [thunk];
+const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(...middleWares)));
 
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
