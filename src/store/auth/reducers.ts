@@ -8,7 +8,7 @@ const initialAuthState: AuthState = {
         privilege: '',
         associatedLanguages: []
     },
-    accessToken: '',
+    accessToken: localStorage.getItem('user-token') || '',
     isAuthenticated: false
 };
 

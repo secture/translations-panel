@@ -9,17 +9,15 @@ import Dashboard from './layouts/DashboardLayout';
 import LoginView from './views/loginView';
 import DashboardView from './views/dashboardView'
 
-import {BrowserRouter as Router, Route} from 'react-router-dom'
-import { Provider } from 'react-redux'
+/* STORE */
+import store from './store'
+
+/* ROUTES */
+import {Router, Route} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import history from './history';
+
 import './index.css';
-import rootReducers from "./store";
-
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-
-const middleWares = [thunk];
-const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(...middleWares)));
 
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
@@ -27,17 +25,21 @@ const layoutAssignments: any = {
     '/dashboard': {layout: Dashboard, view: DashboardView},
 };
 
-const layoutPicker = (props: any) => {
-    let Layout = layoutAssignments[props.location.pathname].layout;
-    let View = layoutAssignments[props.location.pathname].view;
-    return Layout ? <Layout view={View}/> : <pre>bad route</pre>;
-};
-
 class App extends React.Component {
+
+    layoutPicker(props: any) {
+        if (!store.getState().auth.isAuthenticated && (props.location.pathname !== '/login')) {
+            history.push('/login');
+        }
+        const Layout = layoutAssignments[props.location.pathname].layout;
+        const View = layoutAssignments[props.location.pathname].view;
+        return Layout ? <Layout view={View}/> : <pre>bad route</pre>;
+    }
+
     render() {
         return (
-            <Router>
-                <Route path="*" render={layoutPicker}/>
+            <Router history={history}>
+                <Route path="*" render={this.layoutPicker}/>
             </Router>
         );
     }

@@ -1,4 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
+import store from '../../store'
+import {logoutAction} from "../../store/auth/actions";
+import {initialUserState} from "../../store/user/reducers";
 
 let config: AxiosRequestConfig = {
     /**
@@ -10,11 +13,8 @@ let config: AxiosRequestConfig = {
 const httpClient = axios.create(config);
 
 const authInterceptor = (config: any) => {
-    debugger;
-    // obtener el token desde el state o comprobarlo en el localStorage
-    const token = '';
-
-    // configurar los headers para incluir el token
+    const tokenStore = store.getState().auth.accessToken;
+    const token: string = (tokenStore === null) ? store.getState().auth.accessToken : tokenStore;
     config.headers = {
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
@@ -28,7 +28,12 @@ const okInterceptor = (response: any) => {
 };
 
 const errorInterceptor = (error: any) => {
-    // manejar errores de autenticacion de token. En este caso no hay refresh token, el usuario se le deslogeará directamente de la aplicación
+    localStorage.removeItem('user-token');
+    store.dispatch(logoutAction(initialUserState));
+    /*if (error.request.status === 401) {
+        localStorage.removeItem('user-token');
+        store.dispatch(logoutAction(initialUserState));
+    }*/
     return error;
 };
 

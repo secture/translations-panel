@@ -9,7 +9,6 @@ export function signInAction(user: UserSignInDTO): AuthActionsTypes {
 }
 
 export function loginAction(user: AuthState): AuthActionsTypes {
-    debugger;
     return {
         type: LOGIN,
         payload: user
@@ -17,7 +16,6 @@ export function loginAction(user: AuthState): AuthActionsTypes {
 }
 
 export function logoutAction(user: UserState): AuthActionsTypes {
-    debugger;
     return {
         type: LOGOUT,
         payload: user

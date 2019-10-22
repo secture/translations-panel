@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import {connect} from "react-redux";
-import {getExample, login} from '../services/auth'
-import { ThunkDispatch } from 'redux-thunk'
-import { AnyAction } from 'redux';
+import {ThunkDispatch} from 'redux-thunk'
+import {AnyAction} from 'redux';
+import {UserLoginDTO} from "../store/auth/types";
+import {TranslationsStore} from "../store/types";
+import {login} from '../services/auth'
+import history from "../history";
 
+/* Material UI */
+import {makeStyles, Theme} from "@material-ui/core/styles";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -15,8 +19,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {UserLoginDTO} from "../store/auth/types";
-import {TranslationsStore} from "../store/types";
 
 const loginViewStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -57,12 +59,11 @@ const LoginView: React.FC<any> = (props: AppProps) => {
         password: ''
     };
     const [user, setValues] = useState(initialState);
-    //const dispatch = useDispatch();
     const classes = loginViewStyles();
 
     const handleSubmit = (e: any) => {
         props.loginAction(user).then((response: any) => {
-            console.log(response);
+            (response !== null) ? history.push('/dashboard') : alert('Error al iniciar sesion');
         });
         e.preventDefault();
     };
@@ -152,7 +153,6 @@ const mapStateToProps = (store: TranslationsStore) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         loginAction: (user: UserLoginDTO) => dispatch(login(user)),
-        getExample: () => dispatch(getExample())
     };
 };
 

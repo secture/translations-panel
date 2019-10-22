@@ -6,9 +6,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Badge from '@material-ui/core/Badge';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import CssConditional from "clsx";
+import {UserState} from "../../store/user/types";
+import {connect, useSelector} from "react-redux";
+import {TranslationsStore} from "../../store/types";
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {logOut} from "../../services/auth";
+import history from "../../history";
 
 const drawerWidth = 240;
 
@@ -44,34 +51,66 @@ const menuAppBarStyles = makeStyles((theme: Theme) =>
                 duration: theme.transitions.duration.enteringScreen,
             }),
         },
+        button: {
+            margin: theme.spacing(1),
+        },
     }),
 );
 
-const MenuAppBar: React.FC<any> = ({open_state, updateOpen }: any) => {
+type AppStateProps = ReturnType<typeof mapStateToProps>;
+type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type AppProps = AppStateProps & AppDispatchProps;
+
+const MenuAppBar: React.FC<any> = (props: AppProps) => {
+    const userAuthenticated: UserState = useSelector((state: TranslationsStore) => state.user);
     const classes = menuAppBarStyles();
 
+    const exit = () => {
+        props.logoutAction().then((logoutOk: boolean) => {
+            if (logoutOk) {
+                history.push('/login');
+            }
+        })
+    };
+
     return (
-        <AppBar position="absolute" className={CssConditional(classes.appBar, open_state && classes.appBarShift)}>
+        <AppBar position="absolute" className={CssConditional(classes.appBar, props.open_state && classes.appBarShift)}>
             <Toolbar className={classes.toolbar}>
                 <IconButton
                     edge="start"
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={updateOpen}
-                    className={CssConditional(classes.menuButton, open_state && classes.menuButtonHidden)}
+                    onClick={props.updateOpen}
+                    className={CssConditional(classes.menuButton, props.open_state && classes.menuButtonHidden)}
                 >
                     <MenuIcon />
                 </IconButton>
                 <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                    Dashboard
+                    {userAuthenticated.name}
                 </Typography>
-                <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
+                <IconButton onClick={exit} className={classes.button} aria-label="exit" color="inherit">
+                    <ExitToAppIcon />
                 </IconButton>
             </Toolbar>
         </AppBar>
     );
 };
-export default MenuAppBar;
+
+const mapStateToProps = (store: TranslationsStore, props: any) => {
+    return {
+        auth: store.auth,
+        open_state: props.open_state,
+        updateOpen: props.updateOpen
+    };
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+    return {
+        logoutAction: () => dispatch(logOut()),
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MenuAppBar);

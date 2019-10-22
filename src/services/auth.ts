@@ -1,47 +1,45 @@
-import {AuthState, UserLoginDTO, UserSignInDTO} from "../store/auth/types";
+import {UserLoginDTO, UserSignInDTO} from "../store/auth/types";
 import {signInAction, loginAction, logoutAction} from '../store/auth/actions'
 import {setUserAction} from "../store/user/actions";
 import {initialUserState} from "../store/user/reducers";
 import httpClient from "./common/http-interceptor";
 
-import { AnyAction } from 'redux';
-import { ThunkDispatch, ThunkAction } from 'redux-thunk'
-import axios from 'axios'
-
-export const getExample = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
-    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-        let result = null;
-        try {
-            result = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
-            debugger;
-            console.log(result.data);
-            dispatch(loginAction(result.data));
-        } catch (error) {
-            console.log(error);
-        }
-        return result;
-    }
-};
+import {AnyAction} from 'redux';
+import {ThunkDispatch, ThunkAction} from 'redux-thunk'
 
 export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-        let result = null;
+        let loginServiceDTO: any = null;
         try {
-            result = await httpClient.post('http://localhost:3000/api/auth/login', user);
-            debugger;
-            //build object pass to store auth
-            const userApiResponse: AuthState = {
-                userAuthenticated: result.data.user,
-                accessToken: result.data.accessToken,
-                isAuthenticated: true
-            };
-            dispatch(loginAction(userApiResponse));
-            //pass object to user data
-            dispatch(setUserAction(userApiResponse.userAuthenticated));
+            const apiResponse: any = await httpClient.post('http://localhost:3000/api/auth/login', user);
+            if (typeof apiResponse.isAxiosError === 'undefined' || !apiResponse.isAxiosError) {
+                loginServiceDTO = {
+                    userAuthenticated: apiResponse.data.user,
+                    accessToken: apiResponse.data.accessToken,
+                    isAuthenticated: true
+                };
+                localStorage.setItem(
+                    'user-token',
+                    loginServiceDTO.accessToken
+                );
+                dispatch(loginAction(loginServiceDTO));
+                dispatch(setUserAction(loginServiceDTO.userAuthenticated));
+            } else {
+                console.log(apiResponse.response.data);
+            }
         } catch (error) {
             console.log(error);
         }
-        return result;
+        return loginServiceDTO;
+    }
+};
+
+export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
+    return async function(dispatch: any) {
+        localStorage.removeItem('user-token');
+        dispatch(logoutAction(initialUserState));
+        dispatch(setUserAction(initialUserState));
+        return true;
     }
 };
 
@@ -55,12 +53,5 @@ export const signIn = (user: UserSignInDTO) => {
         } catch (error) {
             console.log(error);
         }
-    }
-};
-
-export const logOut = () => {
-    return async function(dispatch: any) {
-        dispatch(logoutAction(initialUserState));
-        dispatch(setUserAction(initialUserState));
     }
 };
