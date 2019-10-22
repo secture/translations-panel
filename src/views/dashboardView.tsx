@@ -4,22 +4,10 @@ import { TranslationsStore } from "../store/types";
 import { UserState } from "../store/user/types";
 
 /* Material UI */
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
-const dashboardViewStyles = makeStyles((theme: Theme) => ({
-    container: {
-        paddingTop: theme.spacing(4),
-            paddingBottom: theme.spacing(4),
-    },
-    content: {
-        flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-    },
-    appBarSpacer: theme.mixins.toolbar,
-}));
+import {dashboardViewStyles} from "../styles/dashboard";
 
 const DashboardView = () => {
     const classes = dashboardViewStyles();
