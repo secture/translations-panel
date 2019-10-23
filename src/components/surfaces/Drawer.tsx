@@ -8,7 +8,18 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { mainListItems, secondaryListItems } from '../base/ListItems';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import PeopleIcon from '@material-ui/icons/People';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import LayersIcon from '@material-ui/icons/Layers';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+
+import history from "../../history";
 
 
 const drawerWidth = 240;
@@ -48,7 +59,6 @@ const drawerStyles = makeStyles(theme => ({
 
 const DrawerApp: React.FC<any> = ({open_state, updateOpen }: any) => {
     const classes = drawerStyles();
-
     return (
         <Drawer
             variant="permanent"
@@ -63,9 +73,52 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen }: any) => {
                 </IconButton>
             </div>
             <Divider />
-            <List>{mainListItems}</List>
+            <List>
+                <div>
+                    <ListItem button onClick={() => {history.push('/dashboard')}}>
+                        <ListItemIcon>
+                            <DashboardIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Dashboard" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/translations')}}>
+                        <ListItemIcon>
+                            <ShoppingCartIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Translations" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/exports')}}>
+                        <ListItemIcon>
+                            <PeopleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Export translations" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/locales')}}>
+                        <ListItemIcon>
+                            <BarChartIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Locale" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/users')}}>
+                        <ListItemIcon>
+                            <LayersIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Users" />
+                    </ListItem>
+                </div>
+            </List>
             <Divider />
-            <List>{secondaryListItems}</List>
+            <List>
+                <div>
+                    <ListSubheader inset>Saved reports</ListSubheader>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <AssignmentIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Current month" />
+                    </ListItem>
+                </div>
+            </List>
         </Drawer>
     );
 };

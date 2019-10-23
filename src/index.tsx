@@ -8,6 +8,10 @@ import Dashboard from './layouts/DashboardLayout';
 /* VIEWS */
 import LoginView from './views/loginView';
 import DashboardView from './views/dashboardView'
+import TranslationsView from './views/translationsView'
+import ExportsView from "./views/exportsView";
+import LocaleView from "./views/localeView";
+import UsersView from "./views/usersView";
 
 /* STORE */
 import store from './store'
@@ -23,6 +27,10 @@ const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
     '/login': {layout: FullLayout, view: LoginView},
     '/dashboard': {layout: Dashboard, view: DashboardView},
+    '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
+    '/dashboard/exports': {layout: Dashboard, view: ExportsView},
+    '/dashboard/locale': {layout: Dashboard, view: LocaleView},
+    '/dashboard/users': {layout: Dashboard, view: UsersView},
 };
 
 class App extends React.Component {
@@ -31,9 +39,9 @@ class App extends React.Component {
         if (!store.getState().auth.isAuthenticated && (props.location.pathname !== '/login')) {
             history.push('/login');
         }
-        const Layout = layoutAssignments[props.location.pathname].layout;
-        const View = layoutAssignments[props.location.pathname].view;
-        return Layout ? <Layout view={View}/> : <pre>bad route</pre>;
+        const Layout = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].layout: null;
+        const View = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].view: null;
+        return (Layout && View) ? <Layout view={View}/> : <pre>bad route</pre>;
     }
 
     render() {
