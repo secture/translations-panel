@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import store from '../../store'
+import configureStore from '../../store/index';
 import {logoutAction} from "../../store/auth/actions";
 import {initialUserState} from "../../store/user/reducers";
 
@@ -9,7 +9,7 @@ let config: AxiosRequestConfig = {
      */
     baseURL: 'https://localhost:3001'
 };
-
+const {store, persistor} = configureStore();
 const httpClient = axios.create(config);
 
 const authInterceptor = (config: any) => {

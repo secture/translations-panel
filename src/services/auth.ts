@@ -18,10 +18,6 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
                     accessToken: apiResponse.data.accessToken,
                     isAuthenticated: true
                 };
-                localStorage.setItem(
-                    'user-token',
-                    loginServiceDTO.accessToken
-                );
                 dispatch(loginAction(loginServiceDTO));
                 dispatch(setUserAction(loginServiceDTO.userAuthenticated));
             } else {

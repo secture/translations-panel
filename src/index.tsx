@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {PersistGate} from 'redux-persist/integration/react'
 
 /* LAYOUTS */
 import FullLayout from './layouts/FullLayout';
@@ -14,7 +15,7 @@ import LocaleView from "./views/localeView";
 import UsersView from "./views/usersView";
 
 /* STORE */
-import store from './store'
+import configureStore from './store/index';
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'
@@ -23,6 +24,7 @@ import history from './history';
 
 import './index.css';
 
+const {store, persistor} = configureStore();
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
     '/login': {layout: FullLayout, view: LoginView},
@@ -39,8 +41,8 @@ class App extends React.Component {
         if (!store.getState().auth.isAuthenticated && (props.location.pathname !== '/login')) {
             history.push('/login');
         }
-        const Layout = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].layout: null;
-        const View = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].view: null;
+        const Layout = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].layout : null;
+        const View = (typeof layoutAssignments[props.location.pathname] !== 'undefined') ? layoutAssignments[props.location.pathname].view : null;
         return (Layout && View) ? <Layout view={View}/> : <pre>bad route</pre>;
     }
 
@@ -55,7 +57,9 @@ class App extends React.Component {
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
+        <PersistGate loading={null} persistor={persistor}>
+            <App/>
+        </PersistGate>
     </Provider>,
     document.getElementById('root')
 );
