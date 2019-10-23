@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
+import UsersList from "../components/users/usersList";
 
 const UsersView = () => {
     const classes = dashboardViewStyles();
@@ -18,7 +19,9 @@ const UsersView = () => {
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
-                        <div>User View</div>
+                        <div>
+                            <UsersList />
+                        </div>
                     </Grid>
                 </Grid>
             </Container>
