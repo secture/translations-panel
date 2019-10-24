@@ -21,6 +21,12 @@ const localesListStyles = makeStyles({
     },
     table: {
         minWidth: 650,
+    },
+    show: {
+        display: 'show',
+    },
+    hide: {
+        display: 'none',
     }
 });
 
@@ -40,8 +46,8 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
 
     return (
         <div>
-            <button onClick={e => setShowTable(!showTable)} className={ `${!showTable ? "show" : "hide"}` }>volver</button>
-            <Paper className={ `${showTable ? "show" : "hide"}` }>
+            <button onClick={e => setShowTable(!showTable)} className={ `${showTable ? classes.show : classes.hide}`}>volver</button>
+            <Paper className={`${classes.root} ${showTable ? classes.show : classes.hide}` }>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
