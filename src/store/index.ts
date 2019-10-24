@@ -2,6 +2,7 @@
 
 import {authReducer} from './auth/reducers'
 import {userReducer} from "./user/reducers";
+import {localeReducer} from "./locale/reducers";
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {persistStore, persistReducer} from 'redux-persist'
@@ -10,7 +11,8 @@ import thunk from 'redux-thunk';
 
 const rootReducers = combineReducers({
     auth: authReducer,
-    user: userReducer
+    user: userReducer,
+    locale: localeReducer,
 });
 
 const persistConfig = {
