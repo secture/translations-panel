@@ -9,10 +9,11 @@ let config: AxiosRequestConfig = {
      */
     baseURL: 'https://localhost:3001'
 };
-const {store, persistor} = configureStore();
+const {store} = configureStore();
 const httpClient = axios.create(config);
 
 const authInterceptor = (config: any) => {
+    console.log(store.getState().auth);
     const tokenStore = store.getState().auth.accessToken;
     const token: string = (tokenStore === null) ? store.getState().auth.accessToken : tokenStore;
     config.headers = {
