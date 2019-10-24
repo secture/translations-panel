@@ -64,7 +64,7 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
                     <Grid container spacing={3}>
                         <Grid container direction="row" justify="center" xs={12} sm={12}>
                             <Typography variant="h6" gutterBottom>
-                                Editing Locale by ID is: {dataSelected.id}
+                                Locale Edition whose ID is: {dataSelected.id}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
