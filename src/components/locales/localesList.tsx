@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,44 +10,94 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {LocaleState} from "../../store/locale/types";
+import {Button, Fab, FormControl, Grid, Input, InputLabel, TextField, Typography} from "@material-ui/core";
 
-import './localesList.css';
-import {Simulate} from "react-dom/test-utils";
-
-const localesListStyles = makeStyles({
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-    },
-    table: {
-        minWidth: 650,
-    },
-    show: {
-        display: 'show',
-    },
-    hide: {
-        display: 'none',
-    }
-});
+const localesListStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            width: '100%',
+            overflowX: 'auto',
+            flexGrow: 1,
+        },
+        fab: {
+            margin: theme.spacing(1),
+        },
+        table: {
+            minWidth: 650,
+        },
+        form: {
+            padding: '24px',
+            margin: '48px inherit 48px inherit',
+            minWidth: 650,
+        },
+        button: {
+            margin: theme.spacing(1),
+        },
+        show: {
+            display: 'show',
+        },
+        hide: {
+            display: 'none',
+        }
+    })
+);
 
 const LocalesList: React.FC<any> = ({locales}: any) => {
     const classes = localesListStyles();
     const [showTable, setShowTable] = useState(true);
+    const [dataSelected, setDataSelected] = useState({id: '', key: '', name: ''});
 
-    const deleteClick = (data: LocaleState) => {
-        console.log('deleteClick');
+    const editClick = (data: LocaleState) => {
+        setDataSelected(data);
         setShowTable(!showTable);
     };
 
-    const editClick = (data: LocaleState) => {
-        console.log('editClick');
+    const deleteClick = (data: LocaleState) => {
+        setDataSelected(data);
         setShowTable(!showTable);
     };
 
     return (
         <div>
-            <button onClick={e => setShowTable(!showTable)} className={ `${showTable ? classes.show : classes.hide}`}>volver</button>
-            <Paper className={`${classes.root} ${showTable ? classes.show : classes.hide}` }>
+            <Paper className={`${classes.root} ${!showTable ? classes.show : classes.hide}`}>
+                <form className={classes.form}>
+                    <Grid container spacing={3}>
+                        <Grid container direction="row" justify="center" xs={12} sm={12}>
+                            <Typography variant="h6" gutterBottom>
+                                Editing Locale by ID is: {dataSelected.id}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                id="key"
+                                name="key"
+                                label="Key"
+                                fullWidth
+                                autoComplete="fname"
+                                value={dataSelected.key}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                id="name"
+                                name="name"
+                                label="Name"
+                                fullWidth
+                                autoComplete="fname"
+                                value={dataSelected.name}
+                            />
+                        </Grid>
+                        <Grid container direction="row" justify="flex-end" xs={12} sm={12}>
+                            <Button className={classes.button} onClick={e => setShowTable(!showTable)}>Return</Button>
+                            <Button variant="contained" color="primary" className={classes.button}>
+                                Save
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
+
+            <Paper className={`${classes.root} ${showTable ? classes.show : classes.hide}`}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -64,8 +114,14 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
                                 <TableCell align="right">{row.key}</TableCell>
                                 <TableCell align="right">{row.name}</TableCell>
                                 <TableCell align="right">
-                                    <EditIcon onClick={e => editClick(row)}></EditIcon>
-                                    <DeleteIcon onClick={e => deleteClick(row)}></DeleteIcon>
+                                    <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                         onClick={e => editClick(row)}>
+                                        <EditIcon/>
+                                    </Fab>
+                                    <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                         onClick={e => deleteClick(row)}>
+                                        <DeleteIcon/>
+                                    </Fab>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -73,8 +129,6 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
                 </Table>
             </Paper>
         </div>
-
-
     );
 };
 
