@@ -5,6 +5,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 
 import EditIcon from '@material-ui/icons/Edit';
@@ -42,9 +47,10 @@ const localesListStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const LocalesList: React.FC<any> = ({locales}: any) => {
+const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
     const classes = localesListStyles();
     const [showTable, setShowTable] = useState(true);
+    const [openModal, setOpenModal] = React.useState(false);
     const [dataSelected, setDataSelected] = useState({id: '', key: '', name: ''});
 
     const editClick = (data: LocaleState) => {
@@ -54,7 +60,14 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
 
     const deleteClick = (data: LocaleState) => {
         setDataSelected(data);
-        setShowTable(!showTable);
+        setOpenModal(!openModal);
+    };
+    const closeModal = () => {
+        setOpenModal(!openModal);
+    };
+    const confirmDeleteLocale = (data: LocaleState) => {
+        setOpenModal(openModal);
+        onDeleteLocale(data);
     };
 
     return (
@@ -62,7 +75,7 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
             <Paper className={`${classes.root} ${!showTable ? classes.show : classes.hide}`}>
                 <form className={classes.form}>
                     <Grid container spacing={3}>
-                        <Grid container direction="row" justify="center" xs={12} sm={12}>
+                        <Grid container item direction="row" justify="center" xs={12} sm={12}>
                             <Typography variant="h6" gutterBottom>
                                 Locale Edition whose ID is: {dataSelected.id}
                             </Typography>
@@ -87,7 +100,7 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
                                 value={dataSelected.name}
                             />
                         </Grid>
-                        <Grid container direction="row" justify="flex-end" xs={12} sm={12}>
+                        <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                             <Button className={classes.button} onClick={e => setShowTable(!showTable)}>Return</Button>
                             <Button variant="contained" color="primary" className={classes.button}>
                                 Save
@@ -127,6 +140,32 @@ const LocalesList: React.FC<any> = ({locales}: any) => {
                         ))}
                     </TableBody>
                 </Table>
+
+                <Dialog
+                    open={openModal}
+                    onClose={closeModal}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Are you sure to delete this locale?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            ID: {dataSelected.id}
+                            <br/>
+                            Key: {dataSelected.key}
+                            <br/>
+                            Name: {dataSelected.name}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={closeModal} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={e => confirmDeleteLocale(dataSelected)} color="primary" autoFocus>
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         </div>
     );

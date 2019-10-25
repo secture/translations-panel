@@ -15,6 +15,7 @@ import UsersView from "./views/usersView";
 
 /* STORE */
 import store from './store'
+import {loadState, saveState} from './store/localStorage';
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'
@@ -52,6 +53,10 @@ class App extends React.Component {
         );
     }
 }
+
+store.subscribe(() => {
+    saveState(store.getState());
+});
 
 ReactDOM.render(
     <Provider store={store}>

@@ -32,7 +32,7 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
 
 export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        localStorage.removeItem('user-token');
+        //localStorage.removeItem('user-token');
         dispatch(logoutAction(initialUserState));
         dispatch(setUserAction(initialUserState));
         return true;
