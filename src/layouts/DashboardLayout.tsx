@@ -11,7 +11,6 @@ import {TranslationsStore} from "../store/types";
 interface DashboardLayoutProps {
     view: React.ComponentClass,
 }
-//interface DashboardLayoutState { open: boolean }
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

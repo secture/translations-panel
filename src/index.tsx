@@ -31,7 +31,7 @@ const layoutAssignments: any = {
     '/dashboard': {layout: Dashboard, view: DashboardView},
     '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
     '/dashboard/exports': {layout: Dashboard, view: ExportsView},
-    '/dashboard/locale': {layout: Dashboard, view: LocaleView},
+    '/dashboard/locales': {layout: Dashboard, view: LocaleView},
     '/dashboard/users': {layout: Dashboard, view: UsersView},
 };
 
