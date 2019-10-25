@@ -66,7 +66,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
         setOpenModal(!openModal);
     };
     const confirmDeleteLocale = (data: LocaleState) => {
-        setOpenModal(openModal);
+        setOpenModal(!openModal);
         onDeleteLocale(data);
     };
 

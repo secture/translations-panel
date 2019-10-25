@@ -4,7 +4,7 @@ export const loadState = () => {
         if (serializedState === null) {
             return undefined
         }
-        return JSON.parse(serializedState);
+        return JSON.parse(atob(serializedState));
     } catch (err) {
         return undefined
     }
@@ -12,7 +12,7 @@ export const loadState = () => {
 
 export const saveState = (state: any) => {
     try {
-        const serializedStated = JSON.stringify(state);
+        const serializedStated = btoa(JSON.stringify(state));
         localStorage.setItem('state', serializedStated);
     } catch (err) {
 
