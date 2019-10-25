@@ -6,7 +6,7 @@ export interface UserState {
     id: string,
     name: string,
     privilege: string,
-    associatedLanguages: Array<any>
+    associatedLanguages: []
 }
 
 //Actions interface

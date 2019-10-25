@@ -57,7 +57,7 @@ const drawerStyles = makeStyles(theme => ({
     }
 }));
 
-const DrawerApp: React.FC<any> = ({open_state, updateOpen }: any) => {
+const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
     const classes = drawerStyles();
     return (
         <Drawer

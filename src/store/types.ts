@@ -3,7 +3,8 @@ import {UserState} from "./user/types";
 import {LocaleState} from "./locale/types";
 
 export interface TranslationsStore {
-    user: UserState,
     auth: AuthState;
+    user: UserState;
+    users: UserState[];
     locale: LocaleState;
 }
