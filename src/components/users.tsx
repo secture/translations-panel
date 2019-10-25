@@ -42,10 +42,9 @@ const Users: React.FC<any> = ({users}: UsersState) => {
 
     const classes = userListStyles();
 
-    function editUser(user: UserState){
+    function loadFormEditUser(user: UserState){
         setShowForm(true);
         setUserSelected(user);
-        console.log(user);
     }
 
     function deleteUser(user: UserState) {
@@ -76,7 +75,7 @@ const Users: React.FC<any> = ({users}: UsersState) => {
                                     <TableCell align="left">{user.privilege}</TableCell>
                                     <TableCell align="left">{user.associatedLanguages}</TableCell>
                                     <TableCell align="left" className={classes.actions}>
-                                        <IconButton onClick={() => editUser(user)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
+                                        <IconButton onClick={() => loadFormEditUser(user)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
                                             <EditIcon color="primary" />
                                         </IconButton>
                                         <IconButton onClick={() => deleteUser(user)} aria-label="delete" className={`${classes.button} ${classes.color}`}>

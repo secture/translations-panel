@@ -29,4 +29,10 @@ export const getUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     }
 };
 
+export const editUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function(dispatch: any) {
+
+    }
+};
+
 

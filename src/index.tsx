@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {PersistGate} from 'redux-persist/integration/react'
 
 /* LAYOUTS */
 import FullLayout from './layouts/FullLayout';
@@ -15,7 +14,7 @@ import LocaleView from "./views/localeView";
 import UsersView from "./views/usersView";
 
 /* STORE */
-import configureStore from './store/index';
+import store from './store'
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'
@@ -24,7 +23,6 @@ import history from './history';
 
 import './index.css';
 
-const {store, persistor} = configureStore();
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
     '/login': {layout: FullLayout, view: LoginView},
@@ -57,9 +55,7 @@ class App extends React.Component {
 
 ReactDOM.render(
     <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <App/>
-        </PersistGate>
+        <App/>
     </Provider>,
     document.getElementById('root')
 );
