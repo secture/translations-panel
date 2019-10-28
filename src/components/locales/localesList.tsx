@@ -15,16 +15,19 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 import {LocaleState} from "../../store/locale/types";
 import {
     Button,
     Fab,
-    Grid, IconButton,
+    Grid, IconButton, Switch,
     TextField,
     Toolbar,
     Typography
 } from "@material-ui/core";
+import {initialLocale} from "../../store/locale/reducers";
 
 const localesListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -64,7 +67,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
     const [showTable, setShowTable] = useState(true);
     const [editAction, editActionTable] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [dataSelected, setDataSelected] = useState({id: '', key: '', name: ''});
+    const [dataSelected, setDataSelected] = useState(initialLocale);
 
     const showEditForm = (data: LocaleState) => {
         setDataSelected(data);
@@ -81,6 +84,12 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
             [property]: e.target.value
         });
     };
+    const changeValuesBoolean = (e: any, property: string) => {
+        setDataSelected({
+            ...dataSelected,
+            [property]: e.target.value.toLowerCase() !== "true"
+        });
+    };
 
     const openDeleteModal = (data: LocaleState) => {
         setDataSelected(data);
@@ -95,7 +104,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
     };
 
     const addClick = () => {
-        setDataSelected({id: '', key: '', name: ''});
+        setDataSelected(initialLocale);
         editActionTable(false);
         setShowTable(!showTable);
     };
@@ -118,7 +127,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
                                 }
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={12}>
                             <TextField
                                 id="key"
                                 name="key"
@@ -129,7 +138,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
                                 value={dataSelected.key}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={12}>
                             <TextField
                                 id="name"
                                 name="name"
@@ -138,6 +147,15 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
                                 onChange={(e) => changedValues(e, 'name')}
                                 autoComplete="fname"
                                 value={dataSelected.name}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                            <Switch
+                                checked={dataSelected.localeForPlayers}
+                                onChange={(e) => changeValuesBoolean(e, 'localeForPlayers')}
+                                value={dataSelected.localeForPlayers}
+                                color="primary"
+                                inputProps={{'aria-label': 'Locale For Players'}}
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
@@ -171,15 +189,19 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAd
                             <TableCell>ID</TableCell>
                             <TableCell align="right">KEY</TableCell>
                             <TableCell align="right">NAME</TableCell>
+                            <TableCell align="right">FOR PLAYERS</TableCell>
                             <TableCell align="right">OPTIONS</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {locales.map((row: any) => (
+                        {locales.map((row: LocaleState) => (
                             <TableRow key={row.id}>
                                 <TableCell component="th" scope="row">{row.id}</TableCell>
                                 <TableCell align="right">{row.key}</TableCell>
                                 <TableCell align="right">{row.name}</TableCell>
+                                <TableCell align="right">
+                                    {row.localeForPlayers ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
+                                </TableCell>
                                 <TableCell align="right">
                                     <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
                                          onClick={e => showEditForm(row)}>

@@ -4,7 +4,8 @@ export const SET_ALL_LOCALES = 'SET ALL LOCALES';
 export interface LocaleState {
     id: string,
     key: string,
-    name: string
+    name: string,
+    localeForPlayers: boolean
 }
 
 interface GetAllLocalesAction {
