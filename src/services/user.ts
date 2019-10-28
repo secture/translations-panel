@@ -3,6 +3,7 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setUserAction} from "../store/user/actions";
 import {setUsersAction} from "../store/users/actions";
+import {UserState} from "../store/user/types";
 
 export const getUsers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
@@ -29,9 +30,29 @@ export const getUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     }
 };
 
-export const editUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const createUser = (user: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
+        let user = null;
+        try{
+            user = await httpClient.put('http://localhost:3000/api/user/me');
+            dispatch(setUserAction(user.data));
+        } catch (error) {
+            console.log(error);
+        }
+        return user;
+    }
+};
 
+export const updateUser = (user: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function(dispatch: any) {
+        let user = null;
+        try{
+            user = await httpClient.put('http://localhost:3000/api/user/me');
+            dispatch(setUserAction(user.data));
+        } catch (error) {
+            console.log(error);
+        }
+        return user;
     }
 };
 

@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import User from "../components/users";
+import User from "../components/users/users";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getUsers} from "../services/user";
