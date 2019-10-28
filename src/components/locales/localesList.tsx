@@ -14,8 +14,17 @@ import Paper from '@material-ui/core/Paper';
 
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+
 import {LocaleState} from "../../store/locale/types";
-import {Button, Fab, FormControl, Grid, Input, InputLabel, TextField, Typography} from "@material-ui/core";
+import {
+    Button,
+    Fab,
+    Grid, IconButton,
+    TextField,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 
 const localesListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,6 +38,9 @@ const localesListStyles = makeStyles((theme: Theme) =>
         },
         table: {
             minWidth: 650,
+        },
+        tableTitle: {
+            flex: '1 1 100%',
         },
         form: {
             padding: '24px',
@@ -47,17 +59,21 @@ const localesListStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
+const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any) => {
     const classes = localesListStyles();
     const [showTable, setShowTable] = useState(true);
-    const [openModal, setOpenModal] = React.useState(false);
+    const [editAction, editActionTable] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const [dataSelected, setDataSelected] = useState({id: '', key: '', name: ''});
 
     const editClick = (data: LocaleState) => {
         setDataSelected(data);
         setShowTable(!showTable);
     };
-
+    const addClick = () => {
+        editActionTable(true);
+        setShowTable(!showTable);
+    };
     const deleteClick = (data: LocaleState) => {
         setDataSelected(data);
         setOpenModal(!openModal);
@@ -69,11 +85,17 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
         setOpenModal(!openModal);
         onDeleteLocale(data);
     };
+    const confirmEditLocale = (data: LocaleState) => {
+        onEditLocale(data);
+    };
+    const onSubmit = (event: any, data: LocaleState) => {
+        setDataSelected(data);
+    };
 
     return (
         <div>
             <Paper className={`${classes.root} ${!showTable ? classes.show : classes.hide}`}>
-                <form className={classes.form}>
+                <form className={classes.form} onChange={e => onSubmit(e, dataSelected)}>
                     <Grid container spacing={3}>
                         <Grid container item direction="row" justify="center" xs={12} sm={12}>
                             <Typography variant="h6" gutterBottom>
@@ -102,7 +124,8 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                             <Button className={classes.button} onClick={e => setShowTable(!showTable)}>Return</Button>
-                            <Button variant="contained" color="primary" className={classes.button}>
+                            <Button variant="contained" color="primary" onClick={e => confirmEditLocale(dataSelected)}
+                                    className={classes.button}>
                                 Save
                             </Button>
                         </Grid>
@@ -111,6 +134,14 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale}: any) => {
             </Paper>
 
             <Paper className={`${classes.root} ${showTable ? classes.show : classes.hide}`}>
+                <Toolbar>
+                    <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
+                        Locales
+                    </Typography>
+                    <IconButton aria-label="add" onClick={e => addClick()}>
+                        <AddCircleOutlineIcon/>
+                    </IconButton>
+                </Toolbar>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
