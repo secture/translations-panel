@@ -55,7 +55,12 @@ class App extends React.Component {
 }
 
 store.subscribe(() => {
-    saveState(store.getState());
+    saveState({
+        auth: store.getState().auth,
+        locale: store.getState().locale,
+        user: store.getState().user,
+        users: store.getState().users,
+    });
 });
 
 ReactDOM.render(

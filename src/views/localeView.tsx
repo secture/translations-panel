@@ -10,7 +10,7 @@ import {dashboardViewStyles} from "../styles/dashboard";
 import LocalesList from "../components/locales/localesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {deleteLocaleById, getAllLocales} from "../services/locale";
+import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../services/locale";
 import {LocaleState} from "../store/locale/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
@@ -28,6 +28,14 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
         props.deleteLocaleByIdActions(data).then((response: any) => {
         })
     };
+    const onEditLocale = (data: LocaleState) => {
+        props.editLocaleByIdActions(data).then((response: any) => {
+        })
+    };
+    const onAddLocale = (data: LocaleState) => {
+        props.addLocaleActions(data).then((response: any) => {
+        })
+    };
 
     const classes = dashboardViewStyles();
     return (
@@ -36,7 +44,8 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
-                        <LocalesList locales={props.locale} onDeleteLocale={onDeleteLocale}/>
+                        <LocalesList locales={props.locale} onDeleteLocale={onDeleteLocale}
+                                     onEditLocale={onEditLocale} onAddLocale={onAddLocale}/>
                     </Grid>
                 </Grid>
             </Container>
@@ -53,6 +62,8 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         getAllLocaleActions: () => dispatch(getAllLocales()),
         deleteLocaleByIdActions: (data: LocaleState) => dispatch(deleteLocaleById(data)),
+        editLocaleByIdActions: (data: LocaleState) => dispatch(editLocaleById(data)),
+        addLocaleActions: (data: LocaleState) => dispatch(addLocale(data)),
     };
 };
 
