@@ -59,22 +59,30 @@ const localesListStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any) => {
+const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale, onAddLocale}: any) => {
     const classes = localesListStyles();
     const [showTable, setShowTable] = useState(true);
     const [editAction, editActionTable] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [dataSelected, setDataSelected] = useState({id: '', key: '', name: ''});
 
-    const editClick = (data: LocaleState) => {
+    const showEditForm = (data: LocaleState) => {
         setDataSelected(data);
-        setShowTable(!showTable);
-    };
-    const addClick = () => {
         editActionTable(true);
         setShowTable(!showTable);
     };
-    const deleteClick = (data: LocaleState) => {
+    const confirmEditLocale = (data: LocaleState) => {
+        setShowTable(!showTable);
+        onEditLocale(data);
+    };
+    const changedValues = (e: any, property: string) => {
+        setDataSelected({
+            ...dataSelected,
+            [property]: e.target.value
+        });
+    };
+
+    const openDeleteModal = (data: LocaleState) => {
         setDataSelected(data);
         setOpenModal(!openModal);
     };
@@ -85,21 +93,29 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any
         setOpenModal(!openModal);
         onDeleteLocale(data);
     };
-    const confirmEditLocale = (data: LocaleState) => {
-        onEditLocale(data);
+
+    const addClick = () => {
+        setDataSelected({id: '', key: '', name: ''});
+        editActionTable(false);
+        setShowTable(!showTable);
     };
-    const onSubmit = (event: any, data: LocaleState) => {
-        setDataSelected(data);
+    const confirmCreateLocale = (data: LocaleState) => {
+        setShowTable(!showTable);
+        onAddLocale(data);
     };
+
 
     return (
         <div>
             <Paper className={`${classes.root} ${!showTable ? classes.show : classes.hide}`}>
-                <form className={classes.form} onChange={e => onSubmit(e, dataSelected)}>
+                <form className={classes.form}>
                     <Grid container spacing={3}>
                         <Grid container item direction="row" justify="center" xs={12} sm={12}>
                             <Typography variant="h6" gutterBottom>
-                                Locale Edition whose ID is: {dataSelected.id}
+                                {editAction ?
+                                    'Locale Edition whose ID is: ' + dataSelected.id :
+                                    'Create a new Locale'
+                                }
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -109,6 +125,7 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any
                                 label="Key"
                                 fullWidth
                                 autoComplete="fname"
+                                onChange={(e) => changedValues(e, 'key')}
                                 value={dataSelected.key}
                             />
                         </Grid>
@@ -118,16 +135,22 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any
                                 name="name"
                                 label="Name"
                                 fullWidth
+                                onChange={(e) => changedValues(e, 'name')}
                                 autoComplete="fname"
                                 value={dataSelected.name}
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                             <Button className={classes.button} onClick={e => setShowTable(!showTable)}>Return</Button>
-                            <Button variant="contained" color="primary" onClick={e => confirmEditLocale(dataSelected)}
-                                    className={classes.button}>
-                                Save
-                            </Button>
+                            {editAction ? (
+                                <Button variant="contained" color="primary"
+                                        onClick={e => confirmEditLocale(dataSelected)}
+                                        className={classes.button}> Save </Button>
+                            ) : (
+                                <Button variant="contained" color="primary"
+                                        onClick={e => confirmCreateLocale(dataSelected)}
+                                        className={classes.button}> Create </Button>
+                            )}
                         </Grid>
                     </Grid>
                 </form>
@@ -159,11 +182,11 @@ const LocalesList: React.FC<any> = ({locales, onDeleteLocale, onEditLocale}: any
                                 <TableCell align="right">{row.name}</TableCell>
                                 <TableCell align="right">
                                     <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                         onClick={e => editClick(row)}>
+                                         onClick={e => showEditForm(row)}>
                                         <EditIcon/>
                                     </Fab>
                                     <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                         onClick={e => deleteClick(row)}>
+                                         onClick={e => openDeleteModal(row)}>
                                         <DeleteIcon/>
                                     </Fab>
                                 </TableCell>
