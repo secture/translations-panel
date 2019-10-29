@@ -29,7 +29,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
-import {LocaleState} from "../../store/locale/types";
 import {deleteUser} from "../../services/user";
 
 const userListStyles = makeStyles((theme: Theme) => createStyles({
@@ -59,7 +58,7 @@ type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
-const Users: React.FC<any> = (props: AppProps) => {
+const UsersList: React.FC<any> = (props: AppProps) => {
     const [showForm, setShowForm] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [actionForm, setActionForm] = useState('create');
@@ -197,4 +196,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(Users);
+)(UsersList);
