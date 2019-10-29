@@ -6,6 +6,7 @@ export interface UserState {
     id: string,
     name: string,
     privilege: string,
+    password?: string,
     associatedLanguages: []
 }
 

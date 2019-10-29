@@ -15,7 +15,6 @@ import {TranslationsStore} from "../../store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {connect} from "react-redux";
-import {getAllLocales} from "../../services/locale";
 import {UserState} from "../../store/user/types";
 import {createUser, updateUser} from "../../services/user";
 
@@ -56,23 +55,15 @@ const FormUsers = (props: AppProps) => {
         setUser({...updatedUser, [property]: value});
     };
 
-    const [localesForm, setLocalesForm]: any = useState({});
+    const [localesUser, setLocalesUser]: any = useState({});
     const handleChangeLocales = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalesForm({ ...localesForm, [key]: event.target.checked });
+        setLocalesUser({ ...localesUser, [key]: event.target.checked });
     };
-
-    useEffect(() => {
-        let localesView: any = {};
-        props.locales.forEach((locale: any) => {
-            (props.user.associatedLanguages.find((language: any) => language === locale.key)) ? localesView[locale.key] = true : localesView[locale.key] = false;
-        });
-        setLocalesForm(localesView);
-    }, []);
 
     const setLocalesUserUpdated = () => {
         updatedUser.associatedLanguages = [];
-        Object.keys(localesForm).map((key: any) => {
-            if (localesForm[key] === true) {
+        Object.keys(localesUser).map((key: any) => {
+            if (localesUser[key] === true) {
                 updatedUser.associatedLanguages.push(key);
             }
         })
@@ -82,20 +73,28 @@ const FormUsers = (props: AppProps) => {
         setLocalesUserUpdated();
         switch (props.action) {
             case 'create':
-                props.createUserAction(updatedUser).then((response: any) => {
+                props.createUserAction(updatedUser).then((response) => {
                     console.log(response);
                 });
                 break;
             case 'update':
-                props.updateUserAction(updatedUser).then((response: any) => {
+                props.updateUserAction(updatedUser).then((response) => {
                     console.log(response);
                 });
                 break;
-            default:
-                alert('no se ha podido crear o editar el usuarios');
-                break;
         }
+        props.setShowForm(false);
     };
+
+    useEffect(() => {
+        let localesView: any = {};
+        props.locales.forEach((locale: any) => {
+            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: any) => language === locale.key)) ?
+                localesView[locale.key] = true :
+                localesView[locale.key] = false;
+        });
+        setLocalesUser(localesView)
+    }, []);
 
     return (
         <form className={classes.form} onSubmit={sendForm}>
@@ -103,40 +102,50 @@ const FormUsers = (props: AppProps) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
-                            id="standard-name"
+                            id="name"
                             label="Name"
                             fullWidth
                             value={updatedUser.name}
                             margin="normal"
-                            onChange={(e) => handleChangedValues(e.target.name, e.target.value)}
+                            onChange={(e) => handleChangedValues('name', e.target.value)}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            id="standard-name"
+                            id="email"
                             label="Email"
                             fullWidth
                             value={updatedUser.email}
                             margin="normal"
-                            onChange={(e) => handleChangedValues(e.target.name, e.target.value)}
+                            onChange={(e) => handleChangedValues('email', e.target.value)}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            id="standard-name"
+                            id="privilege"
                             label="Role"
                             fullWidth
                             value={updatedUser.privilege}
                             margin="normal"
-                            onChange={(e) => handleChangedValues(e.target.name, e.target.value)}
+                            onChange={(e) => handleChangedValues('privilege', e.target.value)}
                         />
                     </Grid>
+                    {props.action === 'create' && <Grid item xs={12}>
+                        <TextField
+                            id="password"
+                            label="Password"
+                            fullWidth
+                            value={updatedUser.password}
+                            margin="normal"
+                            onChange={(e) => handleChangedValues('password', e.target.value)}
+                        />
+                    </Grid>}
                     <Grid item xs={12}>
                         <FormControl component="fieldset" className={classes.formControl}>
                             <FormLabel component="legend">Locales</FormLabel>
                             <FormGroup>
-                                {Object.keys(localesForm).map((key: any) => ( <FormControlLabel
-                                        control={<Checkbox checked={localesForm[key]} onChange={handleChangeLocales(key)} value={localesForm[key]} />}
+                                {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
+                                        control={<Checkbox checked={localesUser[key]} onChange={handleChangeLocales(key)} value={localesUser[key]} />}
                                 label={key}/>
                                 ))}
                             </FormGroup>
@@ -159,7 +168,7 @@ const FormUsers = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
-        locales: (store.locale === null || typeof store.locale === 'undefined') ? props.getLocalesAction() : store.locale,
+        locales: store.locale,
         action: props.action,
         user: props.user,
         setShowForm: props.setShowForm
@@ -168,7 +177,6 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
-        getLocalesAction: () => dispatch(getAllLocales()),
         createUserAction: (user: UserState) => dispatch(createUser(user)),
         updateUserAction: (user: UserState) => dispatch(updateUser(user))
     };

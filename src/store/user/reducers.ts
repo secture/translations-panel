@@ -4,6 +4,7 @@ export const initialUserState: UserState = {
     email: '',
     name: '',
     privilege: '',
+    password: '',
     id: '',
     associatedLanguages: []
 };

@@ -6,5 +6,5 @@ export interface TranslationsStore {
     auth: AuthState;
     user: UserState;
     users: UserState[];
-    locale: LocaleState;
+    locale: LocaleState[];
 }

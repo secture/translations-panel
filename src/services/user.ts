@@ -30,12 +30,12 @@ export const getUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     }
 };
 
-export const createUser = (user: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const createUser = (createdUser: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.put('http://localhost:3000/api/user/me');
-            dispatch(setUserAction(user.data));
+            user = await httpClient.post('http://localhost:3000/api/auth/register', createdUser);
+            dispatch(getUsers());
         } catch (error) {
             console.log(error);
         }
@@ -43,12 +43,25 @@ export const createUser = (user: UserState): ThunkAction<Promise<any>, {}, {}, A
     }
 };
 
-export const updateUser = (user: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const updateUser = (updatedUser: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.put('http://localhost:3000/api/user/me');
-            dispatch(setUserAction(user.data));
+            user = await httpClient.put(`http://localhost:3000/api/user/${updatedUser.id}`, updatedUser);
+            dispatch(getUsers());
+        } catch (error) {
+            console.log(error);
+        }
+        return user
+    }
+};
+
+export const deleteUser = (id: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function(dispatch: any) {
+        let user = null;
+        try{
+            user = await httpClient.delete(`http://localhost:3000/api/user/${id}`);
+            dispatch(getUsers());
         } catch (error) {
             console.log(error);
         }
