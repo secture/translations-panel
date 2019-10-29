@@ -1,4 +1,5 @@
 import {makeStyles, Theme} from "@material-ui/core";
+import {deepOrange} from '@material-ui/core/colors';
 
 export const dashboardViewStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -10,5 +11,19 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
         height: '100vh',
         overflow: 'auto',
     },
+    root: {
+        padding: theme.spacing(3, 2),
+    },
     appBarSpacer: theme.mixins.toolbar,
+    orangeAvatar: {
+        margin: 10,
+        color: '#fff',
+        backgroundColor: deepOrange[500],
+    },
+    avatar: {
+        backgroundColor: theme.palette.grey.A100
+    },
+    avatarLanguage: {
+        backgroundColor: theme.palette.primary.main
+    }
 }));

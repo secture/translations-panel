@@ -104,9 +104,9 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                         <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                             Users
                         </Typography>
-                        <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
+                        {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
                             <AddCircleOutlineIcon color="primary"/>
-                        </IconButton>
+                        </IconButton>}
                     </Toolbar>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
@@ -119,23 +119,23 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.users.map((user: UserState) => (
-                                <TableRow key={user.id}>
+                            {props.users.map((userRow: UserState) => (
+                                <TableRow key={userRow.id}>
                                     <TableCell component="th" scope="row">
-                                        {user.name}
+                                        {userRow.name}
                                     </TableCell>
-                                    <TableCell align="left">{user.email}</TableCell>
-                                    <TableCell align="left">{user.privilege}</TableCell>
+                                    <TableCell align="left">{userRow.email}</TableCell>
+                                    <TableCell align="left">{userRow.privilege}</TableCell>
                                     <TableCell align="left">
-                                        {user.associatedLanguages.map((language) =>
+                                        {userRow.associatedLanguages.map((language) =>
                                             <Chip label={language} variant="outlined" color="primary"/>
                                         )}
                                     </TableCell>
                                     <TableCell align="left" className={classes.actions}>
-                                        <IconButton onClick={() => loadFormEditUser(user)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
+                                        {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
                                             <EditIcon color="primary" />
-                                        </IconButton>
-                                        <IconButton onClick={() => deleteUser(user)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
+                                        </IconButton>}
+                                        <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
                                             <DeleteIcon color="secondary" />
                                         </IconButton>
                                     </TableCell>
@@ -182,7 +182,8 @@ const UsersList: React.FC<any> = (props: AppProps) => {
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
         locales: store.locale,
-        users: props.users
+        users: props.users,
+        user: props.user,
     };
 };
 
