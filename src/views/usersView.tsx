@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import User from "../components/users";
+import UserList from "../components/users/usersList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getUsers} from "../services/user";
@@ -28,7 +28,7 @@ const UsersView = (props: AppProps) => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
-                    <User users={props.usersToState}/>
+                    <UserList users={props.users} user={props.user}/>
                 </Grid>
             </Container>
         </main>
@@ -37,7 +37,8 @@ const UsersView = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore) => {
     return {
-        usersToState: store.users
+        users: store.users,
+        user: store.user
     };
 };
 

@@ -6,7 +6,17 @@ import { UserState } from "../store/user/types";
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import Chip from '@material-ui/core/Chip';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
 import {dashboardViewStyles} from "../styles/dashboard";
 
 const DashboardView = () => {
@@ -17,14 +27,55 @@ const DashboardView = () => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={8} lg={9}>
-                        <div>{user.email}</div>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <Paper className={classes.root}>
+                            <Box display="flex" alignItems="center">
+                                <Avatar className={classes.orangeAvatar}>{user.privilege.charAt(0).toUpperCase()}</Avatar>
+                                <Box display="flex" flexDirection="column" letterSpacing={6} >
+                                    <Typography variant="h5" component="h3">
+                                        {user.name}
+                                    </Typography>
+                                    <Typography variant="caption" >
+                                        {user.privilege}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Divider variant="middle" />
+                            <Box m={2}>
+                                <Chip icon={<MailOutlineIcon />} label={user.email} color="primary" />
+                                <Box mt={2} px={2} border={1} borderColor="grey.300" borderRadius={6}>
+                                    <List>
+                                        {user.associatedLanguages.map((language: any) =>  (
+                                            <Box>
+                                                <ListItem disableGutters>
+                                                    <ListItemAvatar>
+                                                        <Avatar className={classes.avatar}><span>🇪🇸</span></Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        primary='Español'
+                                                        secondary={language}
+                                                    />
+                                                </ListItem>
+                                            </Box>
+                                        ))}
+                                    </List>
+                                </Box>
+                            </Box>
+                        </Paper>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={3}>
-                        <div>{user.name}</div>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <Paper className={classes.root}>
+                            <Typography>
+                                Chart % traducciones confirmadas / no confirmadas para cada idioma
+                            </Typography>
+                        </Paper>
                     </Grid>
-                    <Grid item xs={12}>
-                        <div>{user.privilege}</div>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <Paper className={classes.root}>
+                            <Typography>
+                                Chart % claves traducidas / no traducidas del idioma X
+                            </Typography>
+                        </Paper>
                     </Grid>
                 </Grid>
             </Container>

@@ -6,7 +6,7 @@ export const initialLocale: LocaleState = {
     name: '',
     localeForPlayers: false
 };
-export const initialLocaleState: LocaleState[] = [initialLocale];
+export const initialLocaleState: LocaleState[] = [];
 
 export function localeReducer(state = initialLocaleState, action: LocaleActionsTypes): LocaleState[] {
     switch (action.type) {

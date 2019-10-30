@@ -20,8 +20,7 @@ type AppProps = AppStateProps & AppDispatchProps;
 const LocaleView: React.FC<any> = (props: AppProps) => {
 
     useEffect(() => {
-        props.getAllLocaleActions().then((response: any) => {
-        });
+        props.getAllLocaleActions();
     }, []);
 
     const onDeleteLocale = (data: LocaleState) => {

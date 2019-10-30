@@ -4,16 +4,15 @@ import {AnyAction} from "redux";
 import {setAllLocales} from "../store/locale/actions";
 import {LocaleState} from "../store/locale/types";
 
-export const getAllLocales = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const getAllLocales = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let locales = null;
+        let locales: any = null;
         try {
             locales = await httpClient.get('http://localhost:3000/api/locale');
             dispatch(setAllLocales(locales.data));
         } catch (error) {
             console.log(error);
         }
-        return locales;
     }
 };
 
