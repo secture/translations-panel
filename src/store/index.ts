@@ -8,13 +8,16 @@ import thunk from 'redux-thunk';
 import {usersReducer} from "./users/reducers";
 import {localeReducer} from "./locale/reducers";
 import {loadState} from './localStorage';
+import {translationsReducer} from "./translations/reducers";
 
 const persistedState = loadState();
 const rootReducers = combineReducers({
     auth: authReducer,
     user: userReducer,
     users: usersReducer,
-    locale: localeReducer
+    locale: localeReducer,
+    translations: translationsReducer,
+    tags: () => { return ['android', 'ios', 'web']; }
 });
 
 const middleWares = [thunk];
