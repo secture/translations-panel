@@ -8,7 +8,7 @@ export const getAllLocales = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let locales: any = null;
         try {
-            locales = await httpClient.get('http://localhost:3000/api/locale');
+            locales = await httpClient.get('http://localhost:3000/api/v1/locales');
             dispatch(setAllLocales(locales.data));
         } catch (error) {
             console.log(error);
@@ -20,7 +20,7 @@ export const deleteLocaleById = (locale: LocaleState): ThunkAction<Promise<any>,
     return async function (dispatch: any) {
         let locales = null;
         try {
-            locales = await httpClient.delete(`http://localhost:3000/api/locale/${locale.id}`);
+            locales = await httpClient.delete(`http://localhost:3000/api/v1/locales/${locale.id}`);
             dispatch(getAllLocales());
         } catch (error) {
             console.log(error);
@@ -33,7 +33,7 @@ export const editLocaleById = (locale: LocaleState): ThunkAction<Promise<any>, {
     return async function (dispatch: any) {
         let locales = null;
         try {
-            locales = await httpClient.put(`http://localhost:3000/api/locale/${locale.id}`, locale);
+            locales = await httpClient.put(`http://localhost:3000/api/v1/locales/${locale.id}`, locale);
             dispatch(getAllLocales());
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ export const addLocale = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}
     return async function (dispatch: any) {
         let locales = null;
         try {
-            locales = await httpClient.post(`http://localhost:3000/api/locale`, locale);
+            locales = await httpClient.post(`http://localhost:3000/api/v1/locales`, locale);
             dispatch(getAllLocales());
         } catch (error) {
             console.log(error);

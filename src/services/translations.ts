@@ -8,7 +8,7 @@ export const getAllTranslations = (): ThunkAction<Promise<any>, {}, {}, AnyActio
     return async function (dispatch: any) {
         let translations = null;
         try {
-            translations = await httpClient.get('http://localhost:3000/api/translations');
+            translations = await httpClient.get('http://localhost:3000/api/v1/translations');
             dispatch(setAllTranslations(translations.data));
         } catch (error) {
             console.log(error);

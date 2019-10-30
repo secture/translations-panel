@@ -52,8 +52,8 @@ const DashboardView = () => {
                                                         <Avatar className={classes.avatar}><span>🇪🇸</span></Avatar>
                                                     </ListItemAvatar>
                                                     <ListItemText
-                                                        primary='Español'
-                                                        secondary={language}
+                                                        primary={language.name}
+                                                        secondary={language.key}
                                                     />
                                                 </ListItem>
                                             </Box>
