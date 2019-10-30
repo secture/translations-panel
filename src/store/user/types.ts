@@ -7,7 +7,14 @@ export interface UserState {
     name: string,
     privilege: string,
     password?: string,
-    associatedLanguages: []
+    associatedLanguages: AssociatedLanguage[]
+}
+
+export interface AssociatedLanguage {
+    id: string,
+    key: string,
+    name: string,
+    localeForPlayers: boolean
 }
 
 //Actions interface

@@ -11,7 +11,7 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         let loginServiceDTO: any = null;
         try {
-            const apiResponse: any = await httpClient.post('http://localhost:3000/api/auth/login', user);
+            const apiResponse: any = await httpClient.post('http://localhost:3000/api/v1/auth/login', user);
             if (typeof apiResponse.isAxiosError === 'undefined' || !apiResponse.isAxiosError) {
                 loginServiceDTO = {
                     userAuthenticated: apiResponse.data.user,
@@ -42,7 +42,7 @@ export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
 export const signIn = (user: UserSignInDTO) => {
     return async function(dispatch: any) {
         try{
-            let result: any = await httpClient.post('https://localhost:3000/auth/signIn', user);
+            let result: any = await httpClient.post('https://localhost:3000/api/v1/auth/signIn', user);
             console.log(result);
             dispatch(signInAction(result));
             return result;

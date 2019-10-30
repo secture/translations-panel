@@ -15,7 +15,7 @@ import {TranslationsStore} from "../../store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {connect} from "react-redux";
-import {UserState} from "../../store/user/types";
+import {AssociatedLanguage, UserState} from "../../store/user/types";
 import {createUser, updateUser} from "../../services/user";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
@@ -56,15 +56,15 @@ const FormUsers = (props: AppProps) => {
     };
 
     const [localesUser, setLocalesUser]: any = useState({});
-    const handleChangeLocales = (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalesUser({ ...localesUser, [key]: event.target.checked });
+    const handleChangeLocales = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLocalesUser({ ...localesUser, [payload.data.key]: {isUserLocale: event.target.checked, data: payload.data}});
     };
 
     const setLocalesUserUpdated = () => {
         updatedUser.associatedLanguages = [];
         Object.keys(localesUser).map((key: any) => {
-            if (localesUser[key] === true) {
-                updatedUser.associatedLanguages.push(key);
+            if (localesUser[key].isUserLocale === true) {
+                updatedUser.associatedLanguages.push(localesUser[key].data.id);
             }
         })
     };
@@ -89,9 +89,15 @@ const FormUsers = (props: AppProps) => {
     useEffect(() => {
         let localesView: any = {};
         props.locales.forEach((locale: any) => {
-            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: any) => language === locale.key)) ?
-                localesView[locale.key] = true :
-                localesView[locale.key] = false;
+            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: AssociatedLanguage) => language.key === locale.key)) ?
+                localesView[locale.key] = {
+                    isUserLocale: true,
+                    data: locale,
+                } :
+                localesView[locale.key] = {
+                    isUserLocale: false,
+                    data: locale
+                 };
         });
         setLocalesUser(localesView)
     }, []);
@@ -145,8 +151,8 @@ const FormUsers = (props: AppProps) => {
                             <FormLabel component="legend">Locales</FormLabel>
                             <FormGroup>
                                 {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
-                                        control={<Checkbox checked={localesUser[key]} onChange={handleChangeLocales(key)} value={localesUser[key]} />}
-                                label={key}/>
+                                        control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
+                                label={localesUser[key].data.name}/>
                                 ))}
                             </FormGroup>
                             <FormHelperText>Select locales for user</FormHelperText>
