@@ -189,12 +189,16 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
     }
 }
 
+function prop<T, K extends keyof T>(obj: T, key: K) {
+    return obj[key];
+}
+
 const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslation, onEditTranslation, onAddTranslation}: any) => {
     const classes = translationsListStyles();
     const [showTable, setShowTable] = useState(true);
     const [editAction, editActionTable] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [dataSelected, setDataSelected] = useState(initialTranslation);
+    const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
 
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof TranslationState>('updateDate');
@@ -226,6 +230,21 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
         setDataSelected({
             ...dataSelected,
             [property]: e.target.value.toLowerCase() !== "true"
+        });
+    };
+    const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
+        let data = (dataSelected[property] as any);
+        if (data.some((stag: string) => stag === key)) {
+            let index = data.indexOf(key, 0);
+            if (index > -1) {
+                data.splice(index, 1);
+            }
+        } else {
+            data.push(key);
+        }
+        setDataSelected({
+            ...dataSelected,
+            [property]: data
         });
     };
     const openDeleteModal = (data: TranslationState) => {
@@ -304,7 +323,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                 fullWidth
                                 autoComplete="fcategory"
                                 onChange={(e) => changedValues(e, 'category')}
-                                value={dataSelected.category.name}
+                                value={dataSelected.category !== null ? dataSelected.category.name : ''}
                             />
                         </Grid>
 
@@ -342,7 +361,8 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                     <FormGroup>
                                         <FormControlLabel
                                             control={<Checkbox
-                                                checked={dataSelected.tags.some(stag => stag === tag)}/>}
+                                                checked={dataSelected.tags.some(stag => stag === tag)}
+                                                onChange={(e) => changeValuesOfArray(e, 'tags', tag)}/>}
                                             label=""
                                         />
                                     </FormGroup>
@@ -350,7 +370,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                             })}
                         </Grid>
 
-                        {Object.keys(dataSelected.translations).map((key: any) => (
+                        {Object.keys(dataSelected.translations).map((key: string) => (
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     id={'translation_' + key}
@@ -359,7 +379,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                     rows="4"
                                     variant="filled"
                                     fullWidth
-                                    defaultValue={dataSelected.translations[key]}
+                                    defaultValue={prop((dataSelected.translations as any), key)}
                                     onChange={(e) => changedValues(e, 'translations.' + key)}
                                 />
                             </Grid>
