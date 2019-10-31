@@ -185,7 +185,7 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
         case 'web':
             return (<LaptopMacIcon className={props.classes.tag}/>);
         default:
-            return (<span></span>);
+            return (<span/>);
     }
 }
 
@@ -202,6 +202,11 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+    const goBack = () => {
+        setDataSelected(initialTranslation);
+        editActionTable(false);
+        setShowTable(!showTable);
+    };
     const showEditForm = (data: TranslationState) => {
         setDataSelected(data);
         editActionTable(true);
@@ -299,7 +304,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                 fullWidth
                                 autoComplete="fcategory"
                                 onChange={(e) => changedValues(e, 'category')}
-                                value={dataSelected.category}
+                                value={dataSelected.category.name}
                             />
                         </Grid>
 
@@ -342,7 +347,6 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                         />
                                     </FormGroup>
                                 </FormControl>
-
                             })}
                         </Grid>
 
@@ -363,7 +367,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
 
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                             <Button className={classes.button}
-                                    onClick={e => setShowTable(!showTable)}>Return</Button>
+                                    onClick={e => goBack()}>Return</Button>
                             {editAction ? (
                                 <Button variant="contained" color="primary"
                                         onClick={e => confirmEditLocale(dataSelected)}
@@ -402,21 +406,16 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                     <TableBody>
                         {stableSort(translations, getSorting(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row: any, index) => {
+                            .map((row: any, index: any) => {
                                 return (<TableRow key={row.id}>
                                         <TableCell>{row.key}</TableCell>
-                                        <TableCell>{row.category}</TableCell>
                                         <TableCell>
-                                            {row.tags.map((tag: any) => {
-                                                switch (tag.toLowerCase()) {
-                                                    case 'ios':
-                                                        return <AppleIcon className={classes.tag}></AppleIcon>
-                                                    case 'android':
-                                                        return <AndroidIcon className={classes.tag}></AndroidIcon>
-                                                    case 'web':
-                                                        return <LaptopMacIcon className={classes.tag}></LaptopMacIcon>
-                                                }
-                                            })}
+                                            {row.category !== null ? row.category.name : ''}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.tags.map((tag: any) => (
+                                                <GetPlatformIcon tag={tag} classes={classes}/>
+                                            ))}
                                         </TableCell>
                                         <TableCell>
                                             {row.confirmed ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
