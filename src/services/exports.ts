@@ -2,22 +2,25 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import httpClient from "./common/http-interceptor";
 
-export const getExportsByPlatform = (tag: string): ThunkAction<void, {}, {}, AnyAction> => {
+export const getExportsByPlatform = (tag: string): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let exportsTranslates: any = null;
+        let exportOk = false;
         try {
-            exportsTranslates = await httpClient.get(`http://localhost:3000/api/v1/export/${tag}`);
-            console.log(exportsTranslates);
-            const element = document.createElement('a');
-            element.setAttribute('href', `http://localhost:3000/api/v1/export/${tag}`);
-            element.setAttribute('download', 'filename');
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+            exportsTranslates = await httpClient.get(`http://localhost:3000/api/v1/export/${tag}`, {responseType: 'blob'});
+            if (typeof exportsTranslates.data !== 'undefined' || exportsTranslates.data !== '') {
+                const downloadUrl = URL.createObjectURL(new Blob([exportsTranslates.data], {type: 'application/zip'}));
+                let a = document.createElement("a");
+                a.href = downloadUrl;
+                a.download = `${tag}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                exportOk = true;
+            }
         } catch (error) {
             console.log(error);
         }
+        return exportOk;
     }
 };
