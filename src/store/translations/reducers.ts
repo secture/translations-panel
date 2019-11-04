@@ -14,10 +14,10 @@ export const initialTranslation: TranslationState = {
     translations: {},
     tags: [],
     context: '',
-    category: '',
+    category: {name: '', id: ''},
     insertionDate: new Date(),
     updateDate: new Date(),
-    insertionUser: '',
+    insertionUser: {},
     updateUser: initialUpdateUserState,
     confirmed: false
 };

@@ -12,13 +12,13 @@ export interface UpdateUserState {
 export interface TranslationState {
     id: string,
     key: string,
-    translations: any,
-    tags: [],
+    translations: {},
+    tags: string[],
     context: string,
-    category: string,
+    category: { name: string, id: string },
     insertionDate: Date,
     updateDate: Date,
-    insertionUser: string,
+    insertionUser: {},
     updateUser: UpdateUserState,
     confirmed: boolean
 }

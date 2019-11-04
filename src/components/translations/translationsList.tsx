@@ -185,8 +185,12 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
         case 'web':
             return (<LaptopMacIcon className={props.classes.tag}/>);
         default:
-            return (<span></span>);
+            return (<span/>);
     }
+}
+
+function prop<T, K extends keyof T>(obj: T, key: K) {
+    return obj[key];
 }
 
 const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslation, onEditTranslation, onAddTranslation}: any) => {
@@ -194,7 +198,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
     const [showTable, setShowTable] = useState(true);
     const [editAction, editActionTable] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const [dataSelected, setDataSelected] = useState(initialTranslation);
+    const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
 
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof TranslationState>('updateDate');
@@ -202,6 +206,11 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+    const goBack = () => {
+        setDataSelected(initialTranslation);
+        editActionTable(false);
+        setShowTable(!showTable);
+    };
     const showEditForm = (data: TranslationState) => {
         setDataSelected(data);
         editActionTable(true);
@@ -221,6 +230,21 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
         setDataSelected({
             ...dataSelected,
             [property]: e.target.value.toLowerCase() !== "true"
+        });
+    };
+    const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
+        let data = (dataSelected[property] as any);
+        if (data.some((stag: string) => stag === key)) {
+            let index = data.indexOf(key, 0);
+            if (index > -1) {
+                data.splice(index, 1);
+            }
+        } else {
+            data.push(key);
+        }
+        setDataSelected({
+            ...dataSelected,
+            [property]: data
         });
     };
     const openDeleteModal = (data: TranslationState) => {
@@ -299,7 +323,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                 fullWidth
                                 autoComplete="fcategory"
                                 onChange={(e) => changedValues(e, 'category')}
-                                value={dataSelected.category}
+                                value={dataSelected.category !== null ? dataSelected.category.name : ''}
                             />
                         </Grid>
 
@@ -337,16 +361,16 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                     <FormGroup>
                                         <FormControlLabel
                                             control={<Checkbox
-                                                checked={dataSelected.tags.some(stag => stag === tag)}/>}
+                                                checked={dataSelected.tags.some(stag => stag === tag)}
+                                                onChange={(e) => changeValuesOfArray(e, 'tags', tag)}/>}
                                             label=""
                                         />
                                     </FormGroup>
                                 </FormControl>
-
                             })}
                         </Grid>
 
-                        {Object.keys(dataSelected.translations).map((key: any) => (
+                        {Object.keys(dataSelected.translations).map((key: string) => (
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     id={'translation_' + key}
@@ -355,7 +379,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                                     rows="4"
                                     variant="filled"
                                     fullWidth
-                                    defaultValue={dataSelected.translations[key]}
+                                    defaultValue={prop((dataSelected.translations as any), key)}
                                     onChange={(e) => changedValues(e, 'translations.' + key)}
                                 />
                             </Grid>
@@ -363,7 +387,7 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
 
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                             <Button className={classes.button}
-                                    onClick={e => setShowTable(!showTable)}>Return</Button>
+                                    onClick={e => goBack()}>Return</Button>
                             {editAction ? (
                                 <Button variant="contained" color="primary"
                                         onClick={e => confirmEditLocale(dataSelected)}
@@ -402,21 +426,16 @@ const TranslationsList: React.FC<any> = ({translations, tags, onDeleteTranslatio
                     <TableBody>
                         {stableSort(translations, getSorting(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row: any, index) => {
+                            .map((row: any, index: any) => {
                                 return (<TableRow key={row.id}>
                                         <TableCell>{row.key}</TableCell>
-                                        <TableCell>{row.category}</TableCell>
                                         <TableCell>
-                                            {row.tags.map((tag: any) => {
-                                                switch (tag.toLowerCase()) {
-                                                    case 'ios':
-                                                        return <AppleIcon className={classes.tag}></AppleIcon>
-                                                    case 'android':
-                                                        return <AndroidIcon className={classes.tag}></AndroidIcon>
-                                                    case 'web':
-                                                        return <LaptopMacIcon className={classes.tag}></LaptopMacIcon>
-                                                }
-                                            })}
+                                            {row.category !== null ? row.category.name : ''}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.tags.map((tag: any) => (
+                                                <GetPlatformIcon tag={tag} classes={classes}/>
+                                            ))}
                                         </TableCell>
                                         <TableCell>
                                             {row.confirmed ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
