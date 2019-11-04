@@ -16,6 +16,7 @@ const authInterceptor = (config: any) => {
     const tokenStore = store.getState().auth.accessToken;
     const token: string = (tokenStore === null) ? store.getState().auth.accessToken : tokenStore;
     config.headers = {
+        ...config.headers,
         Authorization: `Bearer ${token}`,
         'content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
