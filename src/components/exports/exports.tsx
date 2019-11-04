@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import AndroidIcon from '@material-ui/icons/Android';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import AppleIcon from '@material-ui/icons/Apple';
 import ComputerIcon from '@material-ui/icons/Computer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
@@ -53,7 +53,7 @@ const Exports: React.FC<any> = (props: AppProps) => {
                                 case 'android':
                                     return <AndroidIcon />;
                                 case 'ios':
-                                    return <PhoneIphoneIcon />;
+                                    return <AppleIcon />;
                                 case 'web':
                                     return <ComputerIcon />;
                             }
