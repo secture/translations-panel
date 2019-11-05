@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {connect, useSelector} from 'react-redux'
+import {connect} from 'react-redux'
 import {TranslationsStore} from "../store/types";
 
 /* Material UI */
