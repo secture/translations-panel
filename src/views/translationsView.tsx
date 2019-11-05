@@ -37,6 +37,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
     const onSelectedData = (data: TranslationState) => {
         setDataSelected(data);
+        debugger;
         setShowComponent(!showComponent);
     };
 
@@ -83,7 +84,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Paper className={`${classes.content} ${!showComponent ? classes.show : classes.hide}`}>
-                            <TranslationsForm dataSelecteds={dataSelected} tags={props.tags} actionType={actionType}
+                            <TranslationsForm dataSelected={dataSelected} tags={props.tags} actionType={actionType}
                                               onCancel={onCancel} onEditEntity={onEditEntity}
                                               onCreateEntity={onCreateEntity}/>
                         </Paper>
