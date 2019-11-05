@@ -20,7 +20,7 @@ export interface TranslationState {
     updateDate: Date,
     insertionUser: {},
     updateUser: UpdateUserState,
-    confirmed: boolean
+    confirmedTranslations: {}
 }
 
 interface GetAllTranslationsAction {

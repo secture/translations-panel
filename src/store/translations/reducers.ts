@@ -19,7 +19,7 @@ export const initialTranslation: TranslationState = {
     updateDate: new Date(),
     insertionUser: {},
     updateUser: initialUpdateUserState,
-    confirmed: false
+    confirmedTranslations: {}
 };
 export const initialTranslationState: TranslationState[] = [initialTranslation];
 
