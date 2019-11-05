@@ -11,7 +11,7 @@ import LocalesList from "../components/locales/localesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../services/locale";
-import {LocaleState} from "../store/locale/types";
+import {LocaleState} from "../store/locales/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -43,7 +43,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8} lg={9}>
-                        <LocalesList locales={props.locale} onDeleteLocale={onDeleteLocale}
+                        <LocalesList locales={props.locales} onDeleteLocale={onDeleteLocale}
                                      onEditLocale={onEditLocale} onAddLocale={onAddLocale}/>
                     </Grid>
                 </Grid>
@@ -54,7 +54,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore) => {
     return {
-        locale: store.locale
+        locales: store.locales
     };
 };
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {

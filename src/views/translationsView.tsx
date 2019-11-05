@@ -16,8 +16,7 @@ import {addTranslation, deleteTranslationById, editTranslationById, getAllTransl
 import TranslationsForm from "../components/translations/translationsForm";
 import {TranslationState} from "../store/translations/types";
 import {initialTranslation} from "../store/translations/reducers";
-import {LocaleState} from "../store/locale/types";
-import {addLocale, deleteLocaleById, editLocaleById} from "../services/locale";
+import {getAllLocales} from "../services/locale";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -37,12 +36,14 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
     const onSelectedData = (data: TranslationState) => {
         setDataSelected(data);
-        debugger;
         setShowComponent(!showComponent);
     };
 
     const onActionType = (type: string) => {
         setActionType(type);
+        if (type === 'create') {
+            setDataSelected(initialTranslation);
+        }
         setShowComponent(!showComponent);
     };
 
@@ -75,6 +76,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
         });
+        props.getAllLocalesActions().then((response: any) => {
+        });
     }, []);
 
     return (
@@ -83,16 +86,16 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
             <Container className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Paper className={`${classes.content} ${!showComponent ? classes.show : classes.hide}`}>
-                            <TranslationsForm dataSelected={dataSelected} tags={props.tags} actionType={actionType}
-                                              onCancel={onCancel} onEditEntity={onEditEntity}
-                                              onCreateEntity={onCreateEntity}/>
-                        </Paper>
-                        <Paper className={`${classes.content} ${showComponent ? classes.show : classes.hide}`}>
-                            <TranslationsList translations={props.translations} onSelectedData={onSelectedData}
-                                              onActionType={onActionType} onModalAction={onModalAction}/>
-                        </Paper>
-
+                        {!showComponent ? (
+                            <Paper className={`${classes.content}`}>
+                                <TranslationsForm dataSelected={dataSelected} tags={props.tags} locales={props.locales}
+                                                  actionType={actionType} onCancel={onCancel}
+                                                  onEditEntity={onEditEntity} onCreateEntity={onCreateEntity}/>
+                            </Paper>) : (
+                            <Paper className={`${classes.content}`}>
+                                <TranslationsList translations={props.translations} onSelectedData={onSelectedData}
+                                                  onActionType={onActionType} onModalAction={onModalAction}/>
+                            </Paper>)}
                         <Dialog
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
@@ -125,11 +128,13 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 const mapStateToProps = (store: TranslationsStore) => {
     return {
         translations: store.translations,
-        tags: store.tags
+        tags: store.tags,
+        locales: store.locales
     };
 };
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
+        getAllLocalesActions: () => dispatch(getAllLocales()),
         getAllTranslationsActions: () => dispatch(getAllTranslations()),
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),

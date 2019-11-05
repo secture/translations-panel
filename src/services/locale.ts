@@ -1,10 +1,10 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setAllLocales} from "../store/locale/actions";
-import {LocaleState} from "../store/locale/types";
+import {setAllLocales} from "../store/locales/actions";
+import {LocaleState} from "../store/locales/types";
 
-export const getAllLocales = (): ThunkAction<void, {}, {}, AnyAction> => {
+export const getAllLocales = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let locales: any = null;
         try {

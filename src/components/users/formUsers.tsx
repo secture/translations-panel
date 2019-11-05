@@ -174,7 +174,7 @@ const FormUsers = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
-        locales: store.locale,
+        locales: store.locales,
         action: props.action,
         user: props.user,
         setShowForm: props.setShowForm

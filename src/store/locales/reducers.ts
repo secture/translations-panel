@@ -8,7 +8,7 @@ export const initialLocale: LocaleState = {
 };
 export const initialLocaleState: LocaleState[] = [];
 
-export function localeReducer(state = initialLocaleState, action: LocaleActionsTypes): LocaleState[] {
+export function localesReducer(state = initialLocaleState, action: LocaleActionsTypes): LocaleState[] {
     switch (action.type) {
         case SET_ALL_LOCALES: {
             return action.payload;

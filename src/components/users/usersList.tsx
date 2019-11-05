@@ -181,7 +181,7 @@ const UsersList: React.FC<any> = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
-        locales: store.locale,
+        locales: store.locales,
         users: props.users,
         user: props.user,
     };

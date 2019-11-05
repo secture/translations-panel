@@ -18,7 +18,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
-import {LocaleState} from "../../store/locale/types";
+import {LocaleState} from "../../store/locales/types";
 import {
     Button,
     Fab,
@@ -27,7 +27,7 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {initialLocale} from "../../store/locale/reducers";
+import {initialLocale} from "../../store/locales/reducers";
 
 const localesListStyles = makeStyles((theme: Theme) =>
     createStyles({

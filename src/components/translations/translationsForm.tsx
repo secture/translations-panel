@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {
     Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Switch, TextField,
@@ -11,6 +11,7 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
 import {initialTranslation, initialTranslationState} from "../../store/translations/reducers";
 import {TranslationState} from "../../store/translations/types";
+import {LocaleState} from "../../store/locales/types";
 
 const translationsFormStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -79,7 +80,7 @@ function prop<T, K extends keyof T>(obj: T, key: K) {
     return obj[key];
 }
 
-const TranslationsForm: React.FC<any> = ({dataSelected, tags, actionType, onCancel, onEditEntity, onCreateEntity}) => {
+const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionType, onCancel, onEditEntity, onCreateEntity}) => {
     const classes = translationsFormStyles();
     const [editAction, editActionTable] = useState(false);
     const [data, setData] = useState(dataSelected);
@@ -100,6 +101,24 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, actionType, onCanc
             [property]: e.target.value.toLowerCase() !== "true"
         });
     };
+    const changeItemValuesBoolean = (e: any, property: any, item: any) => {
+        setData({
+            ...data,
+            [property]: {
+                ...data[property],
+                [item]: e.target.value.toLowerCase() !== "true"
+            }
+        });
+    };
+    const changeItemValues = (e: any, property: any, item: any) => {
+        setData({
+            ...data,
+            [property]: {
+                ...data[property],
+                [item]: e.target.value
+            }
+        });
+    };
     const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
         let values = (data[property] as any);
         if (values.some((stag: string) => stag === key)) {
@@ -116,119 +135,113 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, actionType, onCanc
         });
     };
 
-    debugger;
-    if(typeof data !== 'undefined'){
-        return (
-            <form className={classes.form} >
-                <Grid container spacing={3}>
-                    <Grid container item direction="row" justify="center" xs={12} sm={12}>
-                        <Typography variant="h6" gutterBottom>
-                            {actionType === 'edit' ?
-                                'Translation id: ' + data.id :
-                                'Create a new Locale'
-                            }
-                        </Typography>
-                        <Divider variant="middle"/>
-                        <Typography variant="overline" display="block" gutterBottom>
-                            Last updated by: {data.updateUser.name}({data.updateUser.privilege})
-                        </Typography>
-                    </Grid>
+    return (
+        <form className={classes.form}>
+            <Grid container spacing={3}>
+                <Grid container item direction="row" justify="center" xs={12} sm={12}>
+                    <Typography variant="h6" gutterBottom>
+                        {actionType === 'edit' ?
+                            'Translation id: ' + data.id :
+                            'Create a new Locale'
+                        }
+                    </Typography>
+                    <Divider variant="middle"/>
+                    <Typography variant="overline" display="block" gutterBottom>
+                        Last updated by: {data.updateUser.name}({data.updateUser.privilege})
+                    </Typography>
+                </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            id={'key_' + data.id}
-                            label={'key'}
-                            fullWidth
-                            value={data.key}
-                            onChange={(e) => changedValues(e, 'key')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            id="category"
-                            label="category"
-                            fullWidth
-                            autoComplete="fcategory"
-                            onChange={(e) => changedValues(e, 'category')}
-                            value={data.category !== null ? data.category.name : ''}
-                        />
-                    </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id={'key_' + data.id}
+                        label={'key'}
+                        fullWidth
+                        value={data.key}
+                        onChange={(e) => changedValues(e, 'key')}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="category"
+                        label="category"
+                        fullWidth
+                        autoComplete="fcategory"
+                        onChange={(e) => changedValues(e, 'category')}
+                        value={data.category !== null ? data.category.name : ''}
+                    />
+                </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            id="context"
-                            label="context"
-                            fullWidth
-                            autoComplete="fcontext"
-                            onChange={(e) => changedValues(e, 'context')}
-                            value={data.context}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                        {tags.map((tagItem: any) => {
-                            return <FormControl key={tagItem} component="fieldset">
-                                <FormLabel component="legend">
-                                    <GetPlatformIcon tag={tagItem} classes={classes}/>
-                                </FormLabel>
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={<Checkbox
-                                            key={tagItem}
-                                            checked={data.tags.some((stag: any) => stag === tagItem)}
-                                            onChange={(e) => changeValuesOfArray(e, 'tags', tagItem)}/>}
-                                        label=""
-                                    />
-                                </FormGroup>
-                            </FormControl>
-                        })}
-                    </Grid>
-                    {Object.keys(data.translations).map((key: string) => (
-                        <Grid item xs={12} sm={6} key={'translation_' + key}>
-                            <TextField
-                                id={'translation_' + key}
-                                label={key.toUpperCase()}
-                                multiline
-                                rows="4"
-                                variant="filled"
-                                fullWidth
-                                defaultValue={prop((data.translations as any), key)}
-                                onChange={(e) => changedValues(e, 'translations.' + key)}
-                            />
-
-                            <FormGroup row>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="context"
+                        label="context"
+                        fullWidth
+                        autoComplete="fcontext"
+                        onChange={(e) => changedValues(e, 'context')}
+                        value={data.context}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={3}>
+                    {tags.map((tagItem: any) => {
+                        return <FormControl key={tagItem} component="fieldset">
+                            <FormLabel component="legend">
+                                <GetPlatformIcon tag={tagItem} classes={classes}/>
+                            </FormLabel>
+                            <FormGroup>
                                 <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={prop((data.confirmedTranslations as any), key)}
-                                            onChange={(e) => changeValuesBoolean(e, 'confirmedTranslations')}
-                                            value={prop((data.confirmedTranslations as any), key)}
-                                            color="primary"
-                                        />
-                                    }
-                                    label="Confirmed"
+                                    control={<Checkbox
+                                        key={tagItem}
+                                        checked={data.tags.some((stag: any) => stag === tagItem)}
+                                        onChange={(e) => changeValuesOfArray(e, 'tags', tagItem)}/>}
+                                    label=""
                                 />
                             </FormGroup>
-                        </Grid>
-                    ))}
-                    <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
-                        <Button className={classes.button}
-                                onClick={e => cancel()}>Return</Button>
-                        {actionType === 'edit' ? (
-                            <Button variant="contained" color="primary"
-                                    onClick={e => onEditEntity(data)}
-                                    className={classes.button}> Save </Button>
-                        ) : (
-                            <Button variant="contained" color="primary"
-                                    onClick={e => onCreateEntity(data)}
-                                    className={classes.button}> Create </Button>
-                        )}
-                    </Grid>
+                        </FormControl>
+                    })}
                 </Grid>
-            </form>
-        );
-    } else{
-        return (<div></div>)
-    }
+                {locales.map((row: LocaleState) => (
+                    <Grid item xs={12} sm={6} key={'translation_' + row.key}>
+                        <TextField
+                            id={'translation_' + row.key}
+                            label={row.key.toUpperCase()}
+                            multiline
+                            rows="4"
+                            variant="filled"
+                            fullWidth
+                            defaultValue={prop((data.translations as any), row.key)}
+                            onChange={(e) => changeItemValues(e, 'translations', row.key)}
+                        />
+
+                        <FormGroup row>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={prop((data.confirmedTranslations as any), row.key)}
+                                        onChange={(e) => changeItemValuesBoolean(e, 'confirmedTranslations', row.key)}
+                                        value={prop((data.confirmedTranslations as any), row.key)}
+                                        color="primary"
+                                    />
+                                }
+                                label="Confirmed"
+                            />
+                        </FormGroup>
+                    </Grid>))}
+                <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
+                    <Button className={classes.button}
+                            onClick={e => cancel()}>Return</Button>
+                    {actionType === 'edit' ? (
+                        <Button variant="contained" color="primary"
+                                onClick={e => onEditEntity(data)}
+                                className={classes.button}> Save </Button>
+                    ) : (
+                        <Button variant="contained" color="primary"
+                                onClick={e => onCreateEntity(data)}
+                                className={classes.button}> Create </Button>
+                    )}
+                </Grid>
+            </Grid>
+        </form>
+    );
 
 
 };
