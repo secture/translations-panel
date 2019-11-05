@@ -76,8 +76,13 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
     }
 }
 
-function prop<T, K extends keyof T>(obj: T, key: K) {
-    return obj[key];
+function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
+    if (typeof obj[key] === "undefined") {
+        return defaultValue;
+    } else {
+        return obj[key];
+    }
+
 }
 
 const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionType, onCancel, onEditEntity, onCreateEntity}) => {
@@ -208,17 +213,19 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionTyp
                             rows="4"
                             variant="filled"
                             fullWidth
-                            defaultValue={prop((data.translations as any), row.key)}
+                            defaultValue={prop((data.translations as any), row.key, null)}
                             onChange={(e) => changeItemValues(e, 'translations', row.key)}
                         />
 
                         <FormGroup row>
                             <FormControlLabel
+                                key={'switch_' + row.key}
                                 control={
                                     <Switch
-                                        checked={prop((data.confirmedTranslations as any), row.key)}
+                                        name={'switch_' + row.key}
+                                        checked={prop((data.confirmedTranslations as any), row.key, false)}
                                         onChange={(e) => changeItemValuesBoolean(e, 'confirmedTranslations', row.key)}
-                                        value={prop((data.confirmedTranslations as any), row.key)}
+                                        value={prop((data.confirmedTranslations as any), row.key, false)}
                                         color="primary"
                                     />
                                 }
