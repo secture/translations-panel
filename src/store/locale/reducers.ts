@@ -4,6 +4,7 @@ export const initialLocale: LocaleState = {
     id: '',
     key: '',
     name: '',
+    icon: '',
     localeForPlayers: false
 };
 export const initialLocaleState: LocaleState[] = [];

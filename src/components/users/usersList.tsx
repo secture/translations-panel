@@ -77,53 +77,51 @@ const UsersList: React.FC<any> = (props: AppProps) => {
     };
 
     return (
-        <Slide direction="up" in={!props.showForm} style={{ transitionDelay: !props.showForm ? '150ms' : '0ms' }} mountOnEnter unmountOnExit>
-            <Paper className={classes.root}>
-                <Toolbar>
-                    <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
-                        Users
-                    </Typography>
-                    {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
-                        <AddCircleOutlineIcon color="primary"/>
-                    </IconButton>}
-                </Toolbar>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="left">Email</TableCell>
-                            <TableCell align="left">Role</TableCell>
-                            <TableCell align="left">Languages</TableCell>
-                            <TableCell align="left">Actions</TableCell>
+        <Paper className={classes.root}>
+            <Toolbar>
+                <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
+                    Users
+                </Typography>
+                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
+                    <AddCircleOutlineIcon color="primary"/>
+                </IconButton>}
+            </Toolbar>
+            <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="left">Email</TableCell>
+                        <TableCell align="left">Role</TableCell>
+                        <TableCell align="left">Languages</TableCell>
+                        <TableCell align="left">Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {props.users.map((userRow: UserState) => (
+                        <TableRow key={userRow.id}>
+                            <TableCell component="th" scope="row">
+                                {userRow.name}
+                            </TableCell>
+                            <TableCell align="left">{userRow.email}</TableCell>
+                            <TableCell align="left">{userRow.privilege}</TableCell>
+                            <TableCell align="left">
+                                {userRow.associatedLanguages.map((language: AssociatedLanguage) =>
+                                    <Chip label={language.key} variant="outlined" color="primary"/>
+                                )}
+                            </TableCell>
+                            <TableCell align="left" className={classes.actions}>
+                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
+                                    <EditIcon color="primary" />
+                                </IconButton>}
+                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
+                                    <DeleteIcon color="secondary" />
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {props.users.map((userRow: UserState) => (
-                            <TableRow key={userRow.id}>
-                                <TableCell component="th" scope="row">
-                                    {userRow.name}
-                                </TableCell>
-                                <TableCell align="left">{userRow.email}</TableCell>
-                                <TableCell align="left">{userRow.privilege}</TableCell>
-                                <TableCell align="left">
-                                    {userRow.associatedLanguages.map((language: AssociatedLanguage) =>
-                                        <Chip label={language.key} variant="outlined" color="primary"/>
-                                    )}
-                                </TableCell>
-                                <TableCell align="left" className={classes.actions}>
-                                    {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
-                                        <EditIcon color="primary" />
-                                    </IconButton>}
-                                    <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
-                                        <DeleteIcon color="secondary" />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
-        </Slide>
+                    ))}
+                </TableBody>
+            </Table>
+        </Paper>
     );
 };
 
@@ -135,7 +133,6 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
         setUserSelected: props.setUserSelected,
         setTypeForm: props.setTypeForm,
         setShowForm: props.setShowForm,
-        showForm: props.showForm,
         openDialog: props.openDialog,
     };
 };

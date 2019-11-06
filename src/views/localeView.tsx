@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import {TranslationsStore} from "../store/types";
 
@@ -12,6 +12,9 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../services/locale";
 import {LocaleState} from "../store/locale/types";
+import DeleteDialog from "../components/common/deleteDialog";
+import LocalesForm from "../components/locales/localesForm";
+import {initialLocale} from "../store/locale/reducers";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -19,20 +22,31 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const LocaleView: React.FC<any> = (props: AppProps) => {
 
+    const [localeSelected, setLocaleSelected] = useState(initialLocale);
+    const [showForm, setShowForm] = useState(false);
+    const [editForm, setEditForm] = useState(false);
+    const [dialog, setOpenDialog] = useState(false);
+    const updateDialog = () => {
+        setOpenDialog(!dialog);
+    };
+
     useEffect(() => {
         props.getAllLocaleActions();
     }, []);
 
     const onDeleteLocale = (data: LocaleState) => {
-        props.deleteLocaleByIdActions(data).then((response: any) => {
+        props.deleteLocaleByIdActions(data).then((locale: LocaleState) => {
+            (locale !== null) ? alert('Locale eliminaro') : alert('no ha sido posible eliminar el locale')
         })
     };
     const onEditLocale = (data: LocaleState) => {
-        props.editLocaleByIdActions(data).then((response: any) => {
+        props.editLocaleByIdActions(data).then((locale: LocaleState) => {
+            (locale !== null) ? alert('Locale editado') : alert('no ha sido posible editar el locale')
         })
     };
     const onAddLocale = (data: LocaleState) => {
-        props.addLocaleActions(data).then((response: any) => {
+        props.addLocaleActions(data).then((locale: LocaleState) => {
+            (locale !== null) ? alert('Locale creado') : alert('no ha sido posible crear el locale')
         })
     };
 
@@ -42,10 +56,27 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
             <div className={classes.appBarSpacer}/>
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={8} lg={9}>
-                        <LocalesList locales={props.locale} onDeleteLocale={onDeleteLocale}
-                                     onEditLocale={onEditLocale} onAddLocale={onAddLocale}/>
-                    </Grid>
+                    {!showForm ? (
+                        <Grid item xs={12}>
+                            <LocalesList locales={props.locale}
+                                         setLocaleSelected={setLocaleSelected}
+                                         showForm={showForm}
+                                         setShowForm={setShowForm}
+                                         openDialog={updateDialog}
+                                         setEditForm={setEditForm}/>
+                        </Grid>) : (
+                        <Grid item xs={12}>
+                            <LocalesForm onEditLocale={onEditLocale}
+                                         onAddLocale={onAddLocale}
+                                         localeSelected={localeSelected}
+                                         showForm={showForm}
+                                         setShowForm={setShowForm}
+                                         editForm={editForm}/>
+                        </Grid>)}
+                    <DeleteDialog openDialog={updateDialog}
+                                  dialog={dialog}
+                                  deleteItem={localeSelected}
+                                  deleteFunction={onDeleteLocale}/>
                 </Grid>
             </Container>
         </main>

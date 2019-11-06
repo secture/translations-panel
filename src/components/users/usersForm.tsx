@@ -109,76 +109,74 @@ const UsersForm = (props: AppProps) => {
     }, []);
 
     return (
-        <Slide direction="up" in={props.showForm} style={{ transitionDelay: props.showForm ? '150ms' : '0ms' }} mountOnEnter unmountOnExit>
-            <Paper className={classes.root}>
-                <form className={classes.form} onSubmit={sendForm}>
-                    <Container className={classes.container}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="name"
-                                    label="Name"
-                                    fullWidth
-                                    value={updatedUser.name}
-                                    margin="normal"
-                                    onChange={(e) => handleChangedValues('name', e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="email"
-                                    label="Email"
-                                    fullWidth
-                                    value={updatedUser.email}
-                                    margin="normal"
-                                    onChange={(e) => handleChangedValues('email', e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="privilege"
-                                    label="Role"
-                                    fullWidth
-                                    value={updatedUser.privilege}
-                                    margin="normal"
-                                    onChange={(e) => handleChangedValues('privilege', e.target.value)}
-                                />
-                            </Grid>
-                            {props.typeForm === 'create' && <Grid item xs={12}>
-                                <TextField
-                                    id="password"
-                                    label="Password"
-                                    fullWidth
-                                    value={updatedUser.password}
-                                    margin="normal"
-                                    onChange={(e) => handleChangedValues('password', e.target.value)}
-                                />
-                            </Grid>}
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset" className={classes.formControl}>
-                                    <FormLabel component="legend">Locales</FormLabel>
-                                    <FormGroup>
-                                        {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
-                                                control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
-                                        label={localesUser[key].data.name}/>
-                                        ))}
-                                    </FormGroup>
-                                    <FormHelperText>Select locales for user</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} className={classes.actions}>
-                                <Button variant="outlined" color="secondary" className={classes.button} onClick={() => props.setShowForm(false)} >
-                                    Back
-                                </Button>
-                                <Button variant="outlined" color="primary" className={classes.button} onClick={() => sendForm()}>
-                                    Send
-                                </Button>
-                            </Grid>
+        <Paper className={classes.root}>
+            <form className={classes.form} onSubmit={sendForm}>
+                <Container className={classes.container}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="name"
+                                label="Name"
+                                fullWidth
+                                value={updatedUser.name}
+                                margin="normal"
+                                onChange={(e) => handleChangedValues('name', e.target.value)}
+                            />
                         </Grid>
-                    </Container>
-                </form>
-            </Paper>
-        </Slide>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="email"
+                                label="Email"
+                                fullWidth
+                                value={updatedUser.email}
+                                margin="normal"
+                                onChange={(e) => handleChangedValues('email', e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="privilege"
+                                label="Role"
+                                fullWidth
+                                value={updatedUser.privilege}
+                                margin="normal"
+                                onChange={(e) => handleChangedValues('privilege', e.target.value)}
+                            />
+                        </Grid>
+                        {props.typeForm === 'create' && <Grid item xs={12}>
+                            <TextField
+                                id="password"
+                                label="Password"
+                                fullWidth
+                                value={updatedUser.password}
+                                margin="normal"
+                                onChange={(e) => handleChangedValues('password', e.target.value)}
+                            />
+                        </Grid>}
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                                <FormLabel component="legend">Locales</FormLabel>
+                                <FormGroup>
+                                    {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
+                                            control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
+                                    label={localesUser[key].data.name}/>
+                                    ))}
+                                </FormGroup>
+                                <FormHelperText>Select locales for user</FormHelperText>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} className={classes.actions}>
+                            <Button variant="outlined" color="secondary" className={classes.button} onClick={() => props.setShowForm(false)} >
+                                Back
+                            </Button>
+                            <Button variant="outlined" color="primary" className={classes.button} onClick={() => sendForm()}>
+                                Send
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </form>
+        </Paper>
     )
 };
 
@@ -188,7 +186,6 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
         locales: store.locale,
         typeForm: props.typeForm,
         setShowForm: props.setShowForm,
-        showForm: props.showForm
     };
 };
 
