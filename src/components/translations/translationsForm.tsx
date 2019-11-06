@@ -80,8 +80,10 @@ function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
 
 }
 
-const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categories, actionType, onCancel,
-                                             onEditEntity, onCreateEntity, onConfirmTranslationLocale}) => {
+const TranslationsForm: React.FC<any> = ({
+                                             dataSelected, tags, locales, categories, actionType, onCancel,
+                                             onEditEntity, onCreateEntity, onConfirmTranslationLocale
+                                         }) => {
     const classes = translationsFormStyles();
     const [editAction, editActionTable] = useState(false);
     const [data, setData] = useState(dataSelected);
@@ -164,7 +166,7 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categorie
                         <Select key={'select_category'}
                                 id="select_category"
                                 value={data.category !== null ? data.category.id : ''}
-                                onChange={(e) => changeItemValues(e, 'category','id')}
+                                onChange={(e) => changeItemValues(e, 'category', 'id')}
                                 fullWidth>
                             {categories.map((catItem: CategoryState) => (
                                 <MenuItem key={'select_category' + catItem.id}
@@ -173,7 +175,6 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categorie
                         </Select>
                     </FormControl>
                 </Grid>
-
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="context"
@@ -215,21 +216,24 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categorie
                             onChange={(e) => changeItemValues(e, 'translations', locale.key)}
                         />
 
-                        <FormGroup row>
-                            <FormControlLabel
-                                key={'switch_' + locale.key}
-                                control={
-                                    <Switch
-                                        name={'switch_' + locale.key}
-                                        checked={prop((data.confirmedTranslations as any), locale.key, false)}
-                                        onChange={(e) => changeConfirmLocaleValue(e, 'confirmedTranslations', locale)}
-                                        value={prop((data.confirmedTranslations as any), locale.key, false)}
-                                        color="primary"
-                                    />
-                                }
-                                label="Confirmed"
-                            />
-                        </FormGroup>
+                        {actionType === 'edit' ? (
+                            <FormGroup row>
+                                <FormControlLabel
+                                    key={'switch_' + locale.key}
+                                    disabled={prop((data.confirmedTranslations as any), locale.key, false)}
+                                    control={
+                                        <Switch
+                                            name={'switch_' + locale.key}
+                                            checked={prop((data.confirmedTranslations as any), locale.key, false)}
+                                            onChange={(e) => changeConfirmLocaleValue(e, 'confirmedTranslations', locale)}
+                                            value={prop((data.confirmedTranslations as any), locale.key, false)}
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Confirmed"
+                                />
+                            </FormGroup>
+                        ) : (<span/>)}
                     </Grid>))}
                 <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                     <Button className={classes.button}
@@ -247,8 +251,6 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categorie
             </Grid>
         </form>
     );
-
-
 };
 
 export default TranslationsForm;

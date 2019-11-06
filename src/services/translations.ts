@@ -94,4 +94,16 @@ export const confirmTranslationLocaleById = (translation: TranslationState, loca
         return translations;
     }
 };
+export const searchTranslations = (search: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function (dispatch: any) {
+        let translations = null;
+        try {
+            translations = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/translations/search?text=' + search);
+            dispatch(setAllTranslations(translations.data));
+        } catch (error) {
+            console.log(error);
+        }
+        return translations;
+    }
+};
 

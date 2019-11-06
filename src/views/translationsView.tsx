@@ -17,7 +17,7 @@ import {
     confirmTranslationLocaleById,
     deleteTranslationById,
     editTranslationById,
-    getAllTranslations
+    getAllTranslations, searchTranslations
 } from "../services/translations";
 import TranslationsForm from "../components/translations/translationsForm";
 import {TranslationState} from "../store/translations/types";
@@ -85,6 +85,10 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         props.confirmTranslationLocaleByIdActions(data, locale).then((response: any) => {
         })
     };
+    const onSearchTranslation = (search: string) => {
+        props.searchTranslationsActions(search).then((response: any) => {
+        })
+    };
 
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
@@ -110,7 +114,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             </Paper>) : (
                             <Paper className={`${classes.content}`}>
                                 <TranslationsList translations={props.translations} onSelectedData={onSelectedData}
-                                                  onActionType={onActionType} onModalAction={onModalAction}/>
+                                                  onActionType={onActionType} onModalAction={onModalAction}
+                                                  onSearchTranslation={onSearchTranslation}/>
                             </Paper>)}
                         <Dialog
                             aria-labelledby="alert-dialog-title"
@@ -157,6 +162,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
+        searchTranslationsActions: (search: string) => dispatch(searchTranslations(search)),
         confirmTranslationLocaleByIdActions: (data: TranslationState, locale: LocaleState) =>
             dispatch(confirmTranslationLocaleById(data, locale)),
     };
