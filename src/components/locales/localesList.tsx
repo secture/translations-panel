@@ -46,6 +46,9 @@ const localesListStyles = makeStyles((theme: Theme) =>
         button: {
             margin: theme.spacing(1),
         },
+        icon: {
+            fontSize: '28px',
+        },
         show: {
             display: 'show',
         },
@@ -110,7 +113,7 @@ const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">{row.id}</TableCell>
                             <TableCell align="right">{row.key}</TableCell>
-                            <TableCell align="right">{row.icon}</TableCell>
+                            <TableCell align="right" className={classes.icon}>{row.icon}</TableCell>
                             <TableCell align="right">{row.name}</TableCell>
                             <TableCell align="right">
                                 {row.localeForPlayers ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}

@@ -1,8 +1,4 @@
 import React from "react";
-import {TranslationsStore} from "../../store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -10,11 +6,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import {Button} from "@material-ui/core";
 
-type AppStateProps = ReturnType<typeof mapStateToProps>;
-type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type AppProps = AppStateProps & AppDispatchProps;
+interface PropsDeleteDialog {
+    openDialog: () => void,
+    dialog: boolean,
+    deleteItem: any,
+    deleteFunction: () => void
+}
 
-const DeleteDialog: React.FC<any> = (props: AppProps) => {
+const DeleteDialog: React.FC<any> = (props: PropsDeleteDialog) => {
 
     return (
         <Dialog
@@ -41,21 +40,5 @@ const DeleteDialog: React.FC<any> = (props: AppProps) => {
     );
 };
 
-const mapStateToProps = (store: TranslationsStore, props: any) => {
-    return {
-        openDialog: props.openDialog,
-        dialog: props.dialog,
-        deleteItem: props.deleteItem,
-        deleteFunction: props.deleteFunction
-    };
-};
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>, props: any) => {
-    return {};
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(DeleteDialog);
+export default DeleteDialog;
 

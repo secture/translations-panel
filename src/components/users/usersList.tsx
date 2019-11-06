@@ -21,7 +21,6 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getAllLocales} from "../../services/locale";
 import {connect} from "react-redux";
-import Slide from "@material-ui/core/Slide";
 
 const userListStyles = makeStyles((theme: Theme) => createStyles({
     root: {

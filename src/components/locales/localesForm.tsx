@@ -38,8 +38,8 @@ interface PropsLocalesForm {
     setShowForm: (show: boolean) => void,
     editForm: boolean,
     localeSelected: LocaleState,
-    onEditLocale: (locale: LocaleState) => void
-    onAddLocale: (locale: LocaleState) => void
+    onEditLocale: (locale: LocaleState) => void,
+    onAddLocale: (locale: LocaleState) => void,
 }
 
 const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
@@ -53,14 +53,14 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
         });
     };
 
-    const confirmEditLocale = (locale: LocaleState) => {
+    const confirmEditLocale = () => {
         props.setShowForm(false);
         props.onEditLocale(locale);
     };
 
-    const confirmCreateLocale = (data: LocaleState) => {
+    const confirmCreateLocale = () => {
         props.setShowForm(false);
-        props.onAddLocale(data);
+        props.onAddLocale(locale);
     };
 
     const changeValuesBoolean = (e: any, property: string) => {
@@ -129,11 +129,11 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                             <Button className={classes.button} onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => confirmEditLocale(locale)}
+                                        onClick={() => {confirmEditLocale()}}
                                         className={classes.button}> Save </Button>
                             ) : (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => confirmCreateLocale(locale)}
+                                        onClick={() => {confirmCreateLocale()}}
                                         className={classes.button}> Create </Button>
                             )}
                         </Grid>

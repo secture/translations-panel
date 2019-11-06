@@ -18,14 +18,17 @@ export const getAllLocales = (): ThunkAction<void, {}, {}, AnyAction> => {
 
 export const deleteLocaleById = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let locales = null;
+        let deleteLocale = null;
         try {
-            locales = await httpClient.delete(`http://localhost:3000/api/v1/locales/${locale.id}`);
-            dispatch(getAllLocales());
+            const response = await httpClient.delete(`http://localhost:3000/api/v1/locales/${locale.id}`);
+            if (response !== null && typeof response.data !== 'undefined') {
+                deleteLocale = response.data;
+                dispatch(getAllLocales());
+            }
         } catch (error) {
             console.log(error);
         }
-        return locales;
+        return deleteLocale.data;
     }
 };
 

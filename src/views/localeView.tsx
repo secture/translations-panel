@@ -34,18 +34,19 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
         props.getAllLocaleActions();
     }, []);
 
-    const onDeleteLocale = (data: LocaleState) => {
-        props.deleteLocaleByIdActions(data).then((locale: LocaleState) => {
+    const onDeleteLocale = () => {
+        props.deleteLocaleByIdActions(localeSelected).then((locale: LocaleState) => {
             (locale !== null) ? alert('Locale eliminaro') : alert('no ha sido posible eliminar el locale')
-        })
+        });
+        setOpenDialog(false);
     };
-    const onEditLocale = (data: LocaleState) => {
-        props.editLocaleByIdActions(data).then((locale: LocaleState) => {
+    const onEditLocale = (locale: LocaleState) => {
+        props.editLocaleByIdActions(locale).then((locale: LocaleState) => {
             (locale !== null) ? alert('Locale editado') : alert('no ha sido posible editar el locale')
         })
     };
-    const onAddLocale = (data: LocaleState) => {
-        props.addLocaleActions(data).then((locale: LocaleState) => {
+    const onAddLocale = (locale: LocaleState) => {
+        props.addLocaleActions(locale).then((locale: LocaleState) => {
             (locale !== null) ? alert('Locale creado') : alert('no ha sido posible crear el locale')
         })
     };
