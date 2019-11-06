@@ -89,8 +89,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
         });
-        props.getAllLocalesActions().then((response: any) => {
-        });
+        props.getAllLocalesActions();
         props.getAllCategoriesActions().then((response: any) => {
         });
     }, []);

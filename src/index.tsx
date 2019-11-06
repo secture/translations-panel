@@ -15,7 +15,7 @@ import UsersView from "./views/usersView";
 
 /* STORE */
 import store from './store'
-import {loadState, saveState} from './store/localStorage';
+import {saveState} from './store/localStorage';
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'

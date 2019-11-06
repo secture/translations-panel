@@ -34,8 +34,11 @@ export const createUser = (createdUser: UserState): ThunkAction<Promise<any>, {}
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/register', createdUser);
-            dispatch(getUsers());
+            const response = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/register', createdUser);
+            if (response !== null && typeof response.data !== 'undefined') {
+                user = response.data;
+                dispatch(getUsers());
+            }
         } catch (error) {
             console.log(error);
         }
@@ -47,8 +50,11 @@ export const updateUser = (updatedUser: UserState): ThunkAction<Promise<any>, {}
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/users/${updatedUser.id}`, updatedUser);
-            dispatch(getUsers());
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/users/${updatedUser.id}`, updatedUser);
+            if (response !== null && typeof response.data !== 'undefined') {
+                user = response.data;
+                dispatch(getUsers());
+            }
         } catch (error) {
             console.log(error);
         }

@@ -4,7 +4,7 @@ import {AnyAction} from "redux";
 import {setAllLocales} from "../store/locales/actions";
 import {LocaleState} from "../store/locales/types";
 
-export const getAllLocales = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const getAllLocales = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let locales: any = null;
         try {
@@ -18,38 +18,48 @@ export const getAllLocales = (): ThunkAction<Promise<any>, {}, {}, AnyAction> =>
 
 export const deleteLocaleById = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let locales = null;
+        let deleteLocale = null;
         try {
-            locales = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/locales/${locale.id}`);
-            dispatch(getAllLocales());
+            const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/locales/${locale.id}`);
+            if (response !== null && typeof response.data !== 'undefined') {
+                deleteLocale = response.data;
+                dispatch(getAllLocales());
+            }
         } catch (error) {
             console.log(error);
         }
-        return locales;
+        return deleteLocale.data;
     }
 };
 
 export const editLocaleById = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let locales = null;
+        let editLocale = null;
         try {
-            locales = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/locales/${locale.id}`, locale);
-            dispatch(getAllLocales());
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/locales/${locale.id}`, locale);
+            if (response !== null && typeof response.data !== 'undefined') {
+                editLocale = response.data;
+                dispatch(getAllLocales());
+            }
         } catch (error) {
             console.log(error);
         }
-        return locales;
+        return editLocale;
     }
 };
+
 export const addLocale = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let locales = null;
+        let newLocale = null;
         try {
-            locales = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/locales`, locale);
-            dispatch(getAllLocales());
+            const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/locales`, locale);
+            if (response !== null && typeof response.data !== 'undefined') {
+                newLocale = response.data;
+                dispatch(getAllLocales());
+            }
         } catch (error) {
             console.log(error);
         }
-        return locales;
+        return newLocale;
     }
 };

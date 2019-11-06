@@ -5,6 +5,7 @@ export interface LocaleState {
     id: string,
     key: string,
     name: string,
+    icon: string,
     localeForPlayers: boolean
 }
 
