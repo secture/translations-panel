@@ -14,7 +14,7 @@ import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../ser
 import {LocaleState} from "../store/locales/types";
 import DeleteDialog from "../components/common/deleteDialog";
 import LocalesForm from "../components/locales/localesForm";
-import {initialLocale} from "../store/locale/reducers";
+import {initialLocale} from "../store/locales/reducers";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
