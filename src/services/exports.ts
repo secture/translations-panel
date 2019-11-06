@@ -7,7 +7,7 @@ export const getExportsByPlatform = (tag: string): ThunkAction<Promise<boolean>,
         let exportsTranslates: any = null;
         let exportOk = false;
         try {
-            exportsTranslates = await httpClient.get(`http://localhost:3000/api/v1/export/${tag}`, {responseType: 'blob'});
+            exportsTranslates = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/export/${tag}`, {responseType: 'blob'});
             if (typeof exportsTranslates.data !== 'undefined' || exportsTranslates.data !== '') {
                 const downloadUrl = URL.createObjectURL(new Blob([exportsTranslates.data], {type: 'application/zip'}));
                 let a = document.createElement("a");

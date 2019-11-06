@@ -1,5 +1,9 @@
+import {CategoryState} from "../categories/types";
+
 export const GET_ALL_TRANSLATIONS = 'GET ALL TRANSLATIONS';
+export const GET_DELETED_TRANSLATIONS = 'GET DELETED TRANSLATIONS';
 export const SET_ALL_TRANSLATIONS = 'SET ALL TRANSLATIONS';
+export const SET_DELETED_TRANSLATIONS = 'SET DELETED TRANSLATIONS';
 
 export interface UpdateUserState {
     associatedLanguages: [],
@@ -15,16 +19,20 @@ export interface TranslationState {
     translations: {},
     tags: string[],
     context: string,
-    category: { name: string, id: string },
+    category: CategoryState
     insertionDate: Date,
     updateDate: Date,
     insertionUser: {},
     updateUser: UpdateUserState,
-    confirmed: boolean
+    confirmedTranslations: {}
 }
 
 interface GetAllTranslationsAction {
     type: typeof GET_ALL_TRANSLATIONS
+}
+
+interface GetDeletedTranslationsAction {
+    type: typeof GET_DELETED_TRANSLATIONS
 }
 
 interface SetAllTranslationsAction {
@@ -32,4 +40,13 @@ interface SetAllTranslationsAction {
     payload: TranslationState[]
 }
 
-export type TranslationsActionsTypes = GetAllTranslationsAction | SetAllTranslationsAction
+interface SetDeletedTranslationsAction {
+    type: typeof SET_DELETED_TRANSLATIONS,
+    payload: TranslationState[]
+}
+
+export type TranslationsActionsTypes =
+    GetAllTranslationsAction |
+    SetAllTranslationsAction |
+    GetDeletedTranslationsAction |
+    SetDeletedTranslationsAction;

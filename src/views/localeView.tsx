@@ -11,7 +11,7 @@ import LocalesList from "../components/locales/localesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../services/locale";
-import {LocaleState} from "../store/locale/types";
+import {LocaleState} from "../store/locales/types";
 import DeleteDialog from "../components/common/deleteDialog";
 import LocalesForm from "../components/locales/localesForm";
 import {initialLocale} from "../store/locale/reducers";
@@ -59,7 +59,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>
-                            <LocalesList locales={props.locale}
+                            <LocalesList locales={props.locales}
                                          setLocaleSelected={setLocaleSelected}
                                          showForm={showForm}
                                          setShowForm={setShowForm}
@@ -86,7 +86,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore) => {
     return {
-        locale: store.locale
+        locales: store.locales
     };
 };
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {

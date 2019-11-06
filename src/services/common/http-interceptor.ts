@@ -30,7 +30,7 @@ const okInterceptor = (response: any) => {
 
 const errorInterceptor = (error: any) => {
     localStorage.removeItem('user-token');
-    store.dispatch(logoutAction(initialUserState));
+    //store.dispatch(logoutAction(initialUserState));
     /*if (error.request.status === 401) {
         localStorage.removeItem('user-token');
         store.dispatch(logoutAction(initialUserState));

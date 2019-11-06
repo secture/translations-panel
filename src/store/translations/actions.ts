@@ -6,3 +6,9 @@ export function setAllTranslations(translations: TranslationState[]): Translatio
         payload: translations
     }
 }
+export function setDeleteTranslations(translations: TranslationState[]): TranslationsActionsTypes {
+    return {
+        type: SET_ALL_TRANSLATIONS,
+        payload: translations
+    }
+}

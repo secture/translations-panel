@@ -128,7 +128,7 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
         users: props.users,
         user: props.user,
-        locales: store.locale,
+        locales: store.locales,
         setUserSelected: props.setUserSelected,
         setTypeForm: props.setTypeForm,
         setShowForm: props.setShowForm,

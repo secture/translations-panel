@@ -1,4 +1,4 @@
-import {makeStyles, Theme} from "@material-ui/core";
+import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import {deepOrange} from '@material-ui/core/colors';
 
 export const dashboardViewStyles = makeStyles((theme: Theme) => ({
@@ -25,5 +25,11 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
     },
     avatarLanguage: {
         backgroundColor: theme.palette.primary.main
+    },
+    show: {
+        display: 'show',
+    },
+    hide: {
+        display: 'none',
     }
 }));
