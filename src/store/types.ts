@@ -12,4 +12,5 @@ export interface TranslationsStore {
     translations: TranslationState[];
     categories: CategoryState[];
     tags: [];
+    roles: [];
 }

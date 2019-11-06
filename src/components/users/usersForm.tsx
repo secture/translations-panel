@@ -17,7 +17,8 @@ import {AnyAction} from "redux";
 import {connect} from "react-redux";
 import {AssociatedLanguage, UserState} from "../../store/user/types";
 import {createUser, updateUser} from "../../services/user";
-import Slide from "@material-ui/core/Slide";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
@@ -134,14 +135,14 @@ const UsersForm = (props: AppProps) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                id="privilege"
-                                label="Role"
-                                fullWidth
-                                value={updatedUser.privilege}
-                                margin="normal"
-                                onChange={(e) => handleChangedValues('privilege', e.target.value)}
-                            />
+                            <FormControl component="fieldset" className={classes.formControl}>
+                                <FormLabel component="legend">Privilege</FormLabel>
+                                <RadioGroup aria-label="gender" name="gender1" value={updatedUser.privilege} onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
+                                    {props.roles.map((role: string) => (
+                                        <FormControlLabel value={role} control={<Radio />} label={role} disabled={props.user.privilege !== 'Admin'}/>
+                                    ))}
+                                </RadioGroup>
+                            </FormControl>
                         </Grid>
                         {props.typeForm === 'create' && <Grid item xs={12}>
                             <TextField
@@ -156,7 +157,7 @@ const UsersForm = (props: AppProps) => {
                         <Grid item xs={12}>
                             <FormControl component="fieldset" className={classes.formControl}>
                                 <FormLabel component="legend">Locales</FormLabel>
-                                <FormGroup>
+                                <FormGroup row>
                                     {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
                                             control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
                                     label={localesUser[key].data.name}/>
@@ -184,6 +185,7 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
         user: props.user,
         locales: store.locales,
+        roles: store.roles,
         typeForm: props.typeForm,
         setShowForm: props.setShowForm,
     };
