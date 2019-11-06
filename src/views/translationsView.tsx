@@ -12,11 +12,19 @@ import {dashboardViewStyles} from "../styles/dashboard";
 import TranslationsList from "../components/translations/translationsList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {addTranslation, deleteTranslationById, editTranslationById, getAllTranslations} from "../services/translations";
+import {
+    addTranslation,
+    confirmTranslationLocaleById,
+    deleteTranslationById,
+    editTranslationById,
+    getAllTranslations
+} from "../services/translations";
 import TranslationsForm from "../components/translations/translationsForm";
 import {TranslationState} from "../store/translations/types";
 import {initialTranslation} from "../store/translations/reducers";
 import {getAllLocales} from "../services/locale";
+import {getAllCategories} from "../services/categories";
+import {LocaleState} from "../store/locales/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -73,10 +81,17 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         })
     };
 
+    const onConfirmTranslationLocale = (data: TranslationState, locale: LocaleState) => {
+        props.confirmTranslationLocaleByIdActions(data, locale).then((response: any) => {
+        })
+    };
+
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
         });
         props.getAllLocalesActions().then((response: any) => {
+        });
+        props.getAllCategoriesActions().then((response: any) => {
         });
     }, []);
 
@@ -89,8 +104,10 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                         {!showComponent ? (
                             <Paper className={`${classes.content}`}>
                                 <TranslationsForm dataSelected={dataSelected} tags={props.tags} locales={props.locales}
-                                                  actionType={actionType} onCancel={onCancel}
-                                                  onEditEntity={onEditEntity} onCreateEntity={onCreateEntity}/>
+                                                  categories={props.categories} actionType={actionType}
+                                                  onCancel={onCancel} onEditEntity={onEditEntity}
+                                                  onCreateEntity={onCreateEntity}
+                                                  onConfirmTranslationLocale={onConfirmTranslationLocale}/>
                             </Paper>) : (
                             <Paper className={`${classes.content}`}>
                                 <TranslationsList translations={props.translations} onSelectedData={onSelectedData}
@@ -129,16 +146,20 @@ const mapStateToProps = (store: TranslationsStore) => {
     return {
         translations: store.translations,
         tags: store.tags,
-        locales: store.locales
+        locales: store.locales,
+        categories: store.categories
     };
 };
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         getAllLocalesActions: () => dispatch(getAllLocales()),
         getAllTranslationsActions: () => dispatch(getAllTranslations()),
+        getAllCategoriesActions: () => dispatch(getAllCategories()),
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
+        confirmTranslationLocaleByIdActions: (data: TranslationState, locale: LocaleState) =>
+            dispatch(confirmTranslationLocaleById(data, locale)),
     };
 };
 

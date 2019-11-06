@@ -149,7 +149,6 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
 
 const TranslationsList: React.FC<any> = ({translations, onSelectedData, onActionType, onModalAction}: any) => {
     const classes = translationsListStyles();
-    const [showTable, setShowTable] = useState(true);
 
     const [order, setOrder] = React.useState<OrderTableType>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof TranslationState>('updateDate');

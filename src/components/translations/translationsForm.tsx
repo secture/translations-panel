@@ -1,17 +1,18 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {
     Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Switch, TextField,
-    Typography, Paper
+    Typography, InputLabel, Select, MenuItem
 } from "@material-ui/core";
 
 import AppleIcon from '@material-ui/icons/Apple';
 import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
-import {initialTranslation, initialTranslationState} from "../../store/translations/reducers";
+import {initialTranslation} from "../../store/translations/reducers";
 import {TranslationState} from "../../store/translations/types";
 import {LocaleState} from "../../store/locales/types";
+import {CategoryState} from "../../store/categories/types";
 
 const translationsFormStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,12 +55,6 @@ const translationsFormStyles = makeStyles((theme: Theme) =>
         button: {
             margin: theme.spacing(1),
         },
-        show: {
-            display: 'show',
-        },
-        hide: {
-            display: 'none',
-        }
     })
 );
 
@@ -85,7 +80,8 @@ function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
 
 }
 
-const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionType, onCancel, onEditEntity, onCreateEntity}) => {
+const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, categories, actionType, onCancel,
+                                             onEditEntity, onCreateEntity, onConfirmTranslationLocale}) => {
     const classes = translationsFormStyles();
     const [editAction, editActionTable] = useState(false);
     const [data, setData] = useState(dataSelected);
@@ -100,20 +96,15 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionTyp
             [property]: e.target.value
         });
     };
-    const changeValuesBoolean = (e: any, property: string) => {
-        setData({
-            ...data,
-            [property]: e.target.value.toLowerCase() !== "true"
-        });
-    };
-    const changeItemValuesBoolean = (e: any, property: any, item: any) => {
+    const changeConfirmLocaleValue = (e: any, property: any, locale: LocaleState) => {
         setData({
             ...data,
             [property]: {
                 ...data[property],
-                [item]: e.target.value.toLowerCase() !== "true"
+                [locale.key]: e.target.value.toLowerCase() !== "true"
             }
         });
+        onConfirmTranslationLocale(data, locale);
     };
     const changeItemValues = (e: any, property: any, item: any) => {
         setData({
@@ -166,14 +157,21 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionTyp
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
-                        id="category"
-                        label="category"
-                        fullWidth
-                        autoComplete="fcategory"
-                        onChange={(e) => changedValues(e, 'category')}
-                        value={data.category !== null ? data.category.name : ''}
-                    />
+                    <FormControl className={classes.root}>
+                        <InputLabel shrink id="select_category">
+                            Category
+                        </InputLabel>
+                        <Select key={'select_category'}
+                                id="select_category"
+                                value={data.category !== null ? data.category.id : ''}
+                                onChange={(e) => changeItemValues(e, 'category','id')}
+                                fullWidth>
+                            {categories.map((catItem: CategoryState) => (
+                                <MenuItem key={'select_category' + catItem.id}
+                                          value={catItem.id}>{catItem.name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -204,28 +202,28 @@ const TranslationsForm: React.FC<any> = ({dataSelected, tags, locales, actionTyp
                         </FormControl>
                     })}
                 </Grid>
-                {locales.map((row: LocaleState) => (
-                    <Grid item xs={12} sm={6} key={'translation_' + row.key}>
+                {locales.map((locale: LocaleState) => (
+                    <Grid item xs={12} sm={6} key={'translation_' + locale.key}>
                         <TextField
-                            id={'translation_' + row.key}
-                            label={row.key.toUpperCase()}
+                            id={'translation_' + locale.key}
+                            label={locale.key.toUpperCase()}
                             multiline
                             rows="4"
                             variant="filled"
                             fullWidth
-                            defaultValue={prop((data.translations as any), row.key, null)}
-                            onChange={(e) => changeItemValues(e, 'translations', row.key)}
+                            defaultValue={prop((data.translations as any), locale.key, null)}
+                            onChange={(e) => changeItemValues(e, 'translations', locale.key)}
                         />
 
                         <FormGroup row>
                             <FormControlLabel
-                                key={'switch_' + row.key}
+                                key={'switch_' + locale.key}
                                 control={
                                     <Switch
-                                        name={'switch_' + row.key}
-                                        checked={prop((data.confirmedTranslations as any), row.key, false)}
-                                        onChange={(e) => changeItemValuesBoolean(e, 'confirmedTranslations', row.key)}
-                                        value={prop((data.confirmedTranslations as any), row.key, false)}
+                                        name={'switch_' + locale.key}
+                                        checked={prop((data.confirmedTranslations as any), locale.key, false)}
+                                        onChange={(e) => changeConfirmLocaleValue(e, 'confirmedTranslations', locale)}
+                                        value={prop((data.confirmedTranslations as any), locale.key, false)}
                                         color="primary"
                                     />
                                 }

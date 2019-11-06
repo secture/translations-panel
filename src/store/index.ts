@@ -9,6 +9,7 @@ import {usersReducer} from "./users/reducers";
 import {localesReducer} from "./locales/reducers";
 import {loadState} from './localStorage';
 import {translationsReducer} from "./translations/reducers";
+import {categoriesReducer} from "./categories/reducers";
 
 const persistedState = loadState();
 const rootReducers = combineReducers({
@@ -17,6 +18,7 @@ const rootReducers = combineReducers({
     users: usersReducer,
     locales: localesReducer,
     translations: translationsReducer,
+    categories: categoriesReducer,
     tags: () => { return ['android', 'ios', 'web']; }
 });
 
