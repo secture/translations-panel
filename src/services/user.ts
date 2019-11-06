@@ -9,7 +9,7 @@ export const getUsers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
         let users: any = null;
         try {
-            users = await httpClient.get('http://localhost:3000/api/v1/users');
+            users = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users');
             dispatch(setUsersAction(users.data));
         } catch (error) {
             console.log(error);
@@ -21,7 +21,7 @@ export const getUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.get('http://localhost:3000/api/v1/users/me');
+            user = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users/me');
             dispatch(setUserAction(user.data));
         } catch (error) {
             console.log(error);
@@ -34,7 +34,7 @@ export const createUser = (createdUser: UserState): ThunkAction<Promise<any>, {}
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.post('http://localhost:3000/api/v1/auth/register', createdUser);
+            user = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/register', createdUser);
             dispatch(getUsers());
         } catch (error) {
             console.log(error);
@@ -47,7 +47,7 @@ export const updateUser = (updatedUser: UserState): ThunkAction<Promise<any>, {}
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.put(`http://localhost:3000/api/v1/users/${updatedUser.id}`, updatedUser);
+            user = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/users/${updatedUser.id}`, updatedUser);
             dispatch(getUsers());
         } catch (error) {
             console.log(error);
@@ -60,7 +60,7 @@ export const deleteUser = (id: string): ThunkAction<Promise<any>, {}, {}, AnyAct
     return async function(dispatch: any) {
         let user = null;
         try{
-            user = await httpClient.delete(`http://localhost:3000/api/v1/users/${id}`);
+            user = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/users/${id}`);
             dispatch(getUsers());
         } catch (error) {
             console.log(error);

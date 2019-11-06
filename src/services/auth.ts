@@ -11,7 +11,7 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         let loginServiceDTO: any = null;
         try {
-            const apiResponse: any = await httpClient.post('http://localhost:3000/api/v1/auth/login', user);
+            const apiResponse: any = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/login', user);
             if (typeof apiResponse.isAxiosError === 'undefined' || !apiResponse.isAxiosError) {
                 loginServiceDTO = {
                     userAuthenticated: apiResponse.data.user,

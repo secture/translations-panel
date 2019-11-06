@@ -8,7 +8,7 @@ export const getAllLocales = (): ThunkAction<Promise<any>, {}, {}, AnyAction> =>
     return async function (dispatch: any) {
         let locales: any = null;
         try {
-            locales = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/locales');
+            locales = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/categories');
             dispatch(setAllLocales(locales.data));
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ export const addLocale = (locale: LocaleState): ThunkAction<Promise<any>, {}, {}
     return async function (dispatch: any) {
         let locales = null;
         try {
-            locales = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/locales`, locale);
+            locales = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/locales', locale);
             dispatch(getAllLocales());
         } catch (error) {
             console.log(error);
