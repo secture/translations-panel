@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {
-    Button, Fab, IconButton, TablePagination, TableSortLabel, Toolbar, Typography, Paper, DialogTitle,
-    DialogContentText, DialogContent, DialogActions, Dialog, TableRow, TableHead, TableCell, TableBody, Table
+    Fab, IconButton, TablePagination, TableSortLabel, Toolbar, Typography, TableRow, TableHead, TableCell,
+    TableBody, Table, InputBase
 } from "@material-ui/core";
 
 import EditIcon from '@material-ui/icons/Edit';
@@ -11,14 +11,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AppleIcon from '@material-ui/icons/Apple';
 import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import SearchIcon from '@material-ui/icons/Search';
 
-import {initialTranslation} from "../../store/translations/reducers";
 import {TranslationState} from "../../store/translations/types";
 import {OrderTableType, TableUtils} from "../../services/utils/table";
-import {on} from "cluster";
 
 const translationsListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,11 +57,8 @@ const translationsListStyles = makeStyles((theme: Theme) =>
         button: {
             margin: theme.spacing(1),
         },
-        show: {
-            display: 'show',
-        },
-        hide: {
-            display: 'none',
+        input: {
+            width: '20%'
         }
     })
 );
@@ -75,8 +68,8 @@ const tableUtils = new TableUtils();
 const headCells: headCell[] = [
     {id: 'key', numeric: false, disablePadding: false, label: 'Key'},
     {id: 'category', numeric: false, disablePadding: false, label: 'Category'},
+    {id: 'translations', numeric: false, disablePadding: false, label: 'Translate'},
     {id: 'tags', numeric: false, disablePadding: false, label: 'Tags'},
-    {id: 'confirmedTranslations', numeric: false, disablePadding: false, label: 'ConfirmedTranslations'},
     {id: 'updateDate', numeric: false, disablePadding: false, label: 'UDate'},
 ];
 
@@ -147,7 +140,7 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
     }
 }
 
-const TranslationsList: React.FC<any> = ({translations, onSelectedData, onActionType, onModalAction}: any) => {
+const TranslationsList: React.FC<any> = ({translations, onSelectedData, onActionType, onModalAction, onSearchTranslation}: any) => {
     const classes = translationsListStyles();
 
     const [order, setOrder] = React.useState<OrderTableType>('asc');
@@ -178,17 +171,27 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
         setOrderBy(property);
     };
 
+    function searchTranslations(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+        if (e.target.value.length >= 2) {
+            onSearchTranslation(e.target.value);
+        }
+    }
+
     return (
         <div>
             <Toolbar>
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Translations
                 </Typography>
+                <SearchIcon/>
+                <InputBase
+                    className={classes.input}
+                    placeholder="Search Translations"
+                    inputProps={{'aria-label': 'search translations'}}
+                    onChange={e => searchTranslations(e)}
+                />
                 <IconButton aria-label="add" onClick={e => onActionType('create')}>
                     <AddCircleOutlineIcon/>
-                </IconButton>
-                <IconButton aria-label="filter list">
-                    <FilterListIcon/>
                 </IconButton>
             </Toolbar>
             <Table className={classes.table} aria-label="simple table">
@@ -210,12 +213,12 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
                                         {row.category !== null ? row.category.name : ''}
                                     </TableCell>
                                     <TableCell>
+                                        {row.translations.es !== null ? row.translations.es : ''}
+                                    </TableCell>
+                                    <TableCell>
                                         {row.tags.map((tag: any) => (
                                             <GetPlatformIcon key={tag} tag={tag} classes={classes}/>
                                         ))}
-                                    </TableCell>
-                                    <TableCell>
-                                        {row.confirmed ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                                     </TableCell>
                                     <TableCell>
                                         {new Date(row.updateDate.toString()).toLocaleString()}</TableCell>
