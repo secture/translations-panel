@@ -3,6 +3,7 @@ import {Button, createStyles, Grid, makeStyles, Switch, TextField, Theme, Typogr
 import Paper from "@material-ui/core/Paper";
 import {LocaleState} from "../../store/locales/types";
 import Container from "@material-ui/core/Container";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     container: {
@@ -117,12 +118,14 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Switch
-                                checked={locale.localeForPlayers}
-                                onChange={(e) => changeValuesBoolean(e, 'localeForPlayers')}
-                                value={locale.localeForPlayers}
-                                color="primary"
-                                inputProps={{'aria-label': 'Locale For Players'}}
+                            <FormControlLabel
+                                control={
+                                    <Switch checked={locale.localeForPlayers}
+                                            onChange={(e) => changeValuesBoolean(e, 'localeForPlayers')}
+                                            value={locale.localeForPlayers}
+                                            color="primary"/>
+                                }
+                                label="Locale for players"
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>

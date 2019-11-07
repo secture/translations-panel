@@ -19,7 +19,8 @@ const rootReducers = combineReducers({
     locales: localesReducer,
     translations: translationsReducer,
     categories: categoriesReducer,
-    tags: () => { return ['android', 'ios', 'web']; }
+    tags: () => { return ['android', 'ios', 'web']; },
+    roles: () => { return ['Admin', 'Developer', 'Interpreter', 'User']; }
 });
 
 const middleWares = [thunk];
