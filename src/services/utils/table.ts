@@ -19,8 +19,8 @@ export class TableUtils {
         return order === 'desc' ? (a, b) => this.desc(a, b, orderBy) : (a, b) => -this.desc(a, b, orderBy);
     }
 
-    stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
-        const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    stableSort(array: any[], cmp: (a: any, b: any) => number) {
+        const stabilizedThis = array.map((el, index) => [el, index] as [any, number]);
         stabilizedThis.sort((a, b) => {
             const order = cmp(a[0], b[0]);
             if (order !== 0) return order;

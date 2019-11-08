@@ -80,45 +80,48 @@ function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
 
 }
 
-const TranslationsForm: React.FC<any> = ({
-                                             dataSelected, tags, locales, categories, actionType, onCancel,
-                                             onEditEntity, onCreateEntity, onConfirmTranslationLocale
-                                         }) => {
-    const classes = translationsFormStyles();
-    const [editAction, editActionTable] = useState(false);
-    const [data, setData] = useState(dataSelected);
+interface PropsDataForm {
+    dataSelected: TranslationState,
+    tags: Array<string>,
+    locales: LocaleState[],
+    categories: CategoryState[],
+    actionType: String,
+    onCancel:() => void,
+    onEditEntity: (translation: TranslationState) => void,
+    onCreateEntity: (translation: TranslationState) => void,
+    onConfirmTranslationLocale: (translation: TranslationState, locale: LocaleState) => void
+}
 
-    const cancel = () => {
-        setData(initialTranslation);
-        onCancel();
-    };
+const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
+    const classes = translationsFormStyles();
+    const [data, setData] = useState<TranslationState>(props.dataSelected);
     const changedValues = (e: any, property: string) => {
         setData({
             ...data,
             [property]: e.target.value
         });
     };
-    const changeConfirmLocaleValue = (e: any, property: any, locale: LocaleState) => {
+    const changeConfirmLocaleValue = (e: any, property: keyof TranslationState, locale: LocaleState) => {
         setData({
-            ...data,
+            ...data as TranslationState,
             [property]: {
-                ...data[property],
+                ...data[property] as TranslationState,
                 [locale.key]: e.target.value.toLowerCase() !== "true"
             }
         });
-        onConfirmTranslationLocale(data, locale);
+        props.onConfirmTranslationLocale(data, locale);
     };
-    const changeItemValues = (e: any, property: any, item: any) => {
+    const changeItemValues = (e: any, property: keyof TranslationState, item: string) => {
         setData({
-            ...data,
+            ...data as TranslationState,
             [property]: {
-                ...data[property],
+                ...data[property] as TranslationState,
                 [item]: e.target.value
             }
         });
     };
     const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
-        let values = (data[property] as any);
+        let values = (data[property] as Array<string>);
         if (values.some((stag: string) => stag === key)) {
             let index = values.indexOf(key, 0);
             if (index > -1) {
@@ -138,7 +141,7 @@ const TranslationsForm: React.FC<any> = ({
             <Grid container spacing={3}>
                 <Grid container item direction="row" justify="center" xs={12} sm={12}>
                     <Typography variant="h6" gutterBottom>
-                        {actionType === 'edit' ?
+                        {props.actionType === 'edit' ?
                             'Translation id: ' + data.id :
                             'Create a new Locale'
                         }
@@ -168,7 +171,7 @@ const TranslationsForm: React.FC<any> = ({
                                 value={data.category !== null ? data.category.id : ''}
                                 onChange={(e) => changeItemValues(e, 'category', 'id')}
                                 fullWidth>
-                            {categories.map((catItem: CategoryState) => (
+                            {props.categories.map((catItem: CategoryState) => (
                                 <MenuItem key={'select_category' + catItem.id}
                                           value={catItem.id}>{catItem.name}</MenuItem>
                             ))}
@@ -186,7 +189,7 @@ const TranslationsForm: React.FC<any> = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    {tags.map((tagItem: any) => {
+                    {props.tags.map((tagItem: any) => {
                         return <FormControl key={tagItem} component="fieldset">
                             <FormLabel component="legend">
                                 <GetPlatformIcon tag={tagItem} classes={classes}/>
@@ -203,7 +206,7 @@ const TranslationsForm: React.FC<any> = ({
                         </FormControl>
                     })}
                 </Grid>
-                {locales.map((locale: LocaleState) => (
+                {props.locales.map((locale: LocaleState) => (
                     <Grid item xs={12} sm={6} key={'translation_' + locale.key}>
                         <TextField
                             id={'translation_' + locale.key}
@@ -216,7 +219,7 @@ const TranslationsForm: React.FC<any> = ({
                             onChange={(e) => changeItemValues(e, 'translations', locale.key)}
                         />
 
-                        {actionType === 'edit' ? (
+                        {props.actionType === 'edit' ? (
                             <FormGroup row>
                                 <FormControlLabel
                                     key={'switch_' + locale.key}
@@ -237,14 +240,14 @@ const TranslationsForm: React.FC<any> = ({
                     </Grid>))}
                 <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
                     <Button className={classes.button}
-                            onClick={e => cancel()}>Return</Button>
-                    {actionType === 'edit' ? (
+                            onClick={e => props.onCancel()}>Return</Button>
+                    {props.actionType === 'edit' ? (
                         <Button variant="contained" color="primary"
-                                onClick={e => onEditEntity(data)}
+                                onClick={e => props.onEditEntity(data)}
                                 className={classes.button}> Save </Button>
                     ) : (
                         <Button variant="contained" color="primary"
-                                onClick={e => onCreateEntity(data)}
+                                onClick={e => props.onCreateEntity(data)}
                                 className={classes.button}> Create </Button>
                     )}
                 </Grid>

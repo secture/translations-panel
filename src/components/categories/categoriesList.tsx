@@ -56,32 +56,32 @@ const categoriesListStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface PropsCategoriesList {
-    categories: CategoryState[],
-    setCategorySelected: (category: CategoryState) => void,
+interface PropsDataList {
+    data: CategoryState[],
+    setDataSelected: (category: CategoryState) => void,
     showForm: boolean,
     setShowForm: (show: boolean) => void,
     openDialog: () => void,
     setEditForm: (isEditForm: boolean) => void
 }
 
-const CategoriesList: React.FC<any> = (props: PropsCategoriesList) => {
+const CategoriesList: React.FC<any> = (props: PropsDataList) => {
     const classes = categoriesListStyles();
 
-    const loadFormAddCategory = () => {
+    const loadFormAddData = () => {
         props.setEditForm(false);
-        props.setCategorySelected(initialCategory);
+        props.setDataSelected(initialCategory);
         props.setShowForm(true);
     };
 
-    const loadFormEditCategory = (category: CategoryState) => {
+    const loadFormEditData = (data: CategoryState) => {
         props.setEditForm(true);
-        props.setCategorySelected(category);
+        props.setDataSelected(data);
         props.setShowForm(true);
     };
 
-    const openDeleteModal = (category: CategoryState) => {
-        props.setCategorySelected(category);
+    const openDeleteModal = (data: CategoryState) => {
+        props.setDataSelected(data);
         props.openDialog();
     };
 
@@ -91,7 +91,7 @@ const CategoriesList: React.FC<any> = (props: PropsCategoriesList) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Categories
                 </Typography>
-                <IconButton aria-label="add" onClick={() => loadFormAddCategory()}>
+                <IconButton aria-label="add" onClick={() => loadFormAddData()}>
                     <AddCircleOutlineIcon/>
                 </IconButton>
             </Toolbar>
@@ -104,13 +104,13 @@ const CategoriesList: React.FC<any> = (props: PropsCategoriesList) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.categories.map((row: CategoryState) => (
+                    {props.data.map((row: CategoryState) => (
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">{row.id}</TableCell>
                             <TableCell align="right">{row.name}</TableCell>
                             <TableCell align="right">
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => loadFormEditCategory(row)}>
+                                     onClick={() => loadFormEditData(row)}>
                                     <EditIcon/>
                                 </Fab>
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}

@@ -15,6 +15,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import {TranslationState} from "../../store/translations/types";
 import {OrderTableType, TableUtils} from "../../services/utils/table";
+import {CategoryState} from "../../store/categories/types";
+import {initialTranslation} from "../../store/translations/reducers";
 
 const translationsListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -140,22 +142,30 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
     }
 }
 
-const TranslationsList: React.FC<any> = ({translations, onSelectedData, onActionType, onModalAction, onSearchTranslation}: any) => {
+interface PropsDataList {
+    data: TranslationState[],
+    onSelectedData: (data: TranslationState) => void,
+    onActionType: (data: string) => void,
+    openDialog: (data: TranslationState) => void,
+    onSearchTranslation: (data: string) => void,
+}
+
+const TranslationsList: React.FC<any> = (props: PropsDataList) => {
     const classes = translationsListStyles();
 
     const [order, setOrder] = React.useState<OrderTableType>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof TranslationState>('updateDate');
-    const [selected, setSelected] = React.useState<string[]>([]);
+    const [selected, setSelected] = React.useState<TranslationState[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const editData = (data: TranslationState) => {
-        onSelectedData(data);
-        onActionType('edit');
+        props.onSelectedData(data);
+        props.onActionType('edit');
     };
 
     const deleteData = (data: TranslationState) => {
-        onModalAction(data);
+        props.openDialog(data);
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -173,7 +183,7 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
 
     function searchTranslations(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
         if (e.target.value.length >= 2) {
-            onSearchTranslation(e.target.value);
+            props.onSearchTranslation(e.target.value);
         }
     }
 
@@ -190,7 +200,7 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
                     inputProps={{'aria-label': 'search translations'}}
                     onChange={e => searchTranslations(e)}
                 />
-                <IconButton aria-label="add" onClick={e => onActionType('create')}>
+                <IconButton aria-label="add" onClick={e => props.onActionType('create')}>
                     <AddCircleOutlineIcon/>
                 </IconButton>
             </Toolbar>
@@ -201,12 +211,12 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
                     order={order}
                     orderBy={orderBy}
                     onRequestSort={handleRequestSort}
-                    rowCount={translations.length}
+                    rowCount={props.data.length}
                 />
                 <TableBody>
-                    {tableUtils.stableSort(translations, tableUtils.getSorting(order, orderBy))
+                    {tableUtils.stableSort(props.data as TranslationState[], tableUtils.getSorting(order, orderBy))
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row: any, index: any) => {
+                        .map((row: TranslationState) => {
                             return (<TableRow key={row.id}>
                                     <TableCell>{row.key}</TableCell>
                                     <TableCell>
@@ -240,7 +250,7 @@ const TranslationsList: React.FC<any> = ({translations, onSelectedData, onAction
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={translations.length}
+                count={props.data.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 backIconButtonProps={{

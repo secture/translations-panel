@@ -60,17 +60,17 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>
-                            <CategoriesList categories={props.categories}
-                                            setCategorySelected={setCategorySelected}
+                            <CategoriesList data={props.categories}
+                                            setDataSelected={setCategorySelected}
                                             showForm={showForm}
                                             setShowForm={setShowForm}
                                             openDialog={updateDialog}
                                             setEditForm={setEditForm}/>
                         </Grid>) : (
                         <Grid item xs={12}>
-                            <CategoriesForm onEditCategory={onEditCategory}
-                                            onAddCategory={onAddCategory}
-                                            categorySelected={categorySelected}
+                            <CategoriesForm onEditData={onEditCategory}
+                                            onAddData={onAddCategory}
+                                            dataSelected={categorySelected}
                                             showForm={showForm}
                                             setShowForm={setShowForm}
                                             editForm={editForm}/>

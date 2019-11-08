@@ -33,18 +33,18 @@ const formUserStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-interface PropsCategoriesForm {
+interface PropsDataForm {
     showForm: boolean,
     setShowForm: (show: boolean) => void,
     editForm: boolean,
-    categorySelected: CategoryState,
+    dataSelected: CategoryState,
     onEditCategory: (category: CategoryState) => void,
     onAddCategory: (category: CategoryState) => void,
 }
 
-const CategoriesForm: React.FC<any> = (props: PropsCategoriesForm) => {
+const CategoriesForm: React.FC<any> = (props: PropsDataForm) => {
     const classes = formUserStyles();
-    const [category, setCategory] = useState(props.categorySelected);
+    const [category, setCategory] = useState(props.dataSelected);
 
     const changedValues = (e: any, property: string) => {
         setCategory({
@@ -71,7 +71,7 @@ const CategoriesForm: React.FC<any> = (props: PropsCategoriesForm) => {
                         <Grid container item direction="row" justify="center" xs={12}>
                             <Typography variant="h6" gutterBottom>
                                 {props.editForm ?
-                                    'Category Edition whose ID is: ' + props.categorySelected.id :
+                                    'Category Edition whose ID is: ' + props.dataSelected.id :
                                     'Create a new Category'
                                 }
                             </Typography>
