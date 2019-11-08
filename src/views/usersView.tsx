@@ -46,7 +46,7 @@ const UsersView = (props: AppProps) => {
 
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
+            <div className={classes.appBarSpacer}/>
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
@@ -59,10 +59,16 @@ const UsersView = (props: AppProps) => {
                                        openDialog={updateDialog}/>
                         </Grid>) : (
                         <Grid item xs={12}>
-                            <UsersForm user={userSelected} typeForm={typeForm} showForm={showForm} setShowForm={setShowForm}/>
+                            <UsersForm user={userSelected} typeForm={typeForm} showForm={showForm}
+                                       setShowForm={setShowForm}/>
                         </Grid>)
                     }
-                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={userSelected} deleteFunction={deleteUser}/>
+                    <DeleteDialog
+                        openDialog={updateDialog}
+                        dialog={dialog}
+                        dialogTitle={"Are you sure to delete this User?"}
+                        deleteItem={userSelected}
+                        deleteFunction={deleteUser}/>
                 </Grid>
             </Container>
         </main>

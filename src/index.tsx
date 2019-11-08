@@ -12,6 +12,7 @@ import TranslationsView from './views/translationsView'
 import ExportsView from "./views/exportsView";
 import LocaleView from "./views/localeView";
 import UsersView from "./views/usersView";
+import CategoriesView from "./views/categoriesView";
 
 /* STORE */
 import store from './store'
@@ -29,6 +30,7 @@ const layoutAssignments: any = {
     '/login': {layout: FullLayout, view: LoginView},
     '/dashboard': {layout: Dashboard, view: DashboardView},
     '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
+    '/dashboard/categories': {layout: Dashboard, view: CategoriesView},
     '/dashboard/exports': {layout: Dashboard, view: ExportsView},
     '/dashboard/locales': {layout: Dashboard, view: LocaleView},
     '/dashboard/users': {layout: Dashboard, view: UsersView},
@@ -61,6 +63,8 @@ store.subscribe(() => {
         user: store.getState().user,
         users: store.getState().users,
         translations: store.getState().translations,
+        categories: store.getState().categories,
+        tags: store.getState().tags,
     });
 });
 

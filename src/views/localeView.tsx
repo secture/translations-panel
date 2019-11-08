@@ -76,6 +76,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
                         </Grid>)}
                     <DeleteDialog openDialog={updateDialog}
                                   dialog={dialog}
+                                  dialogTitle={"Are you sure to delete this Locale?"}
                                   deleteItem={localeSelected}
                                   deleteFunction={onDeleteLocale}/>
                 </Grid>

@@ -18,6 +18,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ClassIcon from '@material-ui/icons/Class';
 
 import history from "../../history";
 
@@ -86,6 +87,12 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                             <ShoppingCartIcon />
                         </ListItemIcon>
                         <ListItemText primary="Translations" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/categories')}}>
+                        <ListItemIcon>
+                            <ClassIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Categories" />
                     </ListItem>
                     <ListItem button onClick={() => {history.push('/dashboard/exports')}}>
                         <ListItemIcon>
