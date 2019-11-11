@@ -21,36 +21,14 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getAllLocales} from "../../services/locale";
 import {connect} from "react-redux";
-
-const userListStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-    },
-    tableTitle: {
-        flex: '1 1 100%',
-    },
-    table: {
-        minWidth: 650,
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    color: {
-        backgroundColor: theme.palette.grey.A100
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'center'
-    }
-}));
+import {tableStyles} from '../../styles/table'
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const UsersList: React.FC<any> = (props: AppProps) => {
-    const classes = Object.assign(userListStyles(), dashboardViewStyles());
+    const classes = Object.assign(tableStyles(), dashboardViewStyles());
 
     useEffect(() => {
         if (props.locales.length === 0) {

@@ -5,6 +5,14 @@ export const GET_DELETED_TRANSLATIONS = 'GET DELETED TRANSLATIONS';
 export const SET_ALL_TRANSLATIONS = 'SET ALL TRANSLATIONS';
 export const SET_DELETED_TRANSLATIONS = 'SET DELETED TRANSLATIONS';
 
+export interface NamePlayers {
+    [key: string]: string
+}
+
+export interface ConfirmedTranslations {
+    [key: string]: boolean
+}
+
 export interface UpdateUserState {
     associatedLanguages: [],
     name: string,
@@ -24,7 +32,7 @@ export interface TranslationState {
     updateDate: Date,
     insertionUser: {},
     updateUser: UpdateUserState,
-    confirmedTranslations: {}
+    confirmedTranslations: ConfirmedTranslations
 }
 
 interface GetAllTranslationsAction {

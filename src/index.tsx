@@ -10,8 +10,9 @@ import LoginView from './views/loginView';
 import DashboardView from './views/dashboardView'
 import TranslationsView from './views/translationsView'
 import ExportsView from "./views/exportsView";
-import LocaleView from "./views/localeView";
+import LocalesView from "./views/localesView";
 import UsersView from "./views/usersView";
+import PlayersView from "./views/playersView";
 
 /* STORE */
 import store from './store'
@@ -30,8 +31,9 @@ const layoutAssignments: any = {
     '/dashboard': {layout: Dashboard, view: DashboardView},
     '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
     '/dashboard/exports': {layout: Dashboard, view: ExportsView},
-    '/dashboard/locales': {layout: Dashboard, view: LocaleView},
+    '/dashboard/locales': {layout: Dashboard, view: LocalesView},
     '/dashboard/users': {layout: Dashboard, view: UsersView},
+    '/dashboard/players': {layout: Dashboard, view: PlayersView}
 };
 
 class App extends React.Component {

@@ -18,6 +18,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 
 import history from "../../history";
 
@@ -98,6 +99,12 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                             <BarChartIcon />
                         </ListItemIcon>
                         <ListItemText primary="Locale" />
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/players')}}>
+                        <ListItemIcon>
+                            <SupervisedUserCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Players" />
                     </ListItem>
                     <ListItem button onClick={() => {history.push('/dashboard/users')}}>
                         <ListItemIcon>

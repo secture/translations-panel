@@ -3,6 +3,7 @@ import {UserState} from "./user/types";
 import {LocaleState} from "./locales/types";
 import {TranslationState} from "./translations/types";
 import {CategoryState} from "./categories/types";
+import {PlayerState} from "./players/types";
 
 export interface TranslationsStore {
     auth: AuthState;
@@ -11,6 +12,7 @@ export interface TranslationsStore {
     locales: LocaleState[];
     translations: TranslationState[];
     categories: CategoryState[];
+    players: PlayerState[];
     tags: [];
     roles: [];
 }

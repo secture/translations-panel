@@ -28,7 +28,7 @@ export const deleteLocaleById = (locale: LocaleState): ThunkAction<Promise<any>,
         } catch (error) {
             console.log(error);
         }
-        return deleteLocale.data;
+        return deleteLocale;
     }
 };
 

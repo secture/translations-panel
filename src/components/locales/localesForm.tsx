@@ -1,38 +1,10 @@
 import React, {useState} from "react";
-import {Button, createStyles, Grid, makeStyles, Switch, TextField, Theme, Typography} from "@material-ui/core";
+import {Button, Grid, Switch, TextField, Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import {LocaleState} from "../../store/locales/types";
 import Container from "@material-ui/core/Container";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-const formUserStyles = makeStyles((theme: Theme) => createStyles({
-    container: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-    },
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-    },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    form: {
-        width: '100%'
-    },
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end'
-    }
-}));
+import {formStyles} from '../../styles/form'
 
 interface PropsLocalesForm {
     showForm: boolean,
@@ -44,7 +16,7 @@ interface PropsLocalesForm {
 }
 
 const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
-    const classes = formUserStyles();
+    const classes = formStyles();
     const [locale, setLocale] = useState(props.localeSelected);
 
     const changedValues = (e: any, property: string) => {

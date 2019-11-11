@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import {createStyles, makeStyles, Theme} from "@material-ui/core";
+import {formStyles} from '../../styles/form'
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import TextField from '@material-ui/core/TextField';
@@ -21,41 +21,13 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
 
-const formUserStyles = makeStyles((theme: Theme) => createStyles({
-    container: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-    },
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-    },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    form: {
-       width: '100%'
-    },
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end'
-    }
-}));
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const UsersForm = (props: AppProps) => {
-    const classes = formUserStyles();
+    const classes = formStyles();
 
     const [updatedUser, setUser]: any = useState(props.user);
     const handleChangedValues = (property: string, value: any) => {

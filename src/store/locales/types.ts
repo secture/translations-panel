@@ -1,5 +1,5 @@
-export const GET_ALL_LOCALES = 'GET ALL LOCALES';
-export const SET_ALL_LOCALES = 'SET ALL LOCALES';
+export const GET_LOCALES = 'GET ALL LOCALES';
+export const SET_LOCALES = 'SET ALL LOCALES';
 
 export interface LocaleState {
     id: string,
@@ -10,11 +10,11 @@ export interface LocaleState {
 }
 
 interface GetAllLocalesAction {
-    type: typeof GET_ALL_LOCALES
+    type: typeof GET_LOCALES
 }
 
 interface SetAllLocalesAction {
-    type: typeof SET_ALL_LOCALES,
+    type: typeof SET_LOCALES,
     payload: Array<LocaleState>
 }
 

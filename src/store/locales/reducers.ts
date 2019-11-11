@@ -1,4 +1,4 @@
-import {LocaleActionsTypes, LocaleState, SET_ALL_LOCALES} from "./types";
+import {LocaleActionsTypes, LocaleState, SET_LOCALES} from "./types";
 
 export const initialLocale: LocaleState = {
     id: '',
@@ -11,7 +11,7 @@ export const initialLocaleState: LocaleState[] = [];
 
 export function localesReducer(state = initialLocaleState, action: LocaleActionsTypes): LocaleState[] {
     switch (action.type) {
-        case SET_ALL_LOCALES: {
+        case SET_LOCALES: {
             return action.payload;
         }
         default:
