@@ -1,90 +1,72 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import Paper from "@material-ui/core/Paper";
-import {enhancedTableStyles} from '../../styles/table'
-import {Fab, IconButton, InputBase, TablePagination, TableSortLabel, Toolbar, Typography} from "@material-ui/core";
-import AddCircleOutlineIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import IconButton from "@material-ui/core/IconButton";
+import MaterialTable, {MTableToolbar} from "material-table";
+import {enhancedTableStyles} from '../../styles/table';
 import {PlayerState} from "../../store/players/types";
 import {UsersState} from "../../store/users/types";
 import {initialPlayerState} from "../../store/players/reducers";
-import {OrderTableType, TableUtils} from "../../services/utils/table";
-
-const tableUtils = new TableUtils();
-
-interface headCell {
-    id: keyof PlayerState;
-    numeric: boolean;
-    disablePadding: boolean;
-    label: string;
+interface ColumnsPlayer {
+    title: string,
+    field: string,
+    disablePadding: boolean,
+    searchable?: boolean,
+    label: string,
+    customFilterAndSearch?: (filter: string, rowData: PlayerState) => boolean,
+    render?: (rowData: PlayerState) => ReactElement
 }
 
-const headCells: headCell[] = [
-    {id: 'playerMasterId', numeric: false, disablePadding: false, label: 'Id'},
-    {id: 'shortName', numeric: false, disablePadding: false, label: 'Short name'},
-    {id: 'largeName', numeric: false, disablePadding: false, label: 'Large name'},
-    {id: 'team', numeric: false, disablePadding: false, label: 'Team'},
-    {id: 'comments', numeric: false, disablePadding: false, label: 'Comments'},
-    {id: 'insertionDate', numeric: false, disablePadding: false, label: 'IDate'},
-    {id: 'updateDate', numeric: false, disablePadding: false, label: 'UDate'},
-    {id: 'insertionUser', numeric: false, disablePadding: false, label: 'IUser'},
-    {id: 'updateUser', numeric: false, disablePadding: false, label: 'IDate'},
-    {id: 'confirmedTranslations', numeric: false, disablePadding: false, label: 'Confirmed'},
-];
-
-interface EnhancedTableProps {
-    classes: ReturnType<any>;
-    numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof PlayerState) => void;
-    order: OrderTableType,
-    orderBy: string;
-    rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-    const {classes, order, orderBy, onRequestSort} = props;
-    const createSortHandler = (property: keyof PlayerState) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
+const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
-        <TableHead>
-            <TableRow>
-                {headCells.map(headCell => (
-                    <TableCell
-                        key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === headCell.id ? order : false}>
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={order}
-                            onClick={createSortHandler(headCell.id)}>
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
-                                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </span>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-                <TableCell>
-                    OPTIONS
-                </TableCell>
-            </TableRow>
-        </TableHead>
-    );
-}
+        <div>
+            {Object.keys(shortName ? rowData.shortName: rowData.largeName).map((key: any)=> (
+                <Chip style={{marginBottom: "5px"}}
+                      avatar={<Avatar color="secondary">{key}</Avatar>}
+                      label={ shortName ? rowData.shortName[key]: rowData.largeName[key]}
+                      color="primary"
+                />)
+            )}
+        </div>
+    )
+};
 
-///////////////
+const confirmedTranslations = (rowData: PlayerState) => {
+    return (
+        <div>
+            {Object.keys(rowData.confirmedTranslations).map((key: any)=> (
+                <Chip style={{marginBottom: "5px"}}
+                      avatar={<Avatar>{key}</Avatar>}
+                      label={rowData.confirmedTranslations[key] ? 'confirm' : 'unconfirmed'}
+                      color={rowData.confirmedTranslations[key] ? 'primary' : 'secondary'}
+                />)
+            )}
+        </div>
+    )
+};
+
+const customSearch = (filter: string, rowData: PlayerState) => {
+    return (rowData.largeName['es'].toLowerCase().includes(filter.toLocaleLowerCase()) ||
+        rowData.shortName['es'].toLowerCase().includes(filter.toLocaleLowerCase()))
+};
+
+const columns: ColumnsPlayer[] = [
+    {title: 'Id', field: 'playerMasterId', disablePadding: false, searchable: true, label: 'Id'},
+    {title: 'Short name', field: 'shortName', disablePadding: false, searchable: true, label: 'Short name',
+        customFilterAndSearch: (filter: string, rowData: PlayerState) => customSearch(filter, rowData),
+        render: (rowData: PlayerState) => playerNames(rowData, true)
+    },
+    {title: 'Large name', field: 'largeName', disablePadding: false, searchable: true, label: 'Large name', render: (rowData: PlayerState) => playerNames(rowData, false)},
+    {title: 'Confirmed', field: 'confirmedTranslations', disablePadding: false, label: 'Confirmed', render: (rowData: PlayerState) => confirmedTranslations(rowData)},
+    {title: 'Insertion date', field: 'insertionDate', disablePadding: false, label: 'IDate', render: (rowData: PlayerState) => <div>{new Date(rowData.insertionDate).toDateString()}</div>},
+    {title: 'Updated date', field: 'updateDate', disablePadding: false, label: 'UDate', render: (rowData: PlayerState) => <div>{new Date(rowData.updateDate).toDateString()}</div>},
+    {title: 'Insertion user', field: 'insertionUser', disablePadding: false, searchable: true, label: 'IUser', render: (rowData: PlayerState) => <div>{rowData.insertionUser.name}</div>},
+    {title: 'Updated user', field: 'updateUser', disablePadding: false, searchable: true, label: 'UDate', render: (rowData: PlayerState) => <div>{rowData.updateUser.name}</div>},
+    {title: 'Team', field: 'team', disablePadding: false, label: 'Team'},
+    {title: 'Comments', field: 'comments', disablePadding: false, label: 'Comments'},
+];
 
 interface PropsPlayersList {
     players: any,
@@ -92,151 +74,64 @@ interface PropsPlayersList {
     setPlayerSelected: (player: PlayerState) => void,
     setEditForm: (isEditForm: boolean) => void,
     setShowForm: (show: boolean) => void,
-    openDialog: () => void,
-    onSearchPlayer: (search: string) => void
+    openDialog: () => void
 }
 
 const PlayersList: React.FC<any> = (props: PropsPlayersList) => {
     const classes = enhancedTableStyles();
 
-    const [selected, setSelected] = React.useState<string[]>([]);
-    const [order, setOrder] = React.useState<OrderTableType>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof PlayerState>('updateDate');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
     const loadFormAddPlayer = () => {
-        console.log(initialPlayerState);
+        props.setEditForm(false);
+        props.setPlayerSelected(initialPlayerState);
+        props.setShowForm(true);
     };
 
-    const loadFormEditPlayer = (player: PlayerState) => {
-        console.log(player)
+    const loadFormEditPlayer= (player: PlayerState) => {
+        props.setEditForm(true);
+        props.setPlayerSelected(player);
+        props.setShowForm(true);
     };
 
-    const openDeleteModal = (player: PlayerState) => {
-        console.log(player)
-    };
-
-    const searchTranslations = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        if (e.target.value.length >= 2) {
-            props.onSearchPlayer(e.target.value);
-        }
-    };
-
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PlayerState) => {
-        const isDesc = orderBy === property && order === 'desc';
-        setOrder(isDesc ? 'asc' : 'desc');
-        setOrderBy(property);
-    };
-
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+    const deletePlayer = (player: PlayerState) => {
+        props.setPlayerSelected(player);
+        props.openDialog();
     };
 
     return (
         <Paper className={classes.root}>
-            <Toolbar>
-                <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
-                    Players
-                </Typography>
-                <SearchIcon/>
-                <InputBase
-                    className={classes.input}
-                    placeholder="Search Translations"
-                    inputProps={{'aria-label': 'search translations'}}
-                    onChange={e => searchTranslations(e)}
-                />
-                <IconButton aria-label="add" onClick={() => loadFormAddPlayer()}>
-                    <AddCircleOutlineIcon/>
-                </IconButton>
-            </Toolbar>
-            <Table className={classes.table} aria-label="simple table">
-                <EnhancedTableHead
-                    classes={classes}
-                    numSelected={selected.length}
-                    order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
-                    rowCount={props.players.length}
-                />
-                <TableBody>
-                    {tableUtils.stableSort(props.players, tableUtils.getSorting(order, orderBy))
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row: any, index: any) => {
-                            return (
-                                <TableRow key={row.id}>
-                                    <TableCell>{row.playerMasterId}</TableCell>
-                                    <TableCell align="right">
-                                        <div style={{display: "flex", flexDirection: "column"}}>
-                                            {
-                                                Object.keys(row.shortName).map((key: any) => (
-                                                    <Chip
-                                                        style={{marginBottom: "5px"}}
-                                                        avatar={<Avatar>{key}</Avatar>}
-                                                        label={row.shortName[key]}
-                                                        color="primary"
-                                                    />
-                                                ))}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell align="right">{
-                                        Object.keys(row.largeName).map((key: any) => (
-                                            <Chip
-                                                avatar={<Avatar>{key}</Avatar>}
-                                                label={row.largeName[key]}
-                                                color="primary"
-                                            />
-                                        ))}
-                                    </TableCell>
-                                    <TableCell align="right">{row.team}</TableCell>
-                                    <TableCell align="right">{row.comments}</TableCell>
-                                    <TableCell align="right">{row.insertionDate}</TableCell>
-                                    <TableCell align="right">{row.updateDate}</TableCell>
-                                    <TableCell align="right">{row.insertionUser.name}</TableCell>
-                                    <TableCell align="right">{row.updateUser.name}</TableCell>
-                                    <TableCell align="right">{
-                                        Object.keys(row.confirmedTranslations).map((key: any) => (
-                                            <Chip
-                                                avatar={<Avatar>{key}</Avatar>}
-                                                label={row.confirmedTranslations[key]}
-                                                color="primary"
-                                            />
-                                        ))}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                             onClick={() => loadFormEditPlayer(row)}>
-                                            <EditIcon/>
-                                        </Fab>
-                                        <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                             onClick={() => openDeleteModal(row)}>
-                                            <DeleteIcon/>
-                                        </Fab>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
-                </TableBody>
-            </Table>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={props.players.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                backIconButtonProps={{
-                    'aria-label': 'previous page',
+            <MaterialTable
+                columns={columns}
+                data={props.players}
+                components={{
+                    Toolbar: props => (
+                        <div style={{display: 'flex', flexDirection: 'row'}}>
+                            <MTableToolbar {...props} />
+                            <div style={{padding: '10px 0 0 0'}}>
+                                <IconButton aria-label="add" onClick={() => loadFormAddPlayer()}>
+                                    <AddCircleOutlineIcon color="primary"/>
+                                </IconButton>
+                            </div>
+                        </div>
+                    ),
                 }}
-                nextIconButtonProps={{
-                    'aria-label': 'next page',
+                actions={[
+                    {
+                        icon: 'edit',
+                        tooltip: 'Edit User',
+                        iconProps: {color: 'primary'},
+                        onClick: (event, rowData: any) => alert("You edit " + rowData.shortName['es'])
+                    },
+                    {
+                        icon: 'delete',
+                        tooltip: 'Delete User',
+                        iconProps: {color: 'secondary'},
+                        onClick: (event, rowData: any) => alert("You want to delete " + rowData.shortName['es'])
+                    }
+                ]}
+                options={{
+                    search: true
                 }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+                isLoading={props.players.length === 0}/>
         </Paper>
     )
 };

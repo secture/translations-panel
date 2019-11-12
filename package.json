@@ -16,6 +16,7 @@
     "clsx": "^1.0.4",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
+    "material-table": "^1.54.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",

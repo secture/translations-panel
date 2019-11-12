@@ -10,7 +10,7 @@ import {AnyAction} from "redux";
 import {connect} from "react-redux";
 import PlayersList from "../components/players/playersList";
 import PlayersForm from "../components/players/playersForm";
-import {getAllPlayers, searchPlayer} from "../services/players";
+import {getAllPlayers} from "../services/players";
 import {initialPlayerState} from "../store/players/reducers";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
@@ -29,15 +29,10 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
-        debugger;
         if (props.players.length === 0) {
             props.getAllPlayersAction();
         }
     }, []);
-
-    const onSearchPlayer = (search: string) => {
-        props.searchPlayersActions(search);
-    };
 
     return (
         <main className={classes.content}>
@@ -51,8 +46,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                          setPlayerSelected={setPlayerSelected}
                                          setShowForm={setShowForm}
                                          openDialog={updateDialog}
-                                         setEditForm={setEditForm}
-                                         onSearchPlayer={onSearchPlayer}/>
+                                         setEditForm={setEditForm}/>
                         </Grid>) : (
                         <Grid item xs={12}>
                             <PlayersForm />
@@ -73,7 +67,6 @@ const mapStateToProps = (store: TranslationsStore) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         getAllPlayersAction: () => dispatch(getAllPlayers()),
-        searchPlayersActions: (search: string) => dispatch(searchPlayer(search)),
     };
 };
 

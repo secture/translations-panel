@@ -18,9 +18,6 @@ export const tableStyles = makeStyles((theme: Theme) => createStyles({
     button: {
         margin: theme.spacing(1),
     },
-    color: {
-        backgroundColor: theme.palette.grey.A100
-    },
     actions: {
         display: 'flex',
         justifyContent: 'center'

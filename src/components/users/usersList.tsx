@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -59,7 +58,7 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Users
                 </Typography>
-                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
+                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()}>
                     <AddCircleOutlineIcon color="primary"/>
                 </IconButton>}
             </Toolbar>
@@ -87,10 +86,10 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                                 )}
                             </TableCell>
                             <TableCell align="left" className={classes.actions}>
-                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
+                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
                                     <EditIcon color="primary" />
                                 </IconButton>}
-                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
+                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
                                     <DeleteIcon color="secondary" />
                                 </IconButton>
                             </TableCell>
