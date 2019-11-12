@@ -120,17 +120,20 @@ const PlayersList: React.FC<any> = (props: PropsPlayersList) => {
                         icon: 'edit',
                         tooltip: 'Edit User',
                         iconProps: {color: 'primary'},
-                        onClick: (event, rowData: any) => alert("You edit " + rowData.shortName['es'])
+                        onClick: (event, rowData: any) => loadFormEditPlayer(rowData)
                     },
                     {
                         icon: 'delete',
                         tooltip: 'Delete User',
                         iconProps: {color: 'secondary'},
-                        onClick: (event, rowData: any) => alert("You want to delete " + rowData.shortName['es'])
+                        onClick: (event, rowData: any) => deletePlayer(rowData)
                     }
                 ]}
                 options={{
                     search: true
+                }}
+                onRowClick={(event, rowData: any) => {
+                   alert('player' + rowData.shortName['es']);
                 }}
                 isLoading={props.players.length === 0}/>
         </Paper>

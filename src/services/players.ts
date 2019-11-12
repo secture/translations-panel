@@ -29,11 +29,11 @@ export const searchPlayer = (search: string): ThunkAction<void, {}, {}, AnyActio
     }
 };
 
-export const deletePlayerById = (player: PlayerState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const deletePlayerById = (id: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let deletePlayer = null;
         try {
-            const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`);
+            const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/players/${id}`);
             if (response !== null && typeof response.data !== 'undefined') {
                 deletePlayer = response.data;
                 dispatch(getAllPlayers());
@@ -49,7 +49,8 @@ export const editPlayerById = (player: PlayerState): ThunkAction<Promise<any>, {
     return async function (dispatch: any) {
         let editPlayer = null;
         try {
-            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, player);
+            debugger;
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 editPlayer = response.data;
                 dispatch(getAllPlayers());
@@ -65,7 +66,8 @@ export const addPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}
     return async function (dispatch: any) {
         let newPlayer = null;
         try {
-            const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/locales`, player);
+            debugger;
+            const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/players`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 newPlayer = response.data;
                 dispatch(getAllPlayers());
@@ -74,5 +76,15 @@ export const addPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}
             console.log(error);
         }
         return newPlayer;
+    }
+};
+
+const createPlayerDTO = (player: PlayerState) => {
+    return {
+        playerMasterId: player.playerMasterId,
+        shortName: player.shortName,
+        largeName: player.largeName,
+        team: player.team,
+        comments: player.comments
     }
 };
