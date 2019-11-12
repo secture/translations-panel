@@ -49,7 +49,6 @@ export const editPlayerById = (player: PlayerState): ThunkAction<Promise<any>, {
     return async function (dispatch: any) {
         let editPlayer = null;
         try {
-            debugger;
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 editPlayer = response.data;
@@ -66,7 +65,6 @@ export const addPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}
     return async function (dispatch: any) {
         let newPlayer = null;
         try {
-            debugger;
             const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/players`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 newPlayer = response.data;

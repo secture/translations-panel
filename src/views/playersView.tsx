@@ -45,13 +45,11 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     };
 
     const onEditPlayer = (player: PlayerState) => {
-        debugger;
         props.editPlayerAction(player).then((player: LocaleState) => {
             (player !== null) ? alert('Player editado') : alert('no ha sido posible editar el Player')
         })
     };
     const onAddPlayer = (player: PlayerState) => {
-        debugger;
         props.addPlayerAction(player).then((player: LocaleState) => {
             (player !== null) ? alert('Player creado') : alert('no ha sido posible crear el Player')
         })
