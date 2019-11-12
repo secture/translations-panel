@@ -9,7 +9,6 @@ export const getAllPlayers = (): ThunkAction<void, {}, {}, AnyAction> => {
         let players: any = null;
         try {
             players = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/players');
-            debugger;
             dispatch(setAllPlayers(players.data));
         } catch (error) {
             console.log(error);

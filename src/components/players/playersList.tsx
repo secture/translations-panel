@@ -9,6 +9,7 @@ import {enhancedTableStyles} from '../../styles/table';
 import {PlayerState} from "../../store/players/types";
 import {UsersState} from "../../store/users/types";
 import {initialPlayerState} from "../../store/players/reducers";
+
 interface ColumnsPlayer {
     title: string,
     field: string,
