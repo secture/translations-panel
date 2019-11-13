@@ -33,9 +33,6 @@ const userListStyles = makeStyles((theme: Theme) => createStyles({
     table: {
         minWidth: 650,
     },
-    button: {
-        margin: theme.spacing(1),
-    },
     color: {
         backgroundColor: theme.palette.grey.A100
     }

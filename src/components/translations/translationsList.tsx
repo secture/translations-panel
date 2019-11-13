@@ -31,9 +31,6 @@ const translationsListStyles = makeStyles((theme: Theme) =>
         table: {
             minWidth: 650,
         },
-        tableWrapper: {
-            overflowX: 'auto',
-        },
         visuallyHidden: {
             border: 0,
             clip: 'rect(0 0 0 0)',
@@ -50,14 +47,6 @@ const translationsListStyles = makeStyles((theme: Theme) =>
         },
         tableTitle: {
             flex: '1 1 100%',
-        },
-        form: {
-            padding: '24px',
-            margin: '48px inherit 48px inherit',
-            minWidth: 650,
-        },
-        button: {
-            margin: theme.spacing(1),
         },
         input: {
             width: '20%'

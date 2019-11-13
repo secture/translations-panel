@@ -9,10 +9,11 @@ import AppleIcon from '@material-ui/icons/Apple';
 import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
-import {initialTranslation} from "../../store/translations/reducers";
 import {TranslationState} from "../../store/translations/types";
 import {LocaleState} from "../../store/locales/types";
 import {CategoryState} from "../../store/categories/types";
+
+import {dashboardViewStyles} from "../../styles/dashboard";
 
 const translationsFormStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,9 +52,6 @@ const translationsFormStyles = makeStyles((theme: Theme) =>
             padding: '24px',
             margin: '48px inherit 48px inherit',
             minWidth: 650,
-        },
-        button: {
-            margin: theme.spacing(1),
         },
     })
 );
@@ -94,6 +92,7 @@ interface PropsDataForm {
 
 const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
     const classes = translationsFormStyles();
+    const globalStyle = dashboardViewStyles();
     const [data, setData] = useState<TranslationState>(props.dataSelected);
     const changedValues = (e: any, property: string) => {
         setData({
@@ -239,16 +238,16 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                         ) : (<span/>)}
                     </Grid>))}
                 <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
-                    <Button className={classes.button}
+                    <Button className={globalStyle.button}
                             onClick={e => props.onCancel()}>Return</Button>
                     {props.actionType === 'edit' ? (
                         <Button variant="contained" color="primary"
                                 onClick={e => props.onEditEntity(data)}
-                                className={classes.button}> Save </Button>
+                                className={globalStyle.button}> Save </Button>
                     ) : (
                         <Button variant="contained" color="primary"
                                 onClick={e => props.onCreateEntity(data)}
-                                className={classes.button}> Create </Button>
+                                className={globalStyle.button}> Create </Button>
                     )}
                 </Grid>
             </Grid>

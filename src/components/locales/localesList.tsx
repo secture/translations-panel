@@ -38,23 +38,9 @@ const localesListStyles = makeStyles((theme: Theme) =>
         tableTitle: {
             flex: '1 1 100%',
         },
-        form: {
-            padding: '24px',
-            margin: '48px inherit 48px inherit',
-            minWidth: 650,
-        },
-        button: {
-            margin: theme.spacing(1),
-        },
         icon: {
             fontSize: '28px',
         },
-        show: {
-            display: 'show',
-        },
-        hide: {
-            display: 'none',
-        }
     })
 );
 
