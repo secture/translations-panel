@@ -36,7 +36,7 @@ const drawerStyles = makeStyles(theme => ({
         padding: '0 8px',
         ...theme.mixins.toolbar,
         '& img': {
-            width: '100%'
+            width: '80%'
         }
     },
     drawerPaper: {
