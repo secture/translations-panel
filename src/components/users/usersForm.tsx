@@ -20,33 +20,15 @@ import {createUser, updateUser} from "../../services/user";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
+import {dashboardViewStyles} from "../../styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
-    container: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-    },
     root: {
         width: '100%',
         overflowX: 'auto',
     },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
     form: {
        width: '100%'
-    },
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end'
     }
 }));
 
@@ -56,6 +38,7 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const UsersForm = (props: AppProps) => {
     const classes = formUserStyles();
+    const globalStyle = dashboardViewStyles();
 
     const [updatedUser, setUser]: any = useState(props.user);
     const handleChangedValues = (property: string, value: any) => {
@@ -112,7 +95,7 @@ const UsersForm = (props: AppProps) => {
     return (
         <Paper className={classes.root}>
             <form className={classes.form} onSubmit={sendForm}>
-                <Container className={classes.container}>
+                <Container className={globalStyle.container}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -135,7 +118,7 @@ const UsersForm = (props: AppProps) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl component="fieldset" className={classes.formControl}>
+                            <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Privilege</FormLabel>
                                 <RadioGroup aria-label="gender" name="gender1" value={updatedUser.privilege} onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
                                     {props.roles.map((role: string) => (
@@ -155,7 +138,7 @@ const UsersForm = (props: AppProps) => {
                             />
                         </Grid>}
                         <Grid item xs={12}>
-                            <FormControl component="fieldset" className={classes.formControl}>
+                            <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Locales</FormLabel>
                                 <FormGroup row>
                                     {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
@@ -166,11 +149,11 @@ const UsersForm = (props: AppProps) => {
                                 <FormHelperText>Select locales for user</FormHelperText>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} className={classes.actions}>
-                            <Button variant="outlined" color="secondary" className={classes.button} onClick={() => props.setShowForm(false)} >
+                        <Grid item xs={12} className={globalStyle.actions}>
+                            <Button variant="outlined" color="secondary" className={globalStyle.button} onClick={() => props.setShowForm(false)} >
                                 Back
                             </Button>
-                            <Button variant="outlined" color="primary" className={classes.button} onClick={() => sendForm()}>
+                            <Button variant="outlined" color="primary" className={globalStyle.button} onClick={() => sendForm()}>
                                 Send
                             </Button>
                         </Grid>

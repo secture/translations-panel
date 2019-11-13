@@ -17,29 +17,11 @@ import {AnyAction} from "redux";
 import {connect} from "react-redux";
 import {AssociatedLanguage, UserState} from "../../store/user/types";
 import {createUser, updateUser} from "../../services/user";
+import {dashboardViewStyles} from "../../styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
-    container: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-    },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
     form: {
        width: '100%'
-    },
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end'
     }
 }));
 
@@ -49,6 +31,7 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const FormUsers = (props: AppProps) => {
     const classes = formUserStyles();
+    const globalStyle = dashboardViewStyles();
 
     const [updatedUser, setUser]: any = useState(props.user);
     const handleChangedValues = (property: string, value: any) => {
@@ -104,7 +87,7 @@ const FormUsers = (props: AppProps) => {
 
     return (
         <form className={classes.form} onSubmit={sendForm}>
-            <Container className={classes.container}>
+            <Container className={globalStyle.container}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
@@ -147,7 +130,7 @@ const FormUsers = (props: AppProps) => {
                         />
                     </Grid>}
                     <Grid item xs={12}>
-                        <FormControl component="fieldset" className={classes.formControl}>
+                        <FormControl component="fieldset" className={globalStyle.formControl}>
                             <FormLabel component="legend">Locales</FormLabel>
                             <FormGroup>
                                 {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
@@ -158,11 +141,11 @@ const FormUsers = (props: AppProps) => {
                             <FormHelperText>Select locales for user</FormHelperText>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} className={classes.actions}>
-                        <Button variant="outlined" color="secondary" className={classes.button} onClick={() => props.setShowForm(false)} >
+                    <Grid item xs={12} className={globalStyle.actions}>
+                        <Button variant="outlined" color="secondary" className={globalStyle.button} onClick={() => props.setShowForm(false)} >
                             Back
                         </Button>
-                        <Button variant="outlined" color="primary" className={classes.button} onClick={() => sendForm()}>
+                        <Button variant="outlined" color="primary" className={globalStyle.button} onClick={() => sendForm()}>
                             Send
                         </Button>
                     </Grid>

@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -35,6 +35,9 @@ const drawerStyles = makeStyles(theme => ({
         justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
+        '& img': {
+            width: '100%'
+        }
     },
     drawerPaper: {
         position: 'relative',
@@ -69,60 +72,73 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
             open={open_state}
         >
             <div className={classes.toolbarIcon}>
+                <img src="/logo.png" alt=""/>
                 <IconButton onClick={updateOpen}>
-                    <ChevronLeftIcon />
+                    <ChevronLeftIcon/>
                 </IconButton>
             </div>
-            <Divider />
+            <Divider/>
             <List>
                 <div>
-                    <ListItem button onClick={() => {history.push('/dashboard')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard')
+                    }}>
                         <ListItemIcon>
-                            <DashboardIcon />
+                            <DashboardIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
+                        <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/translations')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/translations')
+                    }}>
                         <ListItemIcon>
-                            <ShoppingCartIcon />
+                            <ShoppingCartIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Translations" />
+                        <ListItemText primary="Translations"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/categories')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/categories')
+                    }}>
                         <ListItemIcon>
-                            <ClassIcon />
+                            <ClassIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Categories" />
+                        <ListItemText primary="Categories"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/exports')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/exports')
+                    }}>
                         <ListItemIcon>
-                            <PeopleIcon />
+                            <PeopleIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Export translations" />
+                        <ListItemText primary="Export translations"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/locales')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/locales')
+                    }}>
                         <ListItemIcon>
-                            <BarChartIcon />
+                            <BarChartIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Locale" />
+                        <ListItemText primary="Locale"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/users')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/users')
+                    }}>
                         <ListItemIcon>
-                            <LayersIcon />
+                            <LayersIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Users" />
+                        <ListItemText primary="Users"/>
                     </ListItem>
                 </div>
             </List>
-            <Divider />
+            <Divider/>
             <List>
                 <div>
                     <ListSubheader inset>Saved reports</ListSubheader>
                     <ListItem button>
                         <ListItemIcon>
-                            <AssignmentIcon />
+                            <AssignmentIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Current month" />
+                        <ListItemText primary="Current month"/>
                     </ListItem>
                 </div>
             </List>

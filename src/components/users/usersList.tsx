@@ -38,10 +38,6 @@ const userListStyles = makeStyles((theme: Theme) => createStyles({
     },
     color: {
         backgroundColor: theme.palette.grey.A100
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'center'
     }
 }));
 

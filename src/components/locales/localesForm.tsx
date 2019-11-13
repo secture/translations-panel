@@ -4,33 +4,15 @@ import Paper from "@material-ui/core/Paper";
 import {LocaleState} from "../../store/locales/types";
 import Container from "@material-ui/core/Container";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {dashboardViewStyles} from "../../styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
-    container: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-    },
     root: {
         width: '100%',
         overflowX: 'auto',
     },
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
     form: {
         width: '100%'
-    },
-    formControl: {
-        margin: theme.spacing(3),
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end'
     }
 }));
 
@@ -45,6 +27,7 @@ interface PropsLocalesForm {
 
 const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
     const classes = formUserStyles();
+    const globalStyle = dashboardViewStyles();
     const [locale, setLocale] = useState(props.localeSelected);
 
     const changedValues = (e: any, property: string) => {
@@ -74,7 +57,7 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
     return (
         <Paper className={classes.root}>
             <form className={classes.form}>
-                <Container className={classes.container}>
+                <Container className={globalStyle.container}>
                     <Grid container spacing={2}>
                         <Grid container item direction="row" justify="center" xs={12}>
                             <Typography variant="h6" gutterBottom>
@@ -129,15 +112,15 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={classes.button} onClick={() => props.setShowForm(false)}>Back</Button>
+                            <Button className={globalStyle.button} onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
                                 <Button variant="contained" color="primary"
                                         onClick={() => {confirmEditLocale()}}
-                                        className={classes.button}> Save </Button>
+                                        className={globalStyle.button}> Save </Button>
                             ) : (
                                 <Button variant="contained" color="primary"
                                         onClick={() => {confirmCreateLocale()}}
-                                        className={classes.button}> Create </Button>
+                                        className={globalStyle.button}> Create </Button>
                             )}
                         </Grid>
                     </Grid>
