@@ -23,7 +23,6 @@ import ClassIcon from '@material-ui/icons/Class';
 
 import history from "../../history";
 
-
 const drawerWidth = 240;
 
 const drawerStyles = makeStyles(theme => ({

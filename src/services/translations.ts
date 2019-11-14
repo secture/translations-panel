@@ -1,9 +1,9 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setAllTranslations, setDeleteTranslations} from "../store/translations/actions";
-import {TranslationState} from "../store/translations/types";
-import {LocaleState} from "../store/locales/types";
+import {setAllTranslations, setDeleteTranslations} from "store/translations/actions";
+import {TranslationState} from "store/translations/types";
+import {LocaleState} from "store/locales/types";
 
 export const addTranslation = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {

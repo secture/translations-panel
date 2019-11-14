@@ -1,13 +1,13 @@
 import React from 'react';
 import {useSelector} from 'react-redux'
-import { TranslationsStore } from "../store/types";
+import { TranslationsStore } from "store/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import Exports from "../components/exports/exports";
+import Exports from "components/views/exports/exports";
 
 const ExportsView = () => {
     const classes = dashboardViewStyles();

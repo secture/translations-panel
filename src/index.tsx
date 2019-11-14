@@ -6,14 +6,14 @@ import FullLayout from './layouts/FullLayout';
 import Dashboard from './layouts/DashboardLayout';
 
 /* VIEWS */
-import LoginView from './views/loginView';
-import DashboardView from './views/dashboardView'
-import TranslationsView from './views/translationsView'
-import ExportsView from "./views/exportsView";
-import LocalesView from "./views/localesView";
-import UsersView from "./views/usersView";
-import PlayersView from "./views/playersView";
-import CategoriesView from "./views/categoriesView";
+import LoginView from 'views/loginView';
+import DashboardView from 'views/dashboardView'
+import TranslationsView from 'views/translationsView'
+import ExportsView from 'views/exportsView';
+import LocalesView from "views/localesView";
+import UsersView from "views/usersView";
+import PlayersView from "views/playersView";
+import CategoriesView from "views/categoriesView";
 
 /* STORE */
 import store from './store'

@@ -1,8 +1,8 @@
-import {UserLoginDTO, UserSignInDTO} from "../store/auth/types";
-import {signInAction, loginAction, logoutAction} from '../store/auth/actions'
-import {setUserAction} from "../store/user/actions";
-import {initialUserState} from "../store/user/reducers";
-import httpClient from "./common/http-interceptor";
+import {UserLoginDTO, UserSignInDTO} from "store/auth/types";
+import {signInAction, loginAction, logoutAction} from 'store/auth/actions'
+import {setUserAction} from "store/user/actions";
+import {initialUserState} from "store/user/reducers";
+import httpClient from "services/common/http-interceptor";
 
 import {AnyAction} from 'redux';
 import {ThunkDispatch, ThunkAction} from 'redux-thunk'

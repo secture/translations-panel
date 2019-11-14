@@ -1,9 +1,9 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setUserAction} from "../store/user/actions";
-import {setUsersAction} from "../store/users/actions";
-import {UserState} from "../store/user/types";
+import {setUserAction} from "store/user/actions";
+import {setUsersAction} from "store/users/actions";
+import {UserState} from "store/user/types";
 
 export const getUsers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {

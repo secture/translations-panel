@@ -11,16 +11,16 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {connect} from "react-redux";
-import {AssociatedLanguage, UserState} from "../../store/user/types";
-import {createUser, updateUser} from "../../services/user";
+import {AssociatedLanguage, UserState} from "store/user/types";
+import {createUser, updateUser} from "services/user";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
-import {dashboardViewStyles} from "../../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     root: {

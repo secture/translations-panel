@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import MenuAppBar from "../components/surfaces/MenuAppBar";
-import Drawer from "../components/surfaces/Drawer";
+import MenuAppBar from "components/surfaces/MenuAppBar";
+import Drawer from "components/surfaces/Drawer";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {getUser} from "../services/user";
+import {getUser} from "services/user";
 import {connect} from "react-redux";
-import {TranslationsStore} from "../store/types";
-import StatusNotification from "../components/common/statusNotification";
+import {TranslationsStore} from "store/types";
+import StatusNotification from "components/common/statusNotification";
 
 interface DashboardLayoutProps {
     view: React.ComponentClass,
@@ -37,7 +37,7 @@ const DashboardLayout = (props: AppProps) => {
             <MenuAppBar open_state={open} updateOpen={updateOpen}/>
             <Drawer open_state={open} updateOpen={updateOpen}/>
             <View/>
-            <StatusNotification/>
+
         </div>
     )
 };

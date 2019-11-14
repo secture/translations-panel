@@ -11,14 +11,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-import {CategoryState} from "../../store/categories/types";
+import {CategoryState} from "store/categories/types";
 import {
     Fab,
     IconButton,
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {initialCategory} from "../../store/categories/reducers";
+import {initialCategory} from "store/categories/reducers";
 
 const categoriesListStyles = makeStyles((theme: Theme) =>
     createStyles({

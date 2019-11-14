@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
-import {TranslationsStore} from "../store/types";
+import {TranslationsStore} from "store/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper} from "@material-ui/core";
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import TranslationsList from "../components/translations/translationsList";
+import TranslationsList from "components/views/translations/translationsList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {
@@ -17,13 +17,13 @@ import {
     deleteTranslationById,
     editTranslationById,
     getAllTranslations, searchTranslations
-} from "../services/translations";
-import TranslationsForm from "../components/translations/translationsForm";
-import {TranslationState} from "../store/translations/types";
-import {initialTranslation} from "../store/translations/reducers";
-import {getAllLocales} from "../services/locale";
-import {getAllCategories} from "../services/categories";
-import {LocaleState} from "../store/locales/types";
+} from "services/translations";
+import TranslationsForm from "components/views/translations/translationsForm";
+import {TranslationState} from "store/translations/types";
+import {initialTranslation} from "store/translations/reducers";
+import {getAllLocales} from "services/locale";
+import {getAllCategories} from "services/categories";
+import {LocaleState} from "store/locales/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

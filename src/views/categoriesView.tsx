@@ -7,14 +7,14 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import CategoriesList from "../components/categories/categoriesList";
+import CategoriesList from "components/views/categories/categoriesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {addCategory, deleteCategoryById, editCategoryById, getAllCategories} from "../services/categories";
-import {CategoryState} from "../store/categories/types";
-import DeleteDialog from "../components/common/deleteDialog";
-import {initialCategory} from "../store/categories/reducers";
-import CategoriesForm from "../components/categories/categoriesForm";
+import {addCategory, deleteCategoryById, editCategoryById, getAllCategories} from "services/categories";
+import {CategoryState} from "store/categories/types";
+import DeleteDialog from "components/common/deleteDialog";
+import {initialCategory} from "store/categories/reducers";
+import CategoriesForm from "components/views/categories/categoriesForm";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

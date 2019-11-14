@@ -5,20 +5,20 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {AssociatedLanguage, UserState} from "../../store/user/types";
+import {AssociatedLanguage, UserState} from "store/user/types";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {initialUserState} from "../../store/user/reducers";
+import {initialUserState} from "store/user/reducers";
 import Chip from '@material-ui/core/Chip';
 
-import {dashboardViewStyles} from "../../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import {Toolbar, Typography} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {getAllLocales} from "../../services/locale";
+import {getAllLocales} from "services/locale";
 import {connect} from "react-redux";
 import {tableStyles} from '../../styles/table'
 

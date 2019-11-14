@@ -13,14 +13,14 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
-import {LocaleState} from "../../store/locales/types";
+import {LocaleState} from "store/locales/types";
 import {
     Fab,
     IconButton,
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {initialLocale} from "../../store/locales/reducers";
+import {initialLocale} from "store/locales/reducers";
 
 const localesListStyles = makeStyles((theme: Theme) =>
     createStyles({

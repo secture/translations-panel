@@ -9,11 +9,11 @@ import AppleIcon from '@material-ui/icons/Apple';
 import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
-import {TranslationState} from "../../store/translations/types";
-import {LocaleState} from "../../store/locales/types";
-import {CategoryState} from "../../store/categories/types";
+import {TranslationState} from "store/translations/types";
+import {LocaleState} from "store/locales/types";
+import {CategoryState} from "store/categories/types";
 
-import {dashboardViewStyles} from "../../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 
 const translationsFormStyles = makeStyles((theme: Theme) =>
     createStyles({
