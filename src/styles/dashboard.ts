@@ -18,9 +18,6 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
     itemGrid: {
       margin: '1em',
     },
-    root: {
-        padding: theme.spacing(3, 2),
-    },
     appBarSpacer: theme.mixins.toolbar,
     orangeAvatar: {
         margin: 10,

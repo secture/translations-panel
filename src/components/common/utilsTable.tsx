@@ -1,8 +1,8 @@
-import {PlayerState} from "../../store/players/types";
+import {PlayerState} from "store/players/types";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import React, {ReactElement} from "react";
-import {LocaleState} from "../../store/locales/types";
+import {LocaleState} from "store/locales/types";
 
 const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (

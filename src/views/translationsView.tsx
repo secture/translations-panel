@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper} from "@material-ui/core";
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import TranslationsList from "components/views/translations/translationsList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";

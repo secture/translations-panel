@@ -1,5 +1,5 @@
 import {SIGN_IN, LOGIN, AuthActionsTypes, UserSignInDTO, AuthState, LOGOUT} from "./types";
-import {UserState} from "../user/types";
+import {UserState} from "store/user/types";
 
 export function signInAction(user: UserSignInDTO): AuthActionsTypes {
     return {

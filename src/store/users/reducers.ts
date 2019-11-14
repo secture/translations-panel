@@ -1,6 +1,6 @@
 import {SET_USERS, UsersActionsTypes} from "./types";
-import {UserState} from "../user/types";
-import {initialUserState} from "../user/reducers";
+import {UserState} from "store/user/types";
+import {initialUserState} from "store/user/reducers";
 
 export const initialUsersState: UserState[] = [initialUserState];
 

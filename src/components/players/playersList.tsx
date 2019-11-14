@@ -3,14 +3,14 @@ import Paper from "@material-ui/core/Paper";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
 import MaterialTable, {MTableToolbar} from "material-table";
-import {enhancedTableStyles} from '../../styles/table';
-import {PlayerState} from "../../store/players/types";
-import {UsersState} from "../../store/users/types";
-import {initialPlayerState} from "../../store/players/reducers";
-import {getColumns} from '../common/utilsTable';
-import LocaleSelector from "../common/localeSelector";
-import {LocaleState} from "../../store/locales/types";
-import {initialLocale} from "../../store/locales/reducers";
+import {enhancedTableStyles} from 'styles/table';
+import {PlayerState} from "store/players/types";
+import {UsersState} from "store/users/types";
+import {initialPlayerState} from "store/players/reducers";
+import {LocaleState} from "store/locales/types";
+import {initialLocale} from "store/locales/reducers";
+import {getColumns} from 'components/common/utilsTable';
+import LocaleSelector from "components/common/localeSelector";
 
 interface PropsPlayersList {
     players: PlayerState[],

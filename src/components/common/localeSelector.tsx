@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {LocaleState} from "../../store/locales/types";
+import {LocaleState} from "store/locales/types";
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {useSelector} from "react-redux";
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 
 interface PropsLocaleSelector {
     locale: LocaleState,

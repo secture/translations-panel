@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 /* LAYOUTS */
-import FullLayout from './layouts/FullLayout';
-import Dashboard from './layouts/DashboardLayout';
+import FullLayout from 'layouts/FullLayout';
+import Dashboard from 'layouts/DashboardLayout';
 
 /* VIEWS */
 import LoginView from 'views/loginView';
@@ -16,15 +16,15 @@ import PlayersView from "views/playersView";
 import CategoriesView from "views/categoriesView";
 
 /* STORE */
-import store from './store'
-import {saveState} from './store/localStorage';
+import store from 'store'
+import {saveState} from 'store/localStorage';
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import history from './history';
 
-import './index.css';
+import 'index.css';
 
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},

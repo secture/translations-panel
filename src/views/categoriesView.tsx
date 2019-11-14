@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
-import {TranslationsStore} from "../store/types";
+import {TranslationsStore} from "store/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import CategoriesList from "components/views/categories/categoriesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";

@@ -3,8 +3,8 @@ import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
 import {Button, Grid, TextField, Typography} from "@material-ui/core";
-import {PlayerState} from "../../store/players/types";
-import {LocaleState} from "../../store/locales/types";
+import {PlayerState} from "store/players/types";
+import {LocaleState} from "store/locales/types";
 
 interface PropsLocalesForm {
     playerSelected: PlayerState,

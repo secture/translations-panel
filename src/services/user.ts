@@ -1,4 +1,4 @@
-import httpClient from "./common/http-interceptor";
+import httpClient from "services/common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setUserAction} from "store/user/actions";

@@ -1,8 +1,8 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setAllPlayers} from "../store/players/actions";
-import {PlayerState} from "../store/players/types";
+import {setAllPlayers} from "store/players/actions";
+import {PlayerState} from "store/players/types";
 
 export const getAllPlayers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {

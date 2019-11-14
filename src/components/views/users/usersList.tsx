@@ -20,7 +20,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getAllLocales} from "services/locale";
 import {connect} from "react-redux";
-import {tableStyles} from '../../styles/table'
+import {tableStyles} from 'styles/table'
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

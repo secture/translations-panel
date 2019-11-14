@@ -1,9 +1,9 @@
-import {AuthState} from "./auth/types";
-import {UserState} from "./user/types";
-import {LocaleState} from "./locales/types";
-import {TranslationState} from "./translations/types";
-import {CategoryState} from "./categories/types";
-import {PlayerState} from "./players/types";
+import {AuthState} from "store/auth/types";
+import {UserState} from "store/user/types";
+import {LocaleState} from "store/locales/types";
+import {TranslationState} from "store/translations/types";
+import {CategoryState} from "store/categories/types";
+import {PlayerState} from "store/players/types";
 
 export interface TranslationsStore {
     auth: AuthState;
