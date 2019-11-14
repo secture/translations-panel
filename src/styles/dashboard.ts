@@ -11,6 +11,9 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
         height: '100vh',
         overflow: 'auto',
     },
+    itemGrid: {
+      margin: '1em',
+    },
     root: {
         padding: theme.spacing(3, 2),
     },
