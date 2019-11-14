@@ -1,7 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import store from '../../store'
-import {logoutAction} from "../../store/auth/actions";
-import {initialUserState} from "../../store/user/reducers";
+import store from 'store/index'
 
 let config: AxiosRequestConfig = {
     /**

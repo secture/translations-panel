@@ -7,14 +7,14 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
 import {dashboardViewStyles} from "../styles/dashboard";
-import LocalesList from "../components/locales/localesList";
+import LocalesList from "components/views/locales/localesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {addLocale, deleteLocaleById, editLocaleById, getAllLocales} from "../services/locale";
-import {LocaleState} from "../store/locales/types";
-import DeleteDialog from "../components/common/deleteDialog";
-import LocalesForm from "../components/locales/localesForm";
-import {initialLocale} from "../store/locales/reducers";
+import {LocaleState} from "store/locales/types";
+import DeleteDialog from "components/common/deleteDialog";
+import LocalesForm from "components/views/locales/localesForm";
+import {initialLocale} from "store/locales/reducers";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

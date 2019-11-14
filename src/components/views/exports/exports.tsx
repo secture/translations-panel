@@ -1,9 +1,9 @@
 import React from "react";
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {connect} from "react-redux";
-import {getExportsByPlatform} from "../../services/exports";
+import {getExportsByPlatform} from "services/exports";
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';

@@ -7,14 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import CssConditional from "clsx";
-import {UserState} from "../../store/user/types";
+import {UserState} from "store/user/types";
 import {connect, useSelector} from "react-redux";
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {logOut} from "../../services/auth";
+import {logOut} from "services/auth";
 import history from "../../history";
 
 const drawerWidth = 240;

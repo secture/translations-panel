@@ -1,8 +1,8 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setAllCategories} from "../store/categories/actions";
-import {CategoryState} from "../store/categories/types";
+import {setAllCategories} from "store/categories/actions";
+import {CategoryState} from "store/categories/types";
 
 export const getAllCategories = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {

@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {connect} from "react-redux";
 import {ThunkDispatch} from 'redux-thunk'
 import {AnyAction} from 'redux';
-import {UserLoginDTO} from "../store/auth/types";
-import {TranslationsStore} from "../store/types";
-import {login} from '../services/auth'
+import {UserLoginDTO} from "store/auth/types";
+import {TranslationsStore} from "store/types";
+import {login} from 'services/auth'
 import history from "../history";
 
 /* Material UI */

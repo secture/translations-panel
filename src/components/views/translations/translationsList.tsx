@@ -13,10 +13,10 @@ import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import SearchIcon from '@material-ui/icons/Search';
 
-import {TranslationState} from "../../store/translations/types";
-import {OrderTableType, TableUtils} from "../../services/utils/table";
-import {CategoryState} from "../../store/categories/types";
-import {initialTranslation} from "../../store/translations/reducers";
+import {TranslationState} from "store/translations/types";
+import {OrderTableType, TableUtils} from "services/utils/table";
+import {CategoryState} from "store/categories/types";
+import {initialTranslation} from "store/translations/reducers";
 
 const translationsListStyles = makeStyles((theme: Theme) =>
     createStyles({

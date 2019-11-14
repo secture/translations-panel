@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Button, createStyles, Grid, makeStyles, TextField, Theme, Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import {dashboardViewStyles} from "../../styles/dashboard";
-import {CategoryState} from "../../store/categories/types";
+import {dashboardViewStyles} from "styles/dashboard";
+import {CategoryState} from "store/categories/types";
 import Container from "@material-ui/core/Container";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({

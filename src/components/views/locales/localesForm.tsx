@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Button, createStyles, Grid, makeStyles, Switch, TextField, Theme, Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import {LocaleState} from "../../store/locales/types";
+import {LocaleState} from "store/locales/types";
 import Container from "@material-ui/core/Container";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import {dashboardViewStyles} from "../../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     root: {
