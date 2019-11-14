@@ -76,6 +76,7 @@ const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
                                 id="playerMasterId"
                                 name="playerMasterId"
                                 label="Player master id"
+                                type="number"
                                 fullWidth
                                 autoComplete="fname"
                                 onChange={(e) => changedValues(e, 'playerMasterId', 'noKey')}

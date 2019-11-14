@@ -16,19 +16,6 @@ export const getAllPlayers = (): ThunkAction<void, {}, {}, AnyAction> => {
     }
 };
 
-export const searchPlayer = (search: string): ThunkAction<void, {}, {}, AnyAction> => {
-    return async function (dispatch: any) {
-        let players = null;
-        try {
-            players = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/players/search?text=' + search);
-            dispatch(setAllPlayers(players.data));
-        } catch (error) {
-            console.log(error);
-        }
-        return players;
-    }
-};
-
 export const deletePlayerById = (id: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let deletePlayer = null;

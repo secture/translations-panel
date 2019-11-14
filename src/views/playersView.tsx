@@ -61,16 +61,15 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container>
                     {!showForm ? (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className={classes.itemGrid}>
                             <PlayersList
                                 players={props.players}
-                                user={props.user}
                                 setPlayerSelected={setPlayerSelected}
                                 setShowForm={setShowForm}
                                 openDialog={updateDialog}
                                 setEditForm={setEditForm}/>
                         </Grid>) : (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className={classes.itemGrid}>
                             <PlayersForm
                                 playerSelected={playerSelected}
                                 onAddPlayer={onAddPlayer}

@@ -2,8 +2,8 @@ import {LocaleActionsTypes, LocaleState, SET_LOCALES} from "./types";
 
 export const initialLocale: LocaleState = {
     id: '',
-    key: '',
-    name: '',
+    key: 'es',
+    name: 'Spanish',
     icon: '',
     localeForPlayers: false
 };
