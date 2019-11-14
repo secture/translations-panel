@@ -7,6 +7,7 @@ import {AnyAction} from "redux";
 import {getUser} from "../services/user";
 import {connect} from "react-redux";
 import {TranslationsStore} from "../store/types";
+import StatusNotification from "../components/common/statusNotification";
 
 interface DashboardLayoutProps {
     view: React.ComponentClass,
@@ -36,6 +37,7 @@ const DashboardLayout = (props: AppProps) => {
             <MenuAppBar open_state={open} updateOpen={updateOpen}/>
             <Drawer open_state={open} updateOpen={updateOpen}/>
             <View/>
+            <StatusNotification/>
         </div>
     )
 };

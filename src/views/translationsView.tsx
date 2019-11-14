@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {connect, useSelector} from 'react-redux'
+import {connect} from 'react-redux'
 import {TranslationsStore} from "../store/types";
-import {UserState} from "../store/user/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
@@ -56,6 +55,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     };
 
     const onCancel = () => {
+        setDataSelected(initialTranslation);
         setShowComponent(!showComponent);
     };
 
@@ -70,7 +70,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         });
         setShowComponent(!showComponent);
     };
-    const onModalAction = (data: TranslationState) => {
+    const openDialog = (data: TranslationState) => {
         setDataSelected(data);
         setStatusModal(true);
     };
@@ -113,8 +113,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                                   onConfirmTranslationLocale={onConfirmTranslationLocale}/>
                             </Paper>) : (
                             <Paper className={`${classes.content}`}>
-                                <TranslationsList translations={props.translations} onSelectedData={onSelectedData}
-                                                  onActionType={onActionType} onModalAction={onModalAction}
+                                <TranslationsList data={props.translations} onSelectedData={onSelectedData}
+                                                  onActionType={onActionType} openDialog={openDialog}
                                                   onSearchTranslation={onSearchTranslation}/>
                             </Paper>)}
                         <Dialog

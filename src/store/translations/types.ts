@@ -24,7 +24,9 @@ export interface UpdateUserState {
 export interface TranslationState {
     id: string,
     key: string,
-    translations: {},
+    translations: {
+        [key: string]: string
+    },
     tags: string[],
     context: string,
     category: CategoryState

@@ -9,6 +9,7 @@ import {Button} from "@material-ui/core";
 interface PropsDeleteDialog {
     openDialog: () => void,
     dialog: boolean,
+    dialogTitle: string
     deleteItem: any,
     deleteFunction: () => void
 }
@@ -22,10 +23,11 @@ const DeleteDialog: React.FC<any> = (props: PropsDeleteDialog) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">{"Are you sure to delete this locale?"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{props.dialogTitle}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Item will be deleted. Are you ok?
+                    Item will be deleted. Are you ok? <br/>
+                    ID: {props.deleteItem.id}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

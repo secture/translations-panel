@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -19,6 +19,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import ClassIcon from '@material-ui/icons/Class';
 
 import history from "../../history";
 
@@ -35,6 +36,9 @@ const drawerStyles = makeStyles(theme => ({
         justifyContent: 'flex-end',
         padding: '0 8px',
         ...theme.mixins.toolbar,
+        '& img': {
+            width: '80%'
+        }
     },
     drawerPaper: {
         position: 'relative',
@@ -69,36 +73,53 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
             open={open_state}
         >
             <div className={classes.toolbarIcon}>
+                <img src="/logo.png" alt=""/>
                 <IconButton onClick={updateOpen}>
-                    <ChevronLeftIcon />
+                    <ChevronLeftIcon/>
                 </IconButton>
             </div>
-            <Divider />
+            <Divider/>
             <List>
                 <div>
-                    <ListItem button onClick={() => {history.push('/dashboard')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard')
+                    }}>
                         <ListItemIcon>
-                            <DashboardIcon />
+                            <DashboardIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
+                        <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/translations')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/translations')
+                    }}>
                         <ListItemIcon>
-                            <ShoppingCartIcon />
+                            <ShoppingCartIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Translations" />
+                        <ListItemText primary="Translations"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/exports')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/categories')
+                    }}>
                         <ListItemIcon>
-                            <PeopleIcon />
+                            <ClassIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Export translations" />
+                        <ListItemText primary="Categories"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/locales')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/exports')
+                    }}>
                         <ListItemIcon>
-                            <BarChartIcon />
+                            <PeopleIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Locale" />
+                        <ListItemText primary="Export translations"/>
+                    </ListItem>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/locales')
+                    }}>
+                        <ListItemIcon>
+                            <BarChartIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Locale"/>
                     </ListItem>
                     <ListItem button onClick={() => {history.push('/dashboard/players')}}>
                         <ListItemIcon>
@@ -106,23 +127,25 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         </ListItemIcon>
                         <ListItemText primary="Players" />
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/users')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/users')
+                    }}>
                         <ListItemIcon>
-                            <LayersIcon />
+                            <LayersIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Users" />
+                        <ListItemText primary="Users"/>
                     </ListItem>
                 </div>
             </List>
-            <Divider />
+            <Divider/>
             <List>
                 <div>
                     <ListSubheader inset>Saved reports</ListSubheader>
                     <ListItem button>
                         <ListItemIcon>
-                            <AssignmentIcon />
+                            <AssignmentIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Current month" />
+                        <ListItemText primary="Current month"/>
                     </ListItem>
                 </div>
             </List>
