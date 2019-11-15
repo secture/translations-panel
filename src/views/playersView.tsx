@@ -14,7 +14,7 @@ import PlayersForm from "components/players/playersForm";
 import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers} from "../services/players";
 import {initialPlayerState} from "store/players/reducers";
 import DeleteDialog from "components/common/deleteDialog";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 import {PlayerState} from "store/players/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
@@ -46,12 +46,12 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     };
 
     const onEditPlayer = (player: PlayerState) => {
-        props.editPlayerAction(player).then((player: LocaleState) => {
+        props.editPlayerAction(player).then((player: LanguageState) => {
             (player !== null) ? alert('Player editado') : alert('no ha sido posible editar el Player')
         })
     };
     const onAddPlayer = (player: PlayerState) => {
-        props.addPlayerAction(player).then((player: LocaleState) => {
+        props.addPlayerAction(player).then((player: LanguageState) => {
             (player !== null) ? alert('Player creado') : alert('no ha sido posible crear el Player')
         })
     };
@@ -75,7 +75,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                 playerSelected={playerSelected}
                                 onAddPlayer={onAddPlayer}
                                 onEditPlayer={onEditPlayer}
-                                locales={props.locales}
+                                languages={props.languages}
                                 setShowForm={setShowForm}
                                 openDialog={updateDialog}
                                 setEditForm={setEditForm}
@@ -93,7 +93,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
 const mapStateToProps = (store: TranslationsStore) => {
     return {
         players: store.players,
-        locales: store.locales,
+        languages: store.languages,
         user: store.user
     };
 };

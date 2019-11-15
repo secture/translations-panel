@@ -14,8 +14,6 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import {TranslationState} from "store/translations/types";
 import {OrderTableType, TableUtils} from "services/utils/table";
-import {CategoryState} from "store/categories/types";
-import {initialTranslation} from "store/translations/reducers";
 
 const translationsListStyles = makeStyles((theme: Theme) =>
     createStyles({

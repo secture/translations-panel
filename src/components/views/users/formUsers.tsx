@@ -38,22 +38,22 @@ const FormUsers = (props: AppProps) => {
         setUser({...updatedUser, [property]: value});
     };
 
-    const [localesUser, setLocalesUser]: any = useState({});
-    const handleChangeLocales = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalesUser({ ...localesUser, [payload.data.key]: {isUserLocale: event.target.checked, data: payload.data}});
+    const [languagesUser, setLanguagesUser]: any = useState({});
+    const handleChangeLanguages = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLanguagesUser({ ...languagesUser, [payload.data.key]: {isUserLanguage: event.target.checked, data: payload.data}});
     };
 
-    const setLocalesUserUpdated = () => {
+    const setLanguagesUserUpdated = () => {
         updatedUser.associatedLanguages = [];
-        Object.keys(localesUser).map((key: any) => {
-            if (localesUser[key].isUserLocale === true) {
-                updatedUser.associatedLanguages.push(localesUser[key].data.id);
+        Object.keys(languagesUser).map((key: any) => {
+            if (languagesUser[key].isUserLanguage === true) {
+                updatedUser.associatedLanguages.push(languagesUser[key].data.id);
             }
         })
     };
 
     const sendForm = () => {
-        setLocalesUserUpdated();
+        setLanguagesUserUpdated();
         switch (props.action) {
             case 'create':
                 props.createUserAction(updatedUser).then((response) => {
@@ -70,19 +70,19 @@ const FormUsers = (props: AppProps) => {
     };
 
     useEffect(() => {
-        let localesView: any = {};
-        props.locales.forEach((locale: any) => {
-            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: AssociatedLanguage) => language.key === locale.key)) ?
-                localesView[locale.key] = {
-                    isUserLocale: true,
-                    data: locale,
+        let languagesView: any = {};
+        props.languages.forEach((language: any) => {
+            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: AssociatedLanguage) => language.key === language.key)) ?
+                languagesView[language.key] = {
+                    isUserLanguage: true,
+                    data: language,
                 } :
-                localesView[locale.key] = {
-                    isUserLocale: false,
-                    data: locale
+                languagesView[language.key] = {
+                    isUserLanguage: false,
+                    data: language
                  };
         });
-        setLocalesUser(localesView)
+        setLanguagesUser(languagesView)
     }, []);
 
     return (
@@ -131,14 +131,14 @@ const FormUsers = (props: AppProps) => {
                     </Grid>}
                     <Grid item xs={12}>
                         <FormControl component="fieldset" className={globalStyle.formControl}>
-                            <FormLabel component="legend">Locales</FormLabel>
+                            <FormLabel component="legend">Languages</FormLabel>
                             <FormGroup>
-                                {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
-                                        control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
-                                label={localesUser[key].data.name}/>
+                                {Object.keys(languagesUser).map((key: any) => ( <FormControlLabel
+                                        control={<Checkbox checked={languagesUser[key].isUserLanguage} onChange={handleChangeLanguages(languagesUser[key])} value={key} />}
+                                label={languagesUser[key].data.name}/>
                                 ))}
                             </FormGroup>
-                            <FormHelperText>Select locales for user</FormHelperText>
+                            <FormHelperText>Select languages for user</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} className={globalStyle.actions}>
@@ -157,7 +157,7 @@ const FormUsers = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
-        locales: store.locales,
+        languages: store.languages,
         action: props.action,
         user: props.user,
         setShowForm: props.setShowForm

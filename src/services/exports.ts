@@ -1,6 +1,7 @@
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import httpClient from "./common/http-interceptor";
+import {setStatus} from "../store/status/actions";
 
 export const getExportsByPlatform = (tag: string): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
@@ -17,9 +18,18 @@ export const getExportsByPlatform = (tag: string): ThunkAction<Promise<boolean>,
                 a.click();
                 document.body.removeChild(a);
                 exportOk = true;
+                dispatch(setStatus({
+                    type: 'success',
+                    message: 'Export data successfully',
+                    show: true
+                }));
             }
         } catch (error) {
-            console.log(error);
+            dispatch(setStatus({
+                type: 'error',
+                message: 'Error exporting data',
+                show: true
+            }));
         }
         return exportOk;
     }

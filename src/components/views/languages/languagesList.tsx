@@ -13,16 +13,16 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 import {
     Fab,
     IconButton,
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {initialLocale} from "store/locales/reducers";
+import {initialLanguage} from "store/languages/reducers";
 
-const localesListStyles = makeStyles((theme: Theme) =>
+const languagesListStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
@@ -47,32 +47,32 @@ const localesListStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface PropsLocalesList {
-    locales: LocaleState[],
-    setLocaleSelected: (locale: LocaleState) => void,
+interface PropsLanguagesList {
+    languages: LanguageState[],
+    setLanguageSelected: (language: LanguageState) => void,
     showForm: boolean,
     setShowForm: (show: boolean) => void,
     openDialog: () => void,
     setEditForm: (isEditForm: boolean) => void
 }
 
-const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
-    const classes = localesListStyles();
+const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
+    const classes = languagesListStyles();
 
-    const loadFormAddLocale = () => {
+    const loadFormAddLanguage = () => {
         props.setEditForm(false);
-        props.setLocaleSelected(initialLocale);
+        props.setLanguageSelected(initialLanguage);
         props.setShowForm(true);
     };
 
-    const loadFormEditLocale = (locale: LocaleState) => {
+    const loadFormEditLanguage = (language: LanguageState) => {
         props.setEditForm(true);
-        props.setLocaleSelected(locale);
+        props.setLanguageSelected(language);
         props.setShowForm(true);
     };
 
-    const openDeleteModal = (locale: LocaleState) => {
-        props.setLocaleSelected(locale);
+    const openDeleteModal = (language: LanguageState) => {
+        props.setLanguageSelected(language);
         props.openDialog();
     };
 
@@ -80,9 +80,9 @@ const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
         <Paper className={classes.root}>
             <Toolbar>
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
-                    Locales
+                    Languages
                 </Typography>
-                <IconButton aria-label="add" onClick={() => loadFormAddLocale()}>
+                <IconButton aria-label="add" onClick={() => loadFormAddLanguage()}>
                     <AddCircleOutlineIcon/>
                 </IconButton>
             </Toolbar>
@@ -98,7 +98,7 @@ const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.locales.map((row: LocaleState) => (
+                    {props.languages.map((row: LanguageState) => (
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">{row.id}</TableCell>
                             <TableCell align="right">{row.key}</TableCell>
@@ -109,7 +109,7 @@ const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
                             </TableCell>
                             <TableCell align="right">
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => loadFormEditLocale(row)}>
+                                     onClick={() => loadFormEditLanguage(row)}>
                                     <EditIcon/>
                                 </Fab>
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
@@ -125,4 +125,4 @@ const LocalesList: React.FC<any> = (props: PropsLocalesList) => {
     );
 };
 
-export default LocalesList;
+export default LanguagesList;

@@ -2,7 +2,7 @@ import {PlayerState} from "store/players/types";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import React, {ReactElement} from "react";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 
 const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
@@ -32,12 +32,12 @@ const confirmedTranslations = (rowData: PlayerState) => {
     )
 };
 
-const customSearch = (filter: any, rowData: PlayerState, locale: LocaleState) => {
+const customSearch = (filter: any, rowData: PlayerState, locale: LanguageState) => {
     return (rowData.shortName[locale.key].toLowerCase().includes(filter.toLocaleLowerCase()) &&
         rowData.largeName[locale.key].toLowerCase().includes(filter.toLocaleLowerCase()));
 };
 
-const filterByTranslated = (filter: any, rowData: PlayerState, locale: LocaleState) => {
+const filterByTranslated = (filter: any, rowData: PlayerState, locale: LanguageState) => {
     if (filter instanceof Array) {
         if (filter.length === 1) {
             return (filter[0] === 'true') ? (rowData.shortName[locale.key] !== 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT'):
@@ -53,7 +53,7 @@ const filterByTranslated = (filter: any, rowData: PlayerState, locale: LocaleSta
     return false;
 };
 
-const filterByConfirmed = (filter: any, rowData: PlayerState, locale: LocaleState) => {
+const filterByConfirmed = (filter: any, rowData: PlayerState, locale: LanguageState) => {
     if (filter.length === 1) {
         return (rowData.confirmedTranslations[locale.key] === (filter[0] === 'true'));
     } else if (filter.length === 2) {
@@ -74,7 +74,7 @@ interface ColumnsPlayer {
     render?: (rowData: PlayerState) => ReactElement
 }
 
-export const getColumns = (locale: LocaleState) => {
+export const getColumns = (locale: LanguageState) => {
     const columns: ColumnsPlayer[] = [
         {title: 'Id', field: 'playerMasterId', disablePadding: false, searchable: true, filtering: false, label: 'Id'},
         {title: 'Short name', field: 'shortName', disablePadding: false, searchable: true, filtering: false, label: 'Short name',

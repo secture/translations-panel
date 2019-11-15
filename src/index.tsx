@@ -10,7 +10,7 @@ import LoginView from 'views/loginView';
 import DashboardView from 'views/dashboardView'
 import TranslationsView from 'views/translationsView'
 import ExportsView from 'views/exportsView';
-import LocalesView from "views/localesView";
+import LanguageView from "views/languageView";
 import UsersView from "views/usersView";
 import PlayersView from "views/playersView";
 import CategoriesView from "views/categoriesView";
@@ -33,7 +33,7 @@ const layoutAssignments: any = {
     '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
     '/dashboard/categories': {layout: Dashboard, view: CategoriesView},
     '/dashboard/exports': {layout: Dashboard, view: ExportsView},
-    '/dashboard/locales': {layout: Dashboard, view: LocalesView},
+    '/dashboard/languages': {layout: Dashboard, view: LanguageView},
     '/dashboard/users': {layout: Dashboard, view: UsersView},
     '/dashboard/players': {layout: Dashboard, view: PlayersView}
 };
@@ -61,7 +61,7 @@ class App extends React.Component {
 store.subscribe(() => {
     saveState({
         auth: store.getState().auth,
-        locales: store.getState().locales,
+        languages: store.getState().languages,
         user: store.getState().user,
         users: store.getState().users,
         players: store.getState().players,

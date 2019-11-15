@@ -6,8 +6,8 @@ import MaterialTable, {MTableToolbar} from "material-table";
 import {enhancedTableStyles} from 'styles/table';
 import {PlayerState} from "store/players/types";
 import {initialPlayerState} from "store/players/reducers";
-import {LocaleState} from "store/locales/types";
-import {initialLocale} from "store/locales/reducers";
+import {LanguageState} from "store/languages/types";
+import {initialLanguage} from "store/languages/reducers";
 import {getColumns} from 'components/common/utilsTable';
 import LocaleSelector from "components/common/localeSelector";
 import {TranslationsStore} from "../../store/types";
@@ -23,8 +23,8 @@ type AppProps = AppStateProps & AppDispatchProps;
 const PlayersList: React.FC<any> = (props: AppProps) => {
     const classes = enhancedTableStyles();
 
-    const [locale, setLocale] = useState(initialLocale);
-    const handleLocale = (locale: LocaleState) => {
+    const [locale, setLocale] = useState(initialLanguage);
+    const handleLocale = (locale: LanguageState) => {
         setLocale(locale)
     };
 

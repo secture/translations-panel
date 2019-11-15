@@ -113,12 +113,12 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         <ListItemText primary="Export translations"/>
                     </ListItem>
                     <ListItem button onClick={() => {
-                        history.push('/dashboard/locales')
+                        history.push('/dashboard/languages')
                     }}>
                         <ListItemIcon>
                             <LanguageIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Locale"/>
+                        <ListItemText primary="Language"/>
                     </ListItem>
                     <ListItem button onClick={() => {history.push('/dashboard/players')}}>
                         <ListItemIcon>

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,8 +9,8 @@ import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 
 interface PropsLocaleSelector {
-    locale: LocaleState,
-    handleLocale: (locale: LocaleState) => void
+    locale: LanguageState,
+    handleLocale: (locale: LanguageState) => void
 }
 
 const localeSelectorStyles = makeStyles((theme: Theme) =>
@@ -29,7 +29,7 @@ const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
     const classes = localeSelectorStyles();
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const locale = locales.find((locale: LocaleState) => locale.name === event.target.value);
+        const locale = locales.find((locale: LanguageState) => locale.name === event.target.value);
         if (typeof locale !== 'undefined') {
             props.handleLocale(locale);
         }
@@ -41,7 +41,7 @@ const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
         setLabelWidth(inputLabel.current!.offsetWidth);
     }, []);
 
-    const locales = useSelector((state: TranslationsStore) => state.locales);
+    const locales = useSelector((state: TranslationsStore) => state.languages);
 
     return (
         <FormControl className={classes.formControl} style={{margin: '0 26px'}}>
@@ -56,7 +56,7 @@ const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
                 labelWidth={labelWidth}
             >
             {
-                locales.map((locale: LocaleState) => (
+                locales.map((locale: LanguageState) => (
                     locale.localeForPlayers && <MenuItem value={locale.name}>{locale.icon} {locale.name}</MenuItem>
                 ))
             }

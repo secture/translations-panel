@@ -4,13 +4,13 @@ import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
 import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {PlayerState} from "store/players/types";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 
 interface PropsLocalesForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
-    locales: LocaleState[],
+    languages: LanguageState[],
     editForm: boolean
     showForm: boolean,
     setShowForm: (show: boolean) => void,
@@ -44,7 +44,7 @@ const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
     const namePlayersByLocale = (shortName: boolean) => {
         return (
             <div>
-                {props.locales.map((locale: LocaleState) => (
+                {props.languages.map((locale: LanguageState) => (
                     locale.localeForPlayers && <TextField
                     id={locale.key}
                     name={locale.key}

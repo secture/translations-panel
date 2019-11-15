@@ -18,7 +18,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {TranslationsStore} from "store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {getAllLocales} from "services/locale";
+import {getAllLanguages} from "services/languages";
 import {connect} from "react-redux";
 import {tableStyles} from 'styles/table'
 
@@ -30,8 +30,8 @@ const UsersList: React.FC<any> = (props: AppProps) => {
     const classes = Object.assign(tableStyles(), dashboardViewStyles());
 
     useEffect(() => {
-        if (props.locales.length === 0) {
-            props.getLocalesAction();
+        if (props.languages.length === 0) {
+            props.getLanguagesAction();
         }
     }, []);
 
@@ -105,7 +105,7 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
         users: props.users,
         user: props.user,
-        locales: store.locales,
+        languages: store.languages,
         setUserSelected: props.setUserSelected,
         setTypeForm: props.setTypeForm,
         setShowForm: props.setShowForm,
@@ -115,7 +115,7 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
-        getLocalesAction: () => dispatch(getAllLocales()),
+        getLanguagesAction: () => dispatch(getAllLanguages()),
     };
 };
 
