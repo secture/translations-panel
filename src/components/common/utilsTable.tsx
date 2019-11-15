@@ -32,32 +32,32 @@ const confirmedTranslations = (rowData: PlayerState) => {
     )
 };
 
-const customSearch = (filter: any, rowData: PlayerState, locale: LanguageState) => {
-    return (rowData.shortName[locale.key].toLowerCase().includes(filter.toLocaleLowerCase()) &&
-        rowData.largeName[locale.key].toLowerCase().includes(filter.toLocaleLowerCase()));
+const customSearch = (filter: any, rowData: PlayerState, language: LanguageState) => {
+    return (rowData.shortName[language.key].toLowerCase().includes(filter.toLocaleLowerCase()) &&
+        rowData.largeName[language.key].toLowerCase().includes(filter.toLocaleLowerCase()));
 };
 
-const filterByTranslated = (filter: any, rowData: PlayerState, locale: LanguageState) => {
+const filterByTranslated = (filter: any, rowData: PlayerState, language: LanguageState) => {
     if (filter instanceof Array) {
         if (filter.length === 1) {
-            return (filter[0] === 'true') ? (rowData.shortName[locale.key] !== 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT'):
-                (rowData.shortName[locale.key] === 'NO_TEXT' && rowData.largeName[locale.key] === 'NO_TEXT')
+            return (filter[0] === 'true') ? (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT'):
+                (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] === 'NO_TEXT')
 
         } else if (filter.length === 2) {
             return (filter[0] === 'true' && filter[1] === 'true') ?
-                (rowData.shortName[locale.key] !== 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT') && (rowData.shortName[locale.key] !== 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT'):
-                (rowData.shortName[locale.key] === 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT') && (rowData.shortName[locale.key] === 'NO_TEXT' && rowData.largeName[locale.key] !== 'NO_TEXT');
+                (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT') && (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT'):
+                (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT') && (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT');
         }
         return true;
     }
     return false;
 };
 
-const filterByConfirmed = (filter: any, rowData: PlayerState, locale: LanguageState) => {
+const filterByConfirmed = (filter: any, rowData: PlayerState, language: LanguageState) => {
     if (filter.length === 1) {
-        return (rowData.confirmedTranslations[locale.key] === (filter[0] === 'true'));
+        return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true'));
     } else if (filter.length === 2) {
-        return (rowData.confirmedTranslations[locale.key] === (filter[0] === 'true') && rowData.confirmedTranslations[locale.key] === (filter[1] === 'true'));
+        return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true') && rowData.confirmedTranslations[language.key] === (filter[1] === 'true'));
     }
     return true;
 };
@@ -74,18 +74,18 @@ interface ColumnsPlayer {
     render?: (rowData: PlayerState) => ReactElement
 }
 
-export const getColumns = (locale: LanguageState) => {
+export const getColumns = (language: LanguageState) => {
     const columns: ColumnsPlayer[] = [
         {title: 'Id', field: 'playerMasterId', disablePadding: false, searchable: true, filtering: false, label: 'Id'},
         {title: 'Short name', field: 'shortName', disablePadding: false, searchable: true, filtering: false, label: 'Short name',
-            customFilterAndSearch: (filter: string, rowData: PlayerState) => customSearch(filter, rowData, locale),
+            customFilterAndSearch: (filter: string, rowData: PlayerState) => customSearch(filter, rowData, language),
             render: (rowData: PlayerState) => playerNames(rowData, true)
         },
         {title: 'Large name', field: 'largeName', lookup: { true: 'Translated', false: 'Untranslated' }, disablePadding: false, searchable: false, filtering: true, label: 'Large name',
-            customFilterAndSearch: (filter: string, rowData: PlayerState) => filterByTranslated(filter, rowData, locale),
+            customFilterAndSearch: (filter: string, rowData: PlayerState) => filterByTranslated(filter, rowData, language),
             render: (rowData: PlayerState) => playerNames(rowData, false)},
         {title: 'Confirmed', field: 'confirmedTranslations', lookup: { true: 'Confirmed', false: 'No Confirmed' }, disablePadding: false, searchable: false, filtering: true, label: 'Confirmed',
-            customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, locale),
+            customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, language),
             render: (rowData: PlayerState) => confirmedTranslations(rowData)},
         {title: 'Insertion date', field: 'insertionDate', disablePadding: false, searchable: true, filtering: false, label: 'IDate', render: (rowData: PlayerState) => <div>{new Date(rowData.insertionDate).toDateString()}</div>},
         {title: 'Updated date', field: 'updateDate', disablePadding: false, searchable: true, filtering: false, label: 'UDate', render: (rowData: PlayerState) => <div>{new Date(rowData.updateDate).toDateString()}</div>},

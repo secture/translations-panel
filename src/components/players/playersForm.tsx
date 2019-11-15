@@ -6,7 +6,7 @@ import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {PlayerState} from "store/players/types";
 import {LanguageState} from "store/languages/types";
 
-interface PropsLocalesForm {
+interface PropsLanguagesForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
@@ -16,7 +16,7 @@ interface PropsLocalesForm {
     setShowForm: (show: boolean) => void,
 }
 
-const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
+const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
 
     const classes = formStyles();
     const [player, setPlayer] = useState(props.playerSelected);
@@ -41,18 +41,18 @@ const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
         props.onAddPlayer(player);
     };
 
-    const namePlayersByLocale = (shortName: boolean) => {
+    const namePlayersByLanguage = (shortName: boolean) => {
         return (
             <div>
-                {props.languages.map((locale: LanguageState) => (
-                    locale.localeForPlayers && <TextField
-                    id={locale.key}
-                    name={locale.key}
-                    label={locale.key}
+                {props.languages.map((language: LanguageState) => (
+                    language.localeForPlayers && <TextField
+                    id={language.key}
+                    name={language.key}
+                    label={language.key}
                     fullWidth
                     autoComplete="fname"
-                    onChange={(e) => changedValues(e, shortName ? 'shortName': 'largeName',`${locale.key}`, shortName)}
-                    value={shortName ? player.shortName[locale.key]: player.largeName[locale.key]}
+                    onChange={(e) => changedValues(e, shortName ? 'shortName': 'largeName',`${language.key}`, shortName)}
+                    value={shortName ? player.shortName[language.key]: player.largeName[language.key]}
                 />))}
             </div>
         )
@@ -87,13 +87,13 @@ const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
                             <Typography variant="body1">
                                 Short Name
                             </Typography>
-                            {namePlayersByLocale(true)}
+                            {namePlayersByLanguage(true)}
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body1">
                                 Large Name
                             </Typography>
-                            {namePlayersByLocale(false)}
+                            {namePlayersByLanguage(false)}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

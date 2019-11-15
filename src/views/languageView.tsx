@@ -54,8 +54,8 @@ const LanguageView: React.FC<any> = (props: AppProps) => {
     const classes = dashboardViewStyles();
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer}/>
-            <Container maxWidth="lg" className={classes.container}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>

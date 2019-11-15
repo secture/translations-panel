@@ -8,12 +8,12 @@ import Select from '@material-ui/core/Select';
 import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 
-interface PropsLocaleSelector {
-    locale: LanguageState,
-    handleLocale: (locale: LanguageState) => void
+interface PropsLanguageSelector {
+    language: LanguageState,
+    handleLanguage: (locale: LanguageState) => void
 }
 
-const localeSelectorStyles = makeStyles((theme: Theme) =>
+const languageSelectorStyles = makeStyles((theme: Theme) =>
     createStyles({
         formControl: {
             margin: theme.spacing(1),
@@ -25,13 +25,13 @@ const localeSelectorStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
-    const classes = localeSelectorStyles();
+const LanguageSelector: React.FC<any> = (props: PropsLanguageSelector) => {
+    const classes = languageSelectorStyles();
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const locale = locales.find((locale: LanguageState) => locale.name === event.target.value);
-        if (typeof locale !== 'undefined') {
-            props.handleLocale(locale);
+        const language = languages.find((language: LanguageState) => language.name === event.target.value);
+        if (typeof language !== 'undefined') {
+            props.handleLanguage(language);
         }
     };
 
@@ -41,7 +41,7 @@ const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
         setLabelWidth(inputLabel.current!.offsetWidth);
     }, []);
 
-    const locales = useSelector((state: TranslationsStore) => state.languages);
+    const languages = useSelector((state: TranslationsStore) => state.languages);
 
     return (
         <FormControl className={classes.formControl} style={{margin: '0 26px'}}>
@@ -51,18 +51,19 @@ const LocaleSelector: React.FC<any> = (props: PropsLocaleSelector) => {
             <Select
                 labelId="labelLocales"
                 id="selectLocales"
-                value={props.locale.name}
+                value={props.language.name}
                 onChange={handleChange}
                 labelWidth={labelWidth}
             >
-            {
-                locales.map((locale: LanguageState) => (
-                    locale.localeForPlayers && <MenuItem value={locale.name}>{locale.icon} {locale.name}</MenuItem>
-                ))
-            }
+                {
+                    languages.map((language: LanguageState) => (
+                        language.localeForPlayers &&
+                        <MenuItem value={language.name}>{language.icon} {language.name}</MenuItem>
+                    ))
+                }
             </Select>
         </FormControl>
     );
 };
 
-export default LocaleSelector;
+export default LanguageSelector;

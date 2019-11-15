@@ -9,7 +9,7 @@ import {initialPlayerState} from "store/players/reducers";
 import {LanguageState} from "store/languages/types";
 import {initialLanguage} from "store/languages/reducers";
 import {getColumns} from 'components/common/utilsTable';
-import LocaleSelector from "components/common/localeSelector";
+import LanguageSelector from "components/common/languageSelector";
 import {TranslationsStore} from "../../store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
@@ -23,9 +23,9 @@ type AppProps = AppStateProps & AppDispatchProps;
 const PlayersList: React.FC<any> = (props: AppProps) => {
     const classes = enhancedTableStyles();
 
-    const [locale, setLocale] = useState(initialLanguage);
-    const handleLocale = (locale: LanguageState) => {
-        setLocale(locale)
+    const [language, setLanguage] = useState(initialLanguage);
+    const handleLanguage = (language: LanguageState) => {
+        setLanguage(language)
     };
 
     const loadFormAddPlayer = () => {
@@ -55,14 +55,14 @@ const PlayersList: React.FC<any> = (props: AppProps) => {
         <Paper className={classes.root}>
             <MaterialTable
                 title={'Players'}
-                columns={getColumns(locale)}
+                columns={getColumns(language)}
                 data={props.players}
                 components={{
                     Toolbar: (props) => (
                         <div>
                             <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                                 <MTableToolbar {...props} />
-                                <LocaleSelector locale={locale} handleLocale={handleLocale}/>
+                                <LanguageSelector language={language} handleLanguage={handleLanguage}/>
                                 <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
                                     <AddCircleOutlineIcon color="primary"/>
                                 </IconButton>
