@@ -38,9 +38,12 @@ const localesListStyles = makeStyles((theme: Theme) =>
         tableTitle: {
             flex: '1 1 100%',
         },
+        button: {
+            margin: theme.spacing(1),
+        },
         icon: {
             fontSize: '28px',
-        },
+        }
     })
 );
 

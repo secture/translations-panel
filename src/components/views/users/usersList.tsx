@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -21,29 +20,14 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {getAllLocales} from "services/locale";
 import {connect} from "react-redux";
-
-const userListStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-    },
-    tableTitle: {
-        flex: '1 1 100%',
-    },
-    table: {
-        minWidth: 650,
-    },
-    color: {
-        backgroundColor: theme.palette.grey.A100
-    }
-}));
+import {tableStyles} from 'styles/table'
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const UsersList: React.FC<any> = (props: AppProps) => {
-    const classes = Object.assign(userListStyles(), dashboardViewStyles());
+    const classes = Object.assign(tableStyles(), dashboardViewStyles());
 
     useEffect(() => {
         if (props.locales.length === 0) {
@@ -74,7 +58,7 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Users
                 </Typography>
-                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()} className={`${classes.color}`}>
+                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()}>
                     <AddCircleOutlineIcon color="primary"/>
                 </IconButton>}
             </Toolbar>
@@ -102,10 +86,10 @@ const UsersList: React.FC<any> = (props: AppProps) => {
                                 )}
                             </TableCell>
                             <TableCell align="left" className={classes.actions}>
-                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button} ${classes.color}`}>
+                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
                                     <EditIcon color="primary" />
                                 </IconButton>}
-                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button} ${classes.color}`}>
+                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
                                     <DeleteIcon color="secondary" />
                                 </IconButton>
                             </TableCell>

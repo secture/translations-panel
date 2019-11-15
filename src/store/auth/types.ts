@@ -1,4 +1,4 @@
-import {UserState} from "../user/types";
+import {UserState} from "store/user/types";
 
 export const SIGN_IN = '[Auth] SIGN IN USER';
 export const LOGIN = '[Auth] LOGIN USER';

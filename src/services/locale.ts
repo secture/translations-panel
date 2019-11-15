@@ -1,4 +1,4 @@
-import httpClient from "./common/http-interceptor";
+import httpClient from "services/common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setAllLocales} from "store/locales/actions";
@@ -28,7 +28,7 @@ export const deleteLocaleById = (locale: LocaleState): ThunkAction<Promise<any>,
         } catch (error) {
             console.log(error);
         }
-        return deleteLocale.data;
+        return deleteLocale;
     }
 };
 

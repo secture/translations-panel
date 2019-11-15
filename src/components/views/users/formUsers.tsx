@@ -87,7 +87,7 @@ const FormUsers = (props: AppProps) => {
 
     return (
         <form className={classes.form} onSubmit={sendForm}>
-            <Container className={globalStyle.container}>
+            <Container maxWidth={false} className={globalStyle.container}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
-import {TranslationsStore} from "../store/types";
+import {TranslationsStore} from "store/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import CategoriesList from "components/views/categories/categoriesList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
@@ -56,7 +56,7 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>
@@ -68,8 +68,8 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
                                             setEditForm={setEditForm}/>
                         </Grid>) : (
                         <Grid item xs={12}>
-                            <CategoriesForm onEditData={onEditCategory}
-                                            onAddData={onAddCategory}
+                            <CategoriesForm onEditCategory={onEditCategory}
+                                            onAddCategory={onAddCategory}
                                             dataSelected={categorySelected}
                                             showForm={showForm}
                                             setShowForm={setShowForm}

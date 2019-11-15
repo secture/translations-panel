@@ -25,7 +25,7 @@ const DashboardView = () => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} lg={6}>
                         <Paper className={classes.root}>

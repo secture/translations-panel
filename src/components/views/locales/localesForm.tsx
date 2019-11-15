@@ -57,7 +57,7 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
     return (
         <Paper className={classes.root}>
             <form className={classes.form}>
-                <Container className={globalStyle.container}>
+                <Container maxWidth={false} className={globalStyle.container}>
                     <Grid container spacing={2}>
                         <Grid container item direction="row" justify="center" xs={12}>
                             <Typography variant="h6" gutterBottom>

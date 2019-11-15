@@ -20,7 +20,7 @@ type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
-const LocaleView: React.FC<any> = (props: AppProps) => {
+const LocalesView: React.FC<any> = (props: AppProps) => {
 
     const [localeSelected, setLocaleSelected] = useState(initialLocale);
     const [showForm, setShowForm] = useState(false);
@@ -55,7 +55,7 @@ const LocaleView: React.FC<any> = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>
@@ -102,4 +102,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(LocaleView);
+)(LocalesView);

@@ -2,28 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 /* LAYOUTS */
-import FullLayout from './layouts/FullLayout';
-import Dashboard from './layouts/DashboardLayout';
+import FullLayout from 'layouts/FullLayout';
+import Dashboard from 'layouts/DashboardLayout';
 
 /* VIEWS */
 import LoginView from 'views/loginView';
 import DashboardView from 'views/dashboardView'
 import TranslationsView from 'views/translationsView'
 import ExportsView from 'views/exportsView';
-import LocaleView from "views/localeView";
+import LocalesView from "views/localesView";
 import UsersView from "views/usersView";
+import PlayersView from "views/playersView";
 import CategoriesView from "views/categoriesView";
 
 /* STORE */
-import store from './store'
-import {saveState} from './store/localStorage';
+import store from 'store'
+import {saveState} from 'store/localStorage';
 
 /* ROUTES */
 import {Router, Route} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import history from './history';
 
-import './index.css';
+import 'index.css';
 
 const layoutAssignments: any = {
     '/': {layout: FullLayout, view: LoginView},
@@ -32,8 +33,9 @@ const layoutAssignments: any = {
     '/dashboard/translations': {layout: Dashboard, view: TranslationsView},
     '/dashboard/categories': {layout: Dashboard, view: CategoriesView},
     '/dashboard/exports': {layout: Dashboard, view: ExportsView},
-    '/dashboard/locales': {layout: Dashboard, view: LocaleView},
+    '/dashboard/locales': {layout: Dashboard, view: LocalesView},
     '/dashboard/users': {layout: Dashboard, view: UsersView},
+    '/dashboard/players': {layout: Dashboard, view: PlayersView}
 };
 
 class App extends React.Component {
@@ -62,6 +64,7 @@ store.subscribe(() => {
         locales: store.getState().locales,
         user: store.getState().user,
         users: store.getState().users,
+        players: store.getState().players,
         translations: store.getState().translations,
         categories: store.getState().categories,
         tags: store.getState().tags,

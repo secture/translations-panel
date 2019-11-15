@@ -1,15 +1,16 @@
 // src/store/index.ts
 
-import {authReducer} from './auth/reducers'
-import {userReducer} from "./user/reducers";
+import {authReducer} from 'store/auth/reducers'
+import {userReducer} from "store/user/reducers";
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import {usersReducer} from "./users/reducers";
-import {localesReducer} from "./locales/reducers";
-import {loadState} from './localStorage';
-import {translationsReducer} from "./translations/reducers";
-import {categoriesReducer} from "./categories/reducers";
+import {usersReducer} from "store/users/reducers";
+import {localesReducer} from "store/locales/reducers";
+import {loadState} from 'store/localStorage';
+import {translationsReducer} from "store/translations/reducers";
+import {categoriesReducer} from "store/categories/reducers";
+import {playersReducer} from "store/players/reducers";
 import {statusReducer} from "./status/reducers";
 
 const persistedState = loadState();
@@ -20,6 +21,7 @@ const rootReducers = combineReducers({
     locales: localesReducer,
     translations: translationsReducer,
     categories: categoriesReducer,
+    players: playersReducer,
     status: statusReducer,
     tags: () => { return ['android', 'ios', 'web']; },
     roles: () => { return ['Admin', 'Developer', 'Interpreter', 'User']; }

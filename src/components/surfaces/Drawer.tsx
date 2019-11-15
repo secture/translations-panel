@@ -13,11 +13,12 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import FontDownloadIcon from '@material-ui/icons/FontDownload';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import LanguageIcon from '@material-ui/icons/Language';
 import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import ClassIcon from '@material-ui/icons/Class';
 
 import history from "../../history";
@@ -91,7 +92,7 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         history.push('/dashboard/translations')
                     }}>
                         <ListItemIcon>
-                            <ShoppingCartIcon/>
+                            <FontDownloadIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Translations"/>
                     </ListItem>
@@ -107,7 +108,7 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         history.push('/dashboard/exports')
                     }}>
                         <ListItemIcon>
-                            <PeopleIcon/>
+                            <GetAppIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Export translations"/>
                     </ListItem>
@@ -115,29 +116,23 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         history.push('/dashboard/locales')
                     }}>
                         <ListItemIcon>
-                            <BarChartIcon/>
+                            <LanguageIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Locale"/>
+                    </ListItem>
+                    <ListItem button onClick={() => {history.push('/dashboard/players')}}>
+                        <ListItemIcon>
+                            <SportsSoccerIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Players" />
                     </ListItem>
                     <ListItem button onClick={() => {
                         history.push('/dashboard/users')
                     }}>
                         <ListItemIcon>
-                            <LayersIcon/>
+                            <PeopleIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Users"/>
-                    </ListItem>
-                </div>
-            </List>
-            <Divider/>
-            <List>
-                <div>
-                    <ListSubheader inset>Saved reports</ListSubheader>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <AssignmentIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Current month"/>
                     </ListItem>
                 </div>
             </List>

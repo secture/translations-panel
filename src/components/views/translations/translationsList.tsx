@@ -1,8 +1,7 @@
 import React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {
     Fab, IconButton, TablePagination, TableSortLabel, Toolbar, Typography, TableRow, TableHead, TableCell,
-    TableBody, Table, InputBase
+    TableBody, Table, InputBase, makeStyles, Theme, createStyles
 } from "@material-ui/core";
 
 import EditIcon from '@material-ui/icons/Edit';
@@ -94,18 +93,16 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
+                        sortDirection={orderBy === headCell.id ? order : false}>
                         <TableSortLabel
                             active={orderBy === headCell.id}
                             direction={order}
-                            onClick={createSortHandler(headCell.id)}
-                        >
+                            onClick={createSortHandler(headCell.id)}>
                             {headCell.label}
                             {orderBy === headCell.id ? (
                                 <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
+                                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </span>
                             ) : null}
                         </TableSortLabel>
                     </TableCell>
@@ -180,8 +177,8 @@ const TranslationsList: React.FC<any> = (props: PropsDataList) => {
         <div>
             <Toolbar>
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
-                    Translations
-                </Typography>
+                Translations
+            </Typography>
                 <SearchIcon/>
                 <InputBase
                     className={classes.input}

@@ -6,7 +6,7 @@ import { TranslationsStore } from "store/types";
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import Exports from "components/views/exports/exports";
 
 const ExportsView = () => {
@@ -15,8 +15,8 @@ const ExportsView = () => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container>
+            <Container maxWidth={false} className={classes.container}>
+                <Grid container spacing={3}>
                     {
                         tags.map((tag: string) => (
                             <Grid item xs={12} md={4} lg={4}>

@@ -6,7 +6,7 @@ import {TranslationsStore} from "store/types";
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import UsersList from "components/views/users/usersList";
 import UsersForm from "components/views/users/usersForm";
 import DeleteDialog from "components/common/deleteDialog";
@@ -15,7 +15,6 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {deleteUser, getUsers} from "services/user";
 import {initialUserState} from "store/user/reducers";
-
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -47,7 +46,7 @@ const UsersView = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>

@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper} from "@material-ui/core";
 
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 import TranslationsList from "components/views/translations/translationsList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
@@ -101,7 +101,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {!showComponent ? (

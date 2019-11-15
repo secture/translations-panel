@@ -24,9 +24,6 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const useStylesExports = makeStyles((theme: Theme) =>
     createStyles({
-        card: {
-            maxWidth: 345,
-        },
         avatar: {
             backgroundColor: theme.palette.primary.main
         },
@@ -46,7 +43,7 @@ const Exports: React.FC<any> = (props: AppProps) => {
     };
 
     return (
-        <Card className={classes.card}>
+        <Card>
             <CardHeader
                 avatar={
                     <Avatar className={classes.avatar}>
