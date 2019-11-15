@@ -1,21 +1,33 @@
-import React from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import WarningIcon from '@material-ui/icons/Warning';
-import {IconButton, makeStyles, SnackbarContent, Theme} from "@material-ui/core";
+import {IconButton, makeStyles, Slide, Snackbar, SnackbarContent, Theme} from "@material-ui/core";
 import {amber, green} from "@material-ui/core/colors";
+import {TranslationsStore} from "../../store/types";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {connect, useSelector} from "react-redux";
+import {StatusState} from "../../store/status/types";
+import {TransitionProps} from "@material-ui/core/transitions";
+import {setStatus} from "../../store/status/actions";
+import {initialStatus} from "../../store/status/reducers";
 
-const variantIcon = {
+const variantIcon: any = {
     success: CheckCircleIcon,
     warning: WarningIcon,
     error: ErrorIcon,
     info: InfoIcon,
 };
 
-const snackbarsStyle = makeStyles((theme: Theme) => ({
+function SlideTransition(props: TransitionProps) {
+    return <Slide {...props} direction="up"/>;
+}
+
+const snackbarsStyle: any = makeStyles((theme: Theme) => ({
     success: {
         backgroundColor: green[600],
     },
@@ -41,37 +53,58 @@ const snackbarsStyle = makeStyles((theme: Theme) => ({
     },
 }));
 
-interface Props {
-    className?: string;
-    message?: string;
-    onClose?: () => void;
-    variant: keyof typeof variantIcon;
-}
+type AppStateProps = ReturnType<typeof mapStateToProps>;
+type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type AppProps = AppStateProps & AppDispatchProps;
 
-const StatusNotification: React.FC<any> = (props: Props) => {
+const StatusNotification: React.FC<any> = (props: AppProps) => {
     const classes = snackbarsStyle();
-    const { className, message, onClose, variant, ...other } = props;
-    const Icon = variantIcon[variant];
+    const Icon = variantIcon[props.status.type];
+    const [open, setOpen] = useState(props.status.show);
+    const handleClose = (event?: SyntheticEvent, reason?: string) => {
+        setOpen(false);
+        props.setStatusActions(initialStatus);
+    };
 
-    return (
+    useEffect(() => {
+        setOpen(props.status.show);
+    });
+
+    return (<Snackbar
+        open={open}
+        autoHideDuration={3000}
+        TransitionComponent={SlideTransition}
+        onClose={handleClose}>
         <SnackbarContent
-            className={clsx(classes[variant], className)}
+            className={clsx(classes[props.status.type])}
             aria-describedby="client-snackbar"
             message={
-                <span id="client-snackbar" className={classes.message}>
-          <Icon className={clsx(classes.icon, classes.iconVariant)} />
-                    {message}
-        </span>
+                <span id="client-snackbar" className={classes.message}> <Icon
+                    className={clsx(classes.icon, classes.iconVariant)}/>
+                    {props.status.message}</span>
             }
             action={[
-                <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-                    <CloseIcon className={classes.icon} />
+                <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
+                    <CloseIcon className={classes.icon}/>
                 </IconButton>,
             ]}
-            {...other}
         />
-    );
+    </Snackbar>);
+};
+const mapStateToProps = (store: TranslationsStore) => {
+    return {
+        status: store.status
+    };
+};
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+    return {
+        setStatusActions: (data: StatusState) => dispatch(setStatus(data)),
+    };
 };
 
-export default StatusNotification;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(StatusNotification);
+
 

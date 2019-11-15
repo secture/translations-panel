@@ -3,6 +3,7 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setAllCategories} from "store/categories/actions";
 import {CategoryState} from "store/categories/types";
+import {setStatus} from "../store/status/actions";
 
 export const getAllCategories = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
@@ -10,6 +11,11 @@ export const getAllCategories = (): ThunkAction<Promise<any>, {}, {}, AnyAction>
         try {
             categories = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/categories');
             dispatch(setAllCategories(categories.data));
+            dispatch(setStatus({
+                type: 'success',
+                message: 'updated',
+                show: true
+            }));
         } catch (error) {
             console.log(error);
         }
