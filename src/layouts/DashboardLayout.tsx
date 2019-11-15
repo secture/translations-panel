@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import MenuAppBar from "components/surfaces/MenuAppBar";
 import Drawer from "components/surfaces/Drawer";
+import StatusNotification from "components/common/statusNotification";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
