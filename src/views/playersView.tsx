@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "../styles/dashboard";
 import {TranslationsStore} from "../store/types";
 import {ThunkDispatch} from "redux-thunk";
@@ -58,10 +59,10 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container>
+            <Container maxWidth={false} className={classes.container}>
+                <Grid container spacing={3}>
                     {!showForm ? (
-                        <Grid item xs={12} className={classes.itemGrid}>
+                        <Grid item xs={12}>
                             <PlayersList
                                 players={props.players}
                                 setPlayerSelected={setPlayerSelected}
@@ -69,7 +70,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                 openDialog={updateDialog}
                                 setEditForm={setEditForm}/>
                         </Grid>) : (
-                        <Grid item xs={12} className={classes.itemGrid}>
+                        <Grid item xs={12}>
                             <PlayersForm
                                 playerSelected={playerSelected}
                                 onAddPlayer={onAddPlayer}

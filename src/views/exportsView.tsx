@@ -15,8 +15,8 @@ const ExportsView = () => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-                <Grid container>
+            <Container maxWidth={false} className={classes.container}>
+                <Grid container spacing={3}>
                     {
                         tags.map((tag: string) => (
                             <Grid item xs={12} md={4} lg={4}>

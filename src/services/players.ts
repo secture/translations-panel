@@ -39,7 +39,6 @@ export const editPlayerById = (player: PlayerState): ThunkAction<Promise<any>, {
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 editPlayer = response.data;
-                dispatch(getAllPlayers());
             }
         } catch (error) {
             console.log(error);
@@ -61,6 +60,21 @@ export const addPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}
             console.log(error);
         }
         return newPlayer;
+    }
+};
+
+export const historyPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function(dispatch: any) {
+        let historyPlayer = null;
+        try {
+            const response = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/history`);
+            if (response !== null && typeof response.data !== 'undefined') {
+                historyPlayer = response.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        return historyPlayer
     }
 };
 

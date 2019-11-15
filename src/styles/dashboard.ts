@@ -15,9 +15,6 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
         height: '100vh',
         overflow: 'auto',
     },
-    itemGrid: {
-      margin: '1em',
-    },
     appBarSpacer: theme.mixins.toolbar,
     orangeAvatar: {
         margin: 10,

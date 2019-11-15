@@ -16,7 +16,6 @@ import {AnyAction} from "redux";
 import {deleteUser, getUsers} from "services/user";
 import {initialUserState} from "store/user/reducers";
 
-
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
@@ -47,7 +46,7 @@ const UsersView = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container maxWidth="lg" className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
                         <Grid item xs={12}>

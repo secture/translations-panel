@@ -101,7 +101,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
-            <Container className={classes.container}>
+            <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {!showComponent ? (
