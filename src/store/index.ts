@@ -11,6 +11,7 @@ import {loadState} from 'store/localStorage';
 import {translationsReducer} from "store/translations/reducers";
 import {categoriesReducer} from "store/categories/reducers";
 import {playersReducer} from "store/players/reducers";
+import {statusReducer} from "./status/reducers";
 
 const persistedState = loadState();
 const rootReducers = combineReducers({
@@ -21,6 +22,7 @@ const rootReducers = combineReducers({
     translations: translationsReducer,
     categories: categoriesReducer,
     players: playersReducer,
+    status: statusReducer,
     tags: () => { return ['android', 'ios', 'web']; },
     roles: () => { return ['Admin', 'Developer', 'Interpreter', 'User']; }
 });

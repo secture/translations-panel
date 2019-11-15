@@ -36,6 +36,7 @@ const DashboardLayout = (props: AppProps) => {
             <MenuAppBar open_state={open} updateOpen={updateOpen}/>
             <Drawer open_state={open} updateOpen={updateOpen}/>
             <View/>
+            <StatusNotification/>
         </div>
     )
 };
