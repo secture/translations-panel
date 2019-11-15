@@ -1,4 +1,4 @@
-import {formStyles} from '../../styles/form'
+import {formStyles} from '../../../styles/form'
 import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
@@ -6,7 +6,7 @@ import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {PlayerState} from "store/players/types";
 import {LocaleState} from "store/locales/types";
 
-interface PropsLocalesForm {
+interface PropsPlayersForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
@@ -16,7 +16,7 @@ interface PropsLocalesForm {
     setShowForm: (show: boolean) => void,
 }
 
-const PlayersForm: React.FC<any> = (props: PropsLocalesForm) => {
+const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
 
     const classes = formStyles();
     const [player, setPlayer] = useState(props.playerSelected);

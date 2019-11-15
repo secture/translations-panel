@@ -10,17 +10,20 @@ import {LocaleState} from "store/locales/types";
 import {initialLocale} from "store/locales/reducers";
 import {getColumns} from 'components/common/utilsTable';
 import LocaleSelector from "components/common/localeSelector";
-import {TranslationsStore} from "../../store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
-import {historyPlayer} from "../../services/players";
+import {UserState} from "../../../store/user/types";
 
-type AppStateProps = ReturnType<typeof mapStateToProps>;
-type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type AppProps = AppStateProps & AppDispatchProps;
+interface PropsPlayerList {
+    players: PlayerState[],
+    user: UserState,
+    setPlayerSelected: (Player: PlayerState) => void,
+    setEditForm: (editForm: boolean) => void,
+    setShowForm: (showForm: boolean) => void,
+    openDialog: () => void,
+    openHistoryPlayerDialog: () => void,
+    updateHistoryPlayer: (historyPlayer: any) => void
+}
 
-const PlayersList: React.FC<any> = (props: AppProps) => {
+const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
     const classes = enhancedTableStyles();
 
     const [locale, setLocale] = useState(initialLocale);
@@ -45,10 +48,9 @@ const PlayersList: React.FC<any> = (props: AppProps) => {
         props.openDialog();
     };
 
-    const getHistoryPlayer = (rowData: any) => {
-        props.historyPlayerAction(rowData).then((historyPlayer: any) => {
-            console.log(historyPlayer);
-        })
+    const loadHistoryPlayer = (rowData: any) => {
+        props.updateHistoryPlayer(rowData);
+        props.openHistoryPlayerDialog();
     };
 
     return (
@@ -88,30 +90,10 @@ const PlayersList: React.FC<any> = (props: AppProps) => {
                     search: true,
                     filtering: true,
                 }}
-                onRowClick={(event, rowData: any) => getHistoryPlayer(rowData)}
+                onRowClick={(event, rowData: any) => loadHistoryPlayer(rowData)}
                 isLoading={props.players.length === 0}/>
         </Paper>
     )
 };
 
-const mapStateToProps = (store: TranslationsStore, props: any) => {
-    return {
-        players: props.players,
-        user: props.user,
-        setPlayerSelected: props.setPlayerSelected,
-        setEditForm: props.setEditForm,
-        setShowForm: props.setShowForm,
-        openDialog: props.openDialog
-    };
-};
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
-    return {
-        historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(PlayersList);
+export default PlayersList;
