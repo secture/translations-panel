@@ -77,15 +77,15 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {!showForm ? (
-                            <Paper className={`${classes.content}`}>
+                            <Grid item xs={12}>
                                 <TranslationsList translations={props.translations}
                                                   setDataSelected={setDataSelected}
                                                   setEditForm={setEditForm}
                                                   setShowForm={setShowForm}
                                                   openDialog={updateDialog}/>
-                            </Paper>
+                            </Grid>
                         ) : (
-                            <Paper className={`${classes.content}`}>
+                            <Grid item xs={12}>
                                 <TranslationsForm dataSelected={dataSelected} tags={props.tags}
                                                   languages={props.languages}
                                                   categories={props.categories}
@@ -96,7 +96,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                                   setShowForm={setShowForm}
                                                   editForm={editForm}
                                 />
-                            </Paper>
+                            </Grid>
                         )}
 
                         <DeleteDialog
