@@ -15,9 +15,8 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {createUser, deleteUser, getUsers, updateUser} from "services/user";
 import {initialUserState} from "store/user/reducers";
-import {LocaleState} from "../store/locales/types";
 import {UserState} from "../store/user/types";
-import {getAllLocales} from "../services/locale";
+import {getAllLanguages} from "../services/languages";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -35,15 +34,13 @@ const UsersView = (props: AppProps) => {
     const classes = dashboardViewStyles();
 
     useEffect(() => {
-        if (props.locales.length === 0) {
-            props.getLocalesAction();
-        }
+        props.getAllLanguagesAction();
         props.getUsersAction();
     }, []);
 
     const onEditUser = (user: UserState) => {
         props.editUserAction(user).then((user: UserState) => {
-            (user !== null) ? alert('User editado') : alert('no ha sido posible editar el locale')
+            (user !== null) ? alert('User editado') : alert('no ha sido posible editar el User')
         })
     };
     const onAddUser= (user: UserState) => {
@@ -77,7 +74,7 @@ const UsersView = (props: AppProps) => {
                         <Grid item xs={12}>
                             <UsersForm user={props.user}
                                        userSelected={userSelected}
-                                       locales={props.locales}
+                                       languages={props.languages}
                                        roles={props.roles}
                                        editForm={editForm}
                                        showForm={showForm}
@@ -102,7 +99,7 @@ const mapStateToProps = (store: TranslationsStore) => {
     return {
         users: store.users,
         user: store.user,
-        locales: store.locales,
+        languages: store.languages,
         roles: store.roles
     };
 };
@@ -110,7 +107,7 @@ const mapStateToProps = (store: TranslationsStore) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         getUsersAction: () => dispatch(getUsers()),
-        getLocalesAction: () => dispatch(getAllLocales()),
+        getAllLanguagesAction: () => dispatch(getAllLanguages()),
         addUserAction: (user: UserState) => dispatch(createUser(user)),
         editUserAction: (user: UserState) => dispatch(updateUser(user)),
         deleteUserAction: (id: string) => dispatch(deleteUser(id))

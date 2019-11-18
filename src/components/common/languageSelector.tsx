@@ -10,7 +10,7 @@ import {TranslationsStore} from "store/types";
 
 interface PropsLanguageSelector {
     language: LanguageState,
-    handleLanguage: (locale: LanguageState) => void
+    handleLanguage: (language: LanguageState) => void
 }
 
 const languageSelectorStyles = makeStyles((theme: Theme) =>
@@ -45,12 +45,12 @@ const LanguageSelector: React.FC<any> = (props: PropsLanguageSelector) => {
 
     return (
         <FormControl className={classes.formControl} style={{margin: '0 26px'}}>
-            <InputLabel ref={inputLabel} id="labelLocales">
+            <InputLabel ref={inputLabel} id="labelLanguages">
                 Languages
             </InputLabel>
             <Select
-                labelId="labelLocales"
-                id="selectLocales"
+                labelId="labelLanguages"
+                id="selectLanguages"
                 value={props.language.name}
                 onChange={handleChange}
                 labelWidth={labelWidth}

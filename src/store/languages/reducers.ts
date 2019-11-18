@@ -2,7 +2,7 @@ import {LanguageActionsTypes, LanguageState, SET_ALL_LANGUAGES} from "./types";
 
 export const initialLanguage: LanguageState = {
     id: '',
-    key: '',
+    key: 'es',
     name: '',
     icon: '',
     localeForPlayers: false

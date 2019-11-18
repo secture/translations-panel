@@ -39,6 +39,7 @@ export const editPlayerById = (player: PlayerState): ThunkAction<Promise<any>, {
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, createPlayerDTO(player));
             if (response !== null && typeof response.data !== 'undefined') {
                 editPlayer = response.data;
+                dispatch(getAllPlayers());
             }
         } catch (error) {
             console.log(error);

@@ -12,7 +12,7 @@ export interface PlayerHistoryState {
 
 export interface PlayerState {
     id: string,
-    playerMasterId: string,
+    playerMasterId: number,
     shortName: NamePlayers,
     largeName: NamePlayers,
     team: string,

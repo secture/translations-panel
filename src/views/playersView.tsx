@@ -18,6 +18,7 @@ import {PlayerHistoryState, PlayerState} from "store/players/types";
 import FullScreenDialog from "../components/common/fullScreenDialog";
 import {setStatus} from "../store/status/actions";
 import {StatusState} from "../store/status/types";
+import {getAllLanguages} from "../services/languages";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -40,6 +41,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const [historyPlayer, setHistoryPlayer] = useState(initialHistoryPlayerState);
 
     useEffect(() => {
+        props.getAllLanguagesAction();
         if (props.players.length === 0) {
             props.getAllPlayersAction();
         }
@@ -121,6 +123,7 @@ const mapStateToProps = (store: TranslationsStore) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         getAllPlayersAction: () => dispatch(getAllPlayers()),
+        getAllLanguagesAction: () => dispatch(getAllLanguages()),
         addPlayerAction: (player: PlayerState) => dispatch(addPlayer(player)),
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),

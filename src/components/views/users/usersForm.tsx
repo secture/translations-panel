@@ -58,7 +58,7 @@ const UsersForm = (props: PropsUserForm) => {
         userSelected.associatedLanguages = [];
         Object.keys(languagesUser).map((key: any) => {
             if (languagesUser[key].isUserLanguage === true) {
-                userSelected.associatedLanguages.push(languagesuSER[key].data.id);
+                userSelected.associatedLanguages.push(languagesUser[key].data.id);
             }
         })
     };
@@ -66,7 +66,7 @@ const UsersForm = (props: PropsUserForm) => {
     useEffect(() => {
         let languagesView: any = {};
         props.languages.forEach((language: any) => {
-            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((language: AssociatedLanguage) => language.key === language.key)) ?
+            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: AssociatedLanguage) => associatedLanguage.key === language.key)) ?
                 languagesView[language.key] = {
                     isUserLanguage: true,
                     data: language,

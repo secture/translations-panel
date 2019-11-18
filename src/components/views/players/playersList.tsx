@@ -10,6 +10,7 @@ import {LanguageState} from "store/languages/types";
 import {initialLanguage} from "store/languages/reducers";
 import {getColumns} from 'components/common/utilsTable';
 import {UserState} from "../../../store/user/types";
+import LanguageSelector from 'components/common/languageSelector'
 
 interface PropsPlayerList {
     players: PlayerState[],

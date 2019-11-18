@@ -9,7 +9,7 @@ export const initialHistoryPlayerState: PlayerHistoryState = {
 
 export const initialPlayerState: PlayerState = {
     id: '',
-    playerMasterId: '',
+    playerMasterId: 0,
     shortName: {},
     largeName: {},
     team: '',
