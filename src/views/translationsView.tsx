@@ -13,7 +13,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {
     addTranslation,
-    confirmTranslationLocaleById,
+    confirmTranslationLanguageById,
     deleteTranslationById,
     editTranslationById,
     getAllTranslations, searchTranslations
@@ -21,9 +21,9 @@ import {
 import TranslationsForm from "components/views/translations/translationsForm";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
-import {getAllLocales} from "services/locale";
+import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -81,8 +81,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         })
     };
 
-    const onConfirmTranslationLocale = (data: TranslationState, locale: LocaleState) => {
-        props.confirmTranslationLocaleByIdActions(data, locale).then((response: any) => {
+    const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.confirmTranslationLanguageByIdActions(data, language).then((response: any) => {
         })
     };
     const onSearchTranslation = (search: string) => {
@@ -93,7 +93,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
         });
-        props.getAllLocalesActions();
+        props.getAllLanguagesActions();
         props.getAllCategoriesActions().then((response: any) => {
         });
     }, []);
@@ -106,11 +106,11 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                     <Grid item xs={12}>
                         {!showComponent ? (
                             <Paper className={`${classes.content}`}>
-                                <TranslationsForm dataSelected={dataSelected} tags={props.tags} locales={props.locales}
+                                <TranslationsForm dataSelected={dataSelected} tags={props.tags} languages={props.languages}
                                                   categories={props.categories} actionType={actionType}
                                                   onCancel={onCancel} onEditEntity={onEditEntity}
                                                   onCreateEntity={onCreateEntity}
-                                                  onConfirmTranslationLocale={onConfirmTranslationLocale}/>
+                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}/>
                             </Paper>) : (
                             <Paper className={`${classes.content}`}>
                                 <TranslationsList data={props.translations} onSelectedData={onSelectedData}
@@ -121,7 +121,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                             open={statusModal}>
-                            <DialogTitle id="alert-dialog-title">{"Are you sure to delete this locale?"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Are you sure to delete this language?"}</DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
                                     ID: {dataSelected.id}
@@ -150,21 +150,21 @@ const mapStateToProps = (store: TranslationsStore) => {
     return {
         translations: store.translations,
         tags: store.tags,
-        locales: store.locales,
+        languages: store.languages,
         categories: store.categories
     };
 };
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
-        getAllLocalesActions: () => dispatch(getAllLocales()),
+        getAllLanguagesActions: () => dispatch(getAllLanguages()),
         getAllTranslationsActions: () => dispatch(getAllTranslations()),
         getAllCategoriesActions: () => dispatch(getAllCategories()),
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
         searchTranslationsActions: (search: string) => dispatch(searchTranslations(search)),
-        confirmTranslationLocaleByIdActions: (data: TranslationState, locale: LocaleState) =>
-            dispatch(confirmTranslationLocaleById(data, locale)),
+        confirmTranslationLanguageByIdActions: (data: TranslationState, language: LanguageState) =>
+            dispatch(confirmTranslationLanguageById(data, language)),
     };
 };
 

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, createStyles, Grid, makeStyles, Switch, TextField, Theme, Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 import Container from "@material-ui/core/Container";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {dashboardViewStyles} from "styles/dashboard";
@@ -16,40 +16,40 @@ const formUserStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-interface PropsLocalesForm {
+interface PropsLanguagesForm {
     showForm: boolean,
     setShowForm: (show: boolean) => void,
     editForm: boolean,
-    localeSelected: LocaleState,
-    onEditLocale: (locale: LocaleState) => void,
-    onAddLocale: (locale: LocaleState) => void,
+    languageSelected: LanguageState,
+    onEditLanguage: (language: LanguageState) => void,
+    onAddLanguage: (language: LanguageState) => void,
 }
 
-const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
+const LanguagesForm: React.FC<any> = (props: PropsLanguagesForm) => {
     const classes = formUserStyles();
     const globalStyle = dashboardViewStyles();
-    const [locale, setLocale] = useState(props.localeSelected);
+    const [language, setLanguage] = useState(props.languageSelected);
 
     const changedValues = (e: any, property: string) => {
-        setLocale({
-            ...locale,
+        setLanguage({
+            ...language,
             [property]: e.target.value
         });
     };
 
-    const confirmEditLocale = () => {
+    const confirmEditLanguage = () => {
         props.setShowForm(false);
-        props.onEditLocale(locale);
+        props.onEditLanguage(language);
     };
 
-    const confirmCreateLocale = () => {
+    const confirmCreateLanguage = () => {
         props.setShowForm(false);
-        props.onAddLocale(locale);
+        props.onAddLanguage(language);
     };
 
     const changeValuesBoolean = (e: any, property: string) => {
-        setLocale({
-            ...locale,
+        setLanguage({
+            ...language,
             [property]: e.target.value.toLowerCase() !== "true"
         });
     };
@@ -62,8 +62,8 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                         <Grid container item direction="row" justify="center" xs={12}>
                             <Typography variant="h6" gutterBottom>
                                 {props.editForm ?
-                                    'Locale Edition whose ID is: ' + props.localeSelected.id :
-                                    'Create a new Locale'
+                                    'Language Edition whose ID is: ' + props.languageSelected.id :
+                                    'Create a new Language'
                                 }
                             </Typography>
                         </Grid>
@@ -75,7 +75,7 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                                 fullWidth
                                 autoComplete="fname"
                                 onChange={(e) => changedValues(e, 'key')}
-                                value={locale.key}
+                                value={language.key}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -86,7 +86,7 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                                 fullWidth
                                 autoComplete="fname"
                                 onChange={(e) => changedValues(e, 'icon')}
-                                value={locale.icon}
+                                value={language.icon}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -97,29 +97,29 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
                                 fullWidth
                                 onChange={(e) => changedValues(e, 'name')}
                                 autoComplete="fname"
-                                value={locale.name}
+                                value={language.name}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
                                 control={
-                                    <Switch checked={locale.localeForPlayers}
+                                    <Switch checked={language.localeForPlayers}
                                             onChange={(e) => changeValuesBoolean(e, 'localeForPlayers')}
-                                            value={locale.localeForPlayers}
+                                            value={language.localeForPlayers}
                                             color="primary"/>
                                 }
-                                label="Locale for players"
+                                label="Language for players"
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
                             <Button className={globalStyle.button} onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => {confirmEditLocale()}}
+                                        onClick={() => {confirmEditLanguage()}}
                                         className={globalStyle.button}> Save </Button>
                             ) : (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => {confirmCreateLocale()}}
+                                        onClick={() => {confirmCreateLanguage()}}
                                         className={globalStyle.button}> Create </Button>
                             )}
                         </Grid>
@@ -130,4 +130,4 @@ const LocalesForm: React.FC<any> = (props: PropsLocalesForm) => {
     )
 };
 
-export default LocalesForm;
+export default LanguagesForm;

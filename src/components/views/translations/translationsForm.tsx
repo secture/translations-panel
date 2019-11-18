@@ -10,7 +10,7 @@ import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
 import {TranslationState} from "store/translations/types";
-import {LocaleState} from "store/locales/types";
+import {LanguageState} from "store/languages/types";
 import {CategoryState} from "store/categories/types";
 
 import {dashboardViewStyles} from "styles/dashboard";
@@ -81,13 +81,13 @@ function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
 interface PropsDataForm {
     dataSelected: TranslationState,
     tags: Array<string>,
-    locales: LocaleState[],
+    languages: LanguageState[],
     categories: CategoryState[],
     actionType: String,
     onCancel:() => void,
     onEditEntity: (translation: TranslationState) => void,
     onCreateEntity: (translation: TranslationState) => void,
-    onConfirmTranslationLocale: (translation: TranslationState, locale: LocaleState) => void
+    onConfirmTranslationLanguage: (translation: TranslationState, language: LanguageState) => void
 }
 
 const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
@@ -100,15 +100,15 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
             [property]: e.target.value
         });
     };
-    const changeConfirmLocaleValue = (e: any, property: keyof TranslationState, locale: LocaleState) => {
+    const changeConfirmLanguageValue = (e: any, property: keyof TranslationState, language: LanguageState) => {
         setData({
             ...data as TranslationState,
             [property]: {
                 ...data[property] as TranslationState,
-                [locale.key]: e.target.value.toLowerCase() !== "true"
+                [language.key]: e.target.value.toLowerCase() !== "true"
             }
         });
-        props.onConfirmTranslationLocale(data, locale);
+        props.onConfirmTranslationLanguage(data, language);
     };
     const changeItemValues = (e: any, property: keyof TranslationState, item: string) => {
         setData({
@@ -142,7 +142,7 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                     <Typography variant="h6" gutterBottom>
                         {props.actionType === 'edit' ?
                             'Translation id: ' + data.id :
-                            'Create a new Locale'
+                            'Create a new Language'
                         }
                     </Typography>
                     <Divider variant="middle"/>
@@ -205,30 +205,30 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                         </FormControl>
                     })}
                 </Grid>
-                {props.locales.map((locale: LocaleState) => (
-                    <Grid item xs={12} sm={6} key={'translation_' + locale.key}>
+                {props.languages.map((language: LanguageState) => (
+                    <Grid item xs={12} sm={6} key={'translation_' + language.key}>
                         <TextField
-                            id={'translation_' + locale.key}
-                            label={locale.key.toUpperCase()}
+                            id={'translation_' + language.key}
+                            label={language.key.toUpperCase()}
                             multiline
                             rows="4"
                             variant="filled"
                             fullWidth
-                            defaultValue={prop((data.translations as any), locale.key, null)}
-                            onChange={(e) => changeItemValues(e, 'translations', locale.key)}
+                            defaultValue={prop((data.translations as any), language.key, null)}
+                            onChange={(e) => changeItemValues(e, 'translations', language.key)}
                         />
 
                         {props.actionType === 'edit' ? (
                             <FormGroup row>
                                 <FormControlLabel
-                                    key={'switch_' + locale.key}
-                                    disabled={prop((data.confirmedTranslations as any), locale.key, false)}
+                                    key={'switch_' + language.key}
+                                    disabled={prop((data.confirmedTranslations as any), language.key, false)}
                                     control={
                                         <Switch
-                                            name={'switch_' + locale.key}
-                                            checked={prop((data.confirmedTranslations as any), locale.key, false)}
-                                            onChange={(e) => changeConfirmLocaleValue(e, 'confirmedTranslations', locale)}
-                                            value={prop((data.confirmedTranslations as any), locale.key, false)}
+                                            name={'switch_' + language.key}
+                                            checked={prop((data.confirmedTranslations as any), language.key, false)}
+                                            onChange={(e) => changeConfirmLanguageValue(e, 'confirmedTranslations', language)}
+                                            value={prop((data.confirmedTranslations as any), language.key, false)}
                                             color="primary"
                                         />
                                     }

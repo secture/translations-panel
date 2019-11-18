@@ -6,10 +6,9 @@ import MaterialTable, {MTableToolbar} from "material-table";
 import {enhancedTableStyles} from 'styles/table';
 import {PlayerState} from "store/players/types";
 import {initialPlayerState} from "store/players/reducers";
-import {LocaleState} from "store/locales/types";
-import {initialLocale} from "store/locales/reducers";
+import {LanguageState} from "store/languages/types";
+import {initialLanguage} from "store/languages/reducers";
 import {getColumns} from 'components/common/utilsTable';
-import LocaleSelector from "components/common/localeSelector";
 import {UserState} from "../../../store/user/types";
 
 interface PropsPlayerList {
@@ -25,9 +24,9 @@ interface PropsPlayerList {
 const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
     const classes = enhancedTableStyles();
 
-    const [locale, setLocale] = useState(initialLocale);
-    const handleLocale = (locale: LocaleState) => {
-        setLocale(locale)
+    const [language, setLanguage] = useState(initialLanguage);
+    const handleLanguage = (language: LanguageState) => {
+        setLanguage(language)
     };
 
     const loadFormAddPlayer = () => {
@@ -51,14 +50,14 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
         <Paper className={classes.root}>
             <MaterialTable
                 title={'Players'}
-                columns={getColumns(locale)}
+                columns={getColumns(language)}
                 data={props.players}
                 components={{
                     Toolbar: (props) => (
                         <div>
                             <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                                 <MTableToolbar {...props} />
-                                <LocaleSelector locale={locale} handleLocale={handleLocale}/>
+                                <LanguageSelector language={language} handleLanguage={handleLanguage}/>
                                 <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
                                     <AddCircleOutlineIcon color="primary"/>
                                 </IconButton>

@@ -16,7 +16,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
-import {LocaleState} from "../../../store/locales/types";
+import {LanguageState} from "../../../store/languages/types";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     root: {
@@ -31,7 +31,7 @@ const formUserStyles = makeStyles((theme: Theme) => createStyles({
 interface PropsUserForm {
     user: UserState,
     userSelected: UserState,
-    locales: LocaleState[],
+    languages: LanguageState[],
     roles: string[],
     editForm: boolean,
     showForm: boolean,
@@ -49,45 +49,45 @@ const UsersForm = (props: PropsUserForm) => {
         setUserSelected({...userSelected, [property]: value});
     };
 
-    const [localesUser, setLocalesUser]: any = useState({});
-    const handleChangeLocales = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalesUser({ ...localesUser, [payload.data.key]: {isUserLocale: event.target.checked, data: payload.data}});
+    const [languagesUser, setLanguagesUser]: any = useState({});
+    const handleChangeLanguages = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLanguagesUser({ ...languagesUser, [payload.data.key]: {isUserLanguage: event.target.checked, data: payload.data}});
     };
 
-    const setLocalesUserUpdated = () => {
+    const setLanguagesUserUpdated = () => {
         userSelected.associatedLanguages = [];
-        Object.keys(localesUser).map((key: any) => {
-            if (localesUser[key].isUserLocale === true) {
-                userSelected.associatedLanguages.push(localesUser[key].data.id);
+        Object.keys(languagesUser).map((key: any) => {
+            if (languagesUser[key].isUserLanguage === true) {
+                userSelected.associatedLanguages.push(languagesuSER[key].data.id);
             }
         })
     };
 
     useEffect(() => {
-        let localesView: any = {};
-        props.locales.forEach((locale: any) => {
-            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((language: AssociatedLanguage) => language.key === locale.key)) ?
-                localesView[locale.key] = {
-                    isUserLocale: true,
-                    data: locale,
+        let languagesView: any = {};
+        props.languages.forEach((language: any) => {
+            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((language: AssociatedLanguage) => language.key === language.key)) ?
+                languagesView[language.key] = {
+                    isUserLanguage: true,
+                    data: language,
                 } :
-                localesView[locale.key] = {
-                    isUserLocale: false,
-                    data: locale
+                languagesView[language.key] = {
+                    isUserLanguage: false,
+                    data: language
                  };
         });
-        setLocalesUser(localesView)
+        setLanguagesUser(languagesView)
     }, []);
 
     const confirmCreateUser = () => {
         props.setShowForm(false);
-        setLocalesUserUpdated();
+        setLanguagesUserUpdated();
         props.onAddUser(userSelected);
     };
 
     const confirmEditUser = () => {
         props.setShowForm(false);
-        setLocalesUserUpdated();
+        setLanguagesUserUpdated();
         props.onEditUser(userSelected);
     };
 
@@ -138,14 +138,14 @@ const UsersForm = (props: PropsUserForm) => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl component="fieldset" className={globalStyle.formControl}>
-                                <FormLabel component="legend">Locales</FormLabel>
+                                <FormLabel component="legend">Languages</FormLabel>
                                 <FormGroup row>
-                                    {Object.keys(localesUser).map((key: any) => ( <FormControlLabel
-                                            control={<Checkbox checked={localesUser[key].isUserLocale} onChange={handleChangeLocales(localesUser[key])} value={key} />}
-                                    label={localesUser[key].data.name}/>
+                                    {Object.keys(languagesUser).map((key: any) => ( <FormControlLabel
+                                            control={<Checkbox checked={languagesUser[key].isUserLanguage} onChange={handleChangeLanguages(languagesUser[key])} value={key} />}
+                                    label={languagesUser[key].data.name}/>
                                     ))}
                                 </FormGroup>
-                                <FormHelperText>Select locales for user</FormHelperText>
+                                <FormHelperText>Select languages for user</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} className={globalStyle.actions}>

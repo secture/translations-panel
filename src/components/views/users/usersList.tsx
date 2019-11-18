@@ -16,12 +16,12 @@ import {dashboardViewStyles} from "styles/dashboard";
 import {Toolbar, Typography} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {tableStyles} from 'styles/table'
-import {LocaleState} from "../../../store/locales/types";
+import {LanguageState} from "../../../store/languages/types";
 
 interface PropsUsersList {
     users: UserState[],
     user: UserState,
-    locales: LocaleState[],
+    languages: LanguageState[],
     setUserSelected: (user: UserState) => void,
     setEditForm: (isEditForm: boolean) => void,
     setShowForm: (show: boolean) => void,

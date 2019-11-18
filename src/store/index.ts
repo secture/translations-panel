@@ -6,7 +6,7 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import {usersReducer} from "store/users/reducers";
-import {localesReducer} from "store/locales/reducers";
+import {languagesReducer} from "store/languages/reducers";
 import {loadState} from 'store/localStorage';
 import {translationsReducer} from "store/translations/reducers";
 import {categoriesReducer} from "store/categories/reducers";
@@ -18,7 +18,7 @@ const rootReducers = combineReducers({
     auth: authReducer,
     user: userReducer,
     users: usersReducer,
-    locales: localesReducer,
+    languages: languagesReducer,
     translations: translationsReducer,
     categories: categoriesReducer,
     players: playersReducer,

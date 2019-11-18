@@ -36,19 +36,19 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
     }, []);
 
     const onDeleteCategory = () => {
-        props.deleteCategoryByIdActions(categorySelected).then((locale: CategoryState) => {
-            (locale !== null) ? alert('Category eliminaro') : alert('no ha sido posible eliminar el locale')
+        props.deleteCategoryByIdActions(categorySelected).then((language: CategoryState) => {
+            (language !== null) ? alert('Category eliminaro') : alert('no ha sido posible eliminar el language')
         });
         setOpenDialog(false);
     };
-    const onEditCategory = (locale: CategoryState) => {
-        props.editCategoryByIdActions(locale).then((locale: CategoryState) => {
-            (locale !== null) ? alert('Category editado') : alert('no ha sido posible editar el locale')
+    const onEditCategory = (language: CategoryState) => {
+        props.editCategoryByIdActions(language).then((language: CategoryState) => {
+            (language !== null) ? alert('Category editado') : alert('no ha sido posible editar el language')
         })
     };
-    const onAddCategory = (locale: CategoryState) => {
-        props.addCategoryActions(locale).then((locale: CategoryState) => {
-            (locale !== null) ? alert('Category creado') : alert('no ha sido posible crear el locale')
+    const onAddCategory = (language: CategoryState) => {
+        props.addCategoryActions(language).then((language: CategoryState) => {
+            (language !== null) ? alert('Category creado') : alert('no ha sido posible crear el language')
         })
     };
 
