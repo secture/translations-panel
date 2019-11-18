@@ -58,7 +58,7 @@ const LanguageSelector: React.FC<any> = (props: PropsLanguageSelector) => {
                 {
                     languages.map((language: LanguageState) => (
                         language.localeForPlayers &&
-                        <MenuItem value={language.name}>{language.icon} {language.name}</MenuItem>
+                        <MenuItem key={language.id} value={language.name}>{language.icon} {language.name}</MenuItem>
                     ))
                 }
             </Select>

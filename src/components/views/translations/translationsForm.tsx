@@ -13,48 +13,7 @@ import {TranslationState} from "store/translations/types";
 import {LanguageState} from "store/languages/types";
 import {CategoryState} from "store/categories/types";
 
-import {dashboardViewStyles} from "styles/dashboard";
-
-const translationsFormStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            overflowX: 'auto',
-            flexGrow: 1,
-        },
-        fab: {
-            margin: theme.spacing(1),
-        },
-        table: {
-            minWidth: 650,
-        },
-        tableWrapper: {
-            overflowX: 'auto',
-        },
-        visuallyHidden: {
-            border: 0,
-            clip: 'rect(0 0 0 0)',
-            height: 1,
-            margin: -1,
-            overflow: 'hidden',
-            padding: 0,
-            position: 'absolute',
-            top: 20,
-            width: 1,
-        },
-        tag: {
-            fontSize: '18px',
-        },
-        tableTitle: {
-            flex: '1 1 100%',
-        },
-        form: {
-            padding: '24px',
-            margin: '48px inherit 48px inherit',
-            minWidth: 650,
-        },
-    })
-);
+import {formStyles} from "styles/form";
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -75,7 +34,6 @@ function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
     } else {
         return obj[key];
     }
-
 }
 
 interface PropsDataForm {
@@ -84,31 +42,23 @@ interface PropsDataForm {
     languages: LanguageState[],
     categories: CategoryState[],
     actionType: String,
-    onCancel:() => void,
+    onCancel: () => void,
     onEditEntity: (translation: TranslationState) => void,
     onCreateEntity: (translation: TranslationState) => void,
-    onConfirmTranslationLanguage: (translation: TranslationState, language: LanguageState) => void
+    onConfirmTranslationLanguage: (translation: TranslationState, language: LanguageState) => void,
+    editForm: boolean,
+    showForm: boolean,
+    setShowForm: (show: boolean) => void
 }
 
 const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
-    const classes = translationsFormStyles();
-    const globalStyle = dashboardViewStyles();
+    const classes = formStyles();
     const [data, setData] = useState<TranslationState>(props.dataSelected);
     const changedValues = (e: any, property: string) => {
         setData({
             ...data,
             [property]: e.target.value
         });
-    };
-    const changeConfirmLanguageValue = (e: any, property: keyof TranslationState, language: LanguageState) => {
-        setData({
-            ...data as TranslationState,
-            [property]: {
-                ...data[property] as TranslationState,
-                [language.key]: e.target.value.toLowerCase() !== "true"
-            }
-        });
-        props.onConfirmTranslationLanguage(data, language);
     };
     const changeItemValues = (e: any, property: keyof TranslationState, item: string) => {
         setData({
@@ -118,6 +68,17 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                 [item]: e.target.value
             }
         });
+    };
+
+    const changeConfirmLanguageValue = (e: any, property: keyof TranslationState, language: LanguageState) => {
+        setData({
+            ...data as TranslationState,
+            [property]: {
+                ...data[property] as TranslationState,
+                [language.key]: e.target.value.toLowerCase() !== "true"
+            }
+        });
+        props.onConfirmTranslationLanguage(data, language);
     };
     const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
         let values = (data[property] as Array<string>);
@@ -133,6 +94,16 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
             ...data,
             [property]: values
         });
+    };
+
+    const confirmEditData = () => {
+        props.setShowForm(false);
+        props.onEditEntity(data);
+    };
+
+    const confirmCreateData = () => {
+        props.setShowForm(false);
+        props.onCreateEntity(data);
     };
 
     return (
@@ -238,16 +209,16 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                         ) : (<span/>)}
                     </Grid>))}
                 <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
-                    <Button className={globalStyle.button}
-                            onClick={e => props.onCancel()}>Return</Button>
+                    <Button className={classes.button}
+                            onClick={() => props.setShowForm(false)}>Return</Button>
                     {props.actionType === 'edit' ? (
                         <Button variant="contained" color="primary"
-                                onClick={e => props.onEditEntity(data)}
-                                className={globalStyle.button}> Save </Button>
+                                onClick={e => confirmEditData()}
+                                className={classes.button}> Save </Button>
                     ) : (
                         <Button variant="contained" color="primary"
-                                onClick={e => props.onCreateEntity(data)}
-                                className={globalStyle.button}> Create </Button>
+                                onClick={e => confirmCreateData()}
+                                className={classes.button}> Create </Button>
                     )}
                 </Grid>
             </Grid>

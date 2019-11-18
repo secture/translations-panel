@@ -5,7 +5,7 @@ import {TranslationsStore} from "store/types";
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper} from "@material-ui/core";
+import {Paper} from "@material-ui/core";
 
 import {dashboardViewStyles} from "styles/dashboard";
 import TranslationsList from "components/views/translations/translationsList";
@@ -24,6 +24,7 @@ import {initialTranslation} from "store/translations/reducers";
 import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
 import {LanguageState} from "store/languages/types";
+import DeleteDialog from "components/common/deleteDialog";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -32,63 +33,13 @@ type AppProps = AppStateProps & AppDispatchProps;
 const TranslationsView: React.FC<any> = (props: AppProps) => {
     const classes = dashboardViewStyles();
 
+    const [dialog, setOpenDialog] = useState(false);
+    const updateDialog = () => {
+        setOpenDialog(!dialog);
+    };
     const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
-    const [actionType, setActionType] = useState<string>('create');
-    const [showComponent, setShowComponent] = useState(true);
-    const [statusModal, setStatusModal] = useState(false);
-
-    const changeStatusModal = (status: boolean) => {
-        setStatusModal(status);
-    };
-
-    const onSelectedData = (data: TranslationState) => {
-        setDataSelected(data);
-        setShowComponent(!showComponent);
-    };
-
-    const onActionType = (type: string) => {
-        setActionType(type);
-        if (type === 'create') {
-            setDataSelected(initialTranslation);
-        }
-        setShowComponent(!showComponent);
-    };
-
-    const onCancel = () => {
-        setDataSelected(initialTranslation);
-        setShowComponent(!showComponent);
-    };
-
-    const onCreateEntity = (data: TranslationState) => {
-        props.addTranslationActions(data).then((response: any) => {
-        });
-        setShowComponent(!showComponent);
-    };
-
-    const onEditEntity = (data: TranslationState) => {
-        props.editTranslationByIdActions(data).then((response: any) => {
-        });
-        setShowComponent(!showComponent);
-    };
-    const openDialog = (data: TranslationState) => {
-        setDataSelected(data);
-        setStatusModal(true);
-    };
-
-    const onDeleteEntity = (data: TranslationState) => {
-        setStatusModal(false);
-        props.deleteTranslationByIdActions(data).then((response: any) => {
-        })
-    };
-
-    const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
-        props.confirmTranslationLanguageByIdActions(data, language).then((response: any) => {
-        })
-    };
-    const onSearchTranslation = (search: string) => {
-        props.searchTranslationsActions(search).then((response: any) => {
-        })
-    };
+    const [editForm, setEditForm] = useState(false);
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         props.getAllTranslationsActions().then((response: any) => {
@@ -98,47 +49,62 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         });
     }, []);
 
+    const onDeleteEntity = (data: TranslationState) => {
+        setOpenDialog(false);
+        props.deleteTranslationByIdActions(data).then((response: any) => {
+        })
+    };
+    const onEditEntity = (data: TranslationState) => {
+        props.editTranslationByIdActions(data).then((response: any) => {
+        });
+        setShowForm(!showForm);
+    };
+    const onCreateEntity = (data: TranslationState) => {
+        props.addTranslationActions(data).then((response: any) => {
+        });
+        setShowForm(!showForm);
+    };
+
+    const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.confirmTranslationLanguageByIdActions(data, language).then((response: any) => {
+        })
+    };
+
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        {!showComponent ? (
+                        {!showForm ? (
                             <Paper className={`${classes.content}`}>
-                                <TranslationsForm dataSelected={dataSelected} tags={props.tags} languages={props.languages}
-                                                  categories={props.categories} actionType={actionType}
-                                                  onCancel={onCancel} onEditEntity={onEditEntity}
+                                <TranslationsList translations={props.translations}
+                                                  setDataSelected={setDataSelected}
+                                                  setEditForm={setEditForm}
+                                                  setShowForm={setShowForm}
+                                                  openDialog={updateDialog}/>
+                            </Paper>
+                        ) : (
+                            <Paper className={`${classes.content}`}>
+                                <TranslationsForm dataSelected={dataSelected} tags={props.tags}
+                                                  languages={props.languages}
+                                                  categories={props.categories}
+                                                  onEditEntity={onEditEntity}
                                                   onCreateEntity={onCreateEntity}
-                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}/>
-                            </Paper>) : (
-                            <Paper className={`${classes.content}`}>
-                                <TranslationsList data={props.translations} onSelectedData={onSelectedData}
-                                                  onActionType={onActionType} openDialog={openDialog}
-                                                  onSearchTranslation={onSearchTranslation}/>
-                            </Paper>)}
-                        <Dialog
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                            open={statusModal}>
-                            <DialogTitle id="alert-dialog-title">{"Are you sure to delete this language?"}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    ID: {dataSelected.id}
-                                    <br/>
-                                    Key: {dataSelected.key}
-                                    <br/>
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={e => changeStatusModal(false)} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={e => onDeleteEntity(dataSelected)} color="primary" autoFocus>
-                                    Delete
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}
+                                                  setEditForm={setEditForm}
+                                                  setShowForm={setShowForm}
+                                                  editForm={editForm}
+                                />
+                            </Paper>
+                        )}
+
+                        <DeleteDialog
+                            openDialog={updateDialog}
+                            dialog={dialog}
+                            dialogTitle={"Are you sure to delete this Translation?"}
+                            deleteItem={dataSelected}
+                            deleteFunction={onDeleteEntity}/>
                     </Grid>
                 </Grid>
             </Container>
@@ -162,7 +128,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
-        searchTranslationsActions: (search: string) => dispatch(searchTranslations(search)),
         confirmTranslationLanguageByIdActions: (data: TranslationState, language: LanguageState) =>
             dispatch(confirmTranslationLanguageById(data, language)),
     };

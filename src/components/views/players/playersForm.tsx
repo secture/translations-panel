@@ -1,4 +1,4 @@
-import {formStyles} from '../../../styles/form'
+import {formStyles} from 'styles/form'
 import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
@@ -11,7 +11,7 @@ interface PropsPlayersForm {
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
     languages: LanguageState[],
-    editForm: boolean
+    editForm: boolean,
     showForm: boolean,
     setShowForm: (show: boolean) => void,
 }
