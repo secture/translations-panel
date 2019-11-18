@@ -4,9 +4,15 @@ import {UserState} from "../user/types";
 export const GET_PLAYERS = 'GET PLAYERS';
 export const SET_PLAYERS = 'SET PLAYERS';
 
+export interface PlayerHistoryState {
+    id: string,
+    deleted: boolean,
+    history: PlayerState[],
+}
+
 export interface PlayerState {
     id: string,
-    playerMasterId: string,
+    playerMasterId: number,
     shortName: NamePlayers,
     largeName: NamePlayers,
     team: string,

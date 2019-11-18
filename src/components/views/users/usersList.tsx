@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,34 +15,30 @@ import Chip from '@material-ui/core/Chip';
 import {dashboardViewStyles} from "styles/dashboard";
 import {Toolbar, Typography} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import {TranslationsStore} from "store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {getAllLanguages} from "services/languages";
-import {connect} from "react-redux";
 import {tableStyles} from 'styles/table'
+import {LanguageState} from "../../../store/languages/types";
 
-type AppStateProps = ReturnType<typeof mapStateToProps>;
-type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type AppProps = AppStateProps & AppDispatchProps;
+interface PropsUsersList {
+    users: UserState[],
+    user: UserState,
+    languages: LanguageState[],
+    setUserSelected: (user: UserState) => void,
+    setEditForm: (isEditForm: boolean) => void,
+    setShowForm: (show: boolean) => void,
+    openDialog: () => void,
+}
 
-const UsersList: React.FC<any> = (props: AppProps) => {
+const UsersList: React.FC<any> = (props: PropsUsersList) => {
     const classes = Object.assign(tableStyles(), dashboardViewStyles());
 
-    useEffect(() => {
-        if (props.languages.length === 0) {
-            props.getLanguagesAction();
-        }
-    }, []);
-
     const loadFormAddUser = () => {
-        props.setTypeForm('create');
+        props.setEditForm(false);
         props.setUserSelected(initialUserState);
         props.setShowForm(true);
     };
 
     const loadFormEditUser = (user: UserState) => {
-        props.setTypeForm('update');
+        props.setEditForm(true);
         props.setUserSelected(user);
         props.setShowForm(true);
     };
@@ -101,25 +97,4 @@ const UsersList: React.FC<any> = (props: AppProps) => {
     );
 };
 
-const mapStateToProps = (store: TranslationsStore, props: any) => {
-    return {
-        users: props.users,
-        user: props.user,
-        languages: store.languages,
-        setUserSelected: props.setUserSelected,
-        setTypeForm: props.setTypeForm,
-        setShowForm: props.setShowForm,
-        openDialog: props.openDialog,
-    };
-};
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
-    return {
-        getLanguagesAction: () => dispatch(getAllLanguages()),
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(UsersList);
+export default UsersList;

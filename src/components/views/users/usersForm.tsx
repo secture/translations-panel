@@ -11,16 +11,12 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {TranslationsStore} from "store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
 import {AssociatedLanguage, UserState} from "store/user/types";
-import {createUser, updateUser} from "services/user";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
+import {LanguageState} from "../../../store/languages/types";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     root: {
@@ -32,17 +28,25 @@ const formUserStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-type AppStateProps = ReturnType<typeof mapStateToProps>;
-type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type AppProps = AppStateProps & AppDispatchProps;
+interface PropsUserForm {
+    user: UserState,
+    userSelected: UserState,
+    languages: LanguageState[],
+    roles: string[],
+    editForm: boolean,
+    showForm: boolean,
+    onAddUser: (user: UserState) => void,
+    onEditUser: (user: UserState) => void,
+    setShowForm: (show: boolean) => void,
+}
 
-const UsersForm = (props: AppProps) => {
+const UsersForm = (props: PropsUserForm) => {
     const classes = formUserStyles();
     const globalStyle = dashboardViewStyles();
 
-    const [updatedUser, setUser]: any = useState(props.user);
+    const [userSelected, setUserSelected]: any = useState(props.userSelected);
     const handleChangedValues = (property: string, value: any) => {
-        setUser({...updatedUser, [property]: value});
+        setUserSelected({...userSelected, [property]: value});
     };
 
     const [languagesUser, setLanguagesUser]: any = useState({});
@@ -51,35 +55,18 @@ const UsersForm = (props: AppProps) => {
     };
 
     const setLanguagesUserUpdated = () => {
-        updatedUser.associatedLanguages = [];
+        userSelected.associatedLanguages = [];
         Object.keys(languagesUser).map((key: any) => {
             if (languagesUser[key].isUserLanguage === true) {
-                updatedUser.associatedLanguages.push(languagesUser[key].data.id);
+                userSelected.associatedLanguages.push(languagesUser[key].data.id);
             }
         })
-    };
-
-    const sendForm = () => {
-        setLanguagesUserUpdated();
-        switch (props.typeForm) {
-            case 'create':
-                props.createUserAction(updatedUser).then((user: UserState) => {
-                    (user !== null) ? alert('User creado') : alert('no ha sido posible crear el usuario')
-                });
-                break;
-            case 'update':
-                props.updateUserAction(updatedUser).then((user: UserState) => {
-                    (user !== null) ? alert('User editado') : alert('no ha sido posible editar el usuario')
-                });
-                break;
-        }
-        props.setShowForm(false);
     };
 
     useEffect(() => {
         let languagesView: any = {};
         props.languages.forEach((language: any) => {
-            (updatedUser.associatedLanguages !== [] && updatedUser.associatedLanguages.find((language: AssociatedLanguage) => language.key === language.key)) ?
+            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: AssociatedLanguage) => associatedLanguage.key === language.key)) ?
                 languagesView[language.key] = {
                     isUserLanguage: true,
                     data: language,
@@ -92,9 +79,21 @@ const UsersForm = (props: AppProps) => {
         setLanguagesUser(languagesView)
     }, []);
 
+    const confirmCreateUser = () => {
+        props.setShowForm(false);
+        setLanguagesUserUpdated();
+        props.onAddUser(userSelected);
+    };
+
+    const confirmEditUser = () => {
+        props.setShowForm(false);
+        setLanguagesUserUpdated();
+        props.onEditUser(userSelected);
+    };
+
     return (
         <Paper className={classes.root}>
-            <form className={classes.form} onSubmit={sendForm}>
+            <form className={classes.form}>
                 <Container maxWidth={false} className={globalStyle.container}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -102,7 +101,7 @@ const UsersForm = (props: AppProps) => {
                                 id="name"
                                 label="Name"
                                 fullWidth
-                                value={updatedUser.name}
+                                value={userSelected.name}
                                 margin="normal"
                                 onChange={(e) => handleChangedValues('name', e.target.value)}
                             />
@@ -112,31 +111,31 @@ const UsersForm = (props: AppProps) => {
                                 id="email"
                                 label="Email"
                                 fullWidth
-                                value={updatedUser.email}
+                                value={userSelected.email}
                                 margin="normal"
                                 onChange={(e) => handleChangedValues('email', e.target.value)}
                             />
                         </Grid>
+                        {!props.editForm && <Grid item xs={12}>
+                            <TextField
+                                id="password"
+                                label="Password"
+                                fullWidth
+                                value={userSelected.password}
+                                margin="normal"
+                                onChange={(e) => handleChangedValues('password', e.target.value)}
+                            />
+                        </Grid>}
                         <Grid item xs={12}>
                             <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Privilege</FormLabel>
-                                <RadioGroup aria-label="gender" name="gender1" value={updatedUser.privilege} onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
+                                <RadioGroup aria-label="gender" name="gender1" value={userSelected.privilege} onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
                                     {props.roles.map((role: string) => (
                                         <FormControlLabel value={role} control={<Radio />} label={role} disabled={props.user.privilege !== 'Admin'}/>
                                     ))}
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
-                        {props.typeForm === 'create' && <Grid item xs={12}>
-                            <TextField
-                                id="password"
-                                label="Password"
-                                fullWidth
-                                value={updatedUser.password}
-                                margin="normal"
-                                onChange={(e) => handleChangedValues('password', e.target.value)}
-                            />
-                        </Grid>}
                         <Grid item xs={12}>
                             <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Languages</FormLabel>
@@ -153,9 +152,21 @@ const UsersForm = (props: AppProps) => {
                             <Button variant="outlined" color="secondary" className={globalStyle.button} onClick={() => props.setShowForm(false)} >
                                 Back
                             </Button>
-                            <Button variant="outlined" color="primary" className={globalStyle.button} onClick={() => sendForm()}>
-                                Send
-                            </Button>
+                            {props.editForm ? (
+                                <Button variant="outlined"
+                                        color="primary"
+                                        className={globalStyle.button}
+                                        onClick={() => {confirmEditUser()}}>
+                                    Save
+                                </Button>
+                            ) : (
+                                <Button variant="outlined"
+                                        color="primary"
+                                        className={globalStyle.button}
+                                        onClick={() => {confirmCreateUser()}}>
+                                    Create
+                                </Button>
+                            )}
                         </Grid>
                     </Grid>
                 </Container>
@@ -164,24 +175,4 @@ const UsersForm = (props: AppProps) => {
     )
 };
 
-const mapStateToProps = (store: TranslationsStore, props: any) => {
-    return {
-        user: props.user,
-        languages: store.languages,
-        roles: store.roles,
-        typeForm: props.typeForm,
-        setShowForm: props.setShowForm,
-    };
-};
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
-    return {
-        createUserAction: (user: UserState) => dispatch(createUser(user)),
-        updateUserAction: (user: UserState) => dispatch(updateUser(user))
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(UsersForm);
+export default UsersForm;

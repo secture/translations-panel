@@ -1,4 +1,4 @@
-import {formStyles} from '../../styles/form'
+import {formStyles} from '../../../styles/form'
 import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
@@ -6,7 +6,7 @@ import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {PlayerState} from "store/players/types";
 import {LanguageState} from "store/languages/types";
 
-interface PropsLanguagesForm {
+interface PropsPlayersForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
@@ -16,17 +16,17 @@ interface PropsLanguagesForm {
     setShowForm: (show: boolean) => void,
 }
 
-const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
+const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
 
     const classes = formStyles();
     const [player, setPlayer] = useState(props.playerSelected);
 
-    const changedValues = (e: any, property: string, key: string, shortName?: boolean) => {
+    const changedValues = (value: any, property: string, key: string, shortName?: boolean) => {
         setPlayer({
             ...player,
-            [property]: (key === 'noKey') ? e.target.value : {
+            [property]: (key === 'noKey') ? value : {
                 ...(shortName ? player.shortName : player.largeName),
-                [key] : e.target.value
+                [key] : value
             }
         });
     };
@@ -51,7 +51,7 @@ const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
                     label={language.key}
                     fullWidth
                     autoComplete="fname"
-                    onChange={(e) => changedValues(e, shortName ? 'shortName': 'largeName',`${language.key}`, shortName)}
+                    onChange={(e) => changedValues(e.target.value, shortName ? 'shortName': 'largeName',`${language.key}`, shortName)}
                     value={shortName ? player.shortName[language.key]: player.largeName[language.key]}
                 />))}
             </div>
@@ -79,7 +79,7 @@ const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
                                 type="number"
                                 fullWidth
                                 autoComplete="fname"
-                                onChange={(e) => changedValues(e, 'playerMasterId', 'noKey')}
+                                onChange={(e) => changedValues(parseInt(e.target.value), 'playerMasterId', 'noKey')}
                                 value={player.playerMasterId}
                             />
                         </Grid>
@@ -102,7 +102,7 @@ const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
                                 label="Team"
                                 fullWidth
                                 autoComplete="fname"
-                                onChange={(e) => changedValues(e, 'team', 'noKey')}
+                                onChange={(e) => changedValues(e.target.value, 'team', 'noKey')}
                                 value={player.team}
                             />
                         </Grid>
@@ -116,7 +116,7 @@ const PlayersForm: React.FC<any> = (props: PropsLanguagesForm) => {
                                 rows="4"
                                 defaultValue="Default Value"
                                 variant="outlined"
-                                onChange={(e) => changedValues(e, 'comments', 'noKey')}
+                                onChange={(e) => changedValues(e.target.value, 'comments', 'noKey')}
                                 value={player.comments}
                             />
                         </Grid>
