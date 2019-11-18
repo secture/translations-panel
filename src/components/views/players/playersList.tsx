@@ -19,8 +19,7 @@ interface PropsPlayerList {
     setEditForm: (editForm: boolean) => void,
     setShowForm: (showForm: boolean) => void,
     openDialog: () => void,
-    openHistoryPlayerDialog: () => void,
-    updateHistoryPlayer: (historyPlayer: any) => void
+    getHistoryPlayer: (roData: any) => void,
 }
 
 const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
@@ -46,11 +45,6 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
     const deletePlayer = (player: PlayerState) => {
         props.setPlayerSelected(player);
         props.openDialog();
-    };
-
-    const loadHistoryPlayer = (rowData: any) => {
-        props.updateHistoryPlayer(rowData);
-        props.openHistoryPlayerDialog();
     };
 
     return (
@@ -90,7 +84,7 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
                     search: true,
                     filtering: true,
                 }}
-                onRowClick={(event, rowData: any) => loadHistoryPlayer(rowData)}
+                onRowClick={(event, rowData: any) => props.getHistoryPlayer(rowData)}
                 isLoading={props.players.length === 0}/>
         </Paper>
     )

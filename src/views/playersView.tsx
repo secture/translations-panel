@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "../styles/dashboard";
 import {TranslationsStore} from "../store/types";
 import {ThunkDispatch} from "redux-thunk";
@@ -12,11 +11,14 @@ import {connect} from "react-redux";
 import PlayersList from "components/views/players/playersList";
 import PlayersForm from "components/views/players/playersForm";
 import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers, historyPlayer} from "../services/players";
-import {initialPlayerState} from "store/players/reducers";
+import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
 import DeleteDialog from "components/common/deleteDialog";
 import {LocaleState} from "store/locales/types";
-import {PlayerState} from "store/players/types";
+import {PlayerHistoryState, PlayerState} from "store/players/types";
 import FullScreenDialog from "../components/common/fullScreenDialog";
+import {setStatus} from "../store/status/actions";
+import {initialStatusState} from "../store/status/reducers";
+import {StatusState} from "../store/status/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -36,12 +38,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const [playerSelected, setPlayerSelected] = useState(initialPlayerState);
     const [editForm, setEditForm] = useState(false);
     const [showForm, setShowForm] = useState(false);
-
-    const [historyPlayer, setHistoryPlayer] = useState({});
-    const updateHistoryPlayer = (historyPlayer: any) => {
-        setHistoryPlayer(historyPlayer);
-        getHistoryPlayer(historyPlayer);
-    };
+    const [historyPlayer, setHistoryPlayer] = useState(initialHistoryPlayerState);
 
     useEffect(() => {
         if (props.players.length === 0) {
@@ -68,9 +65,16 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     };
 
     const getHistoryPlayer = (rowData: any) => {
-        props.historyPlayerAction(rowData).then((historyPlayer: any) => {
-            console.log(historyPlayer);
-        })
+        props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
+            setHistoryPlayer(historyPlayer);
+            if (historyPlayer.history.length === 0) {
+                props.statusAction({type: 'info',
+                    message: 'The player has no history changes',
+                    show: true})
+            } else {
+                updateHistoryPlayerDialog();
+            }
+        });
     };
 
     return (
@@ -85,8 +89,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                 setPlayerSelected={setPlayerSelected}
                                 setShowForm={setShowForm}
                                 openDialog={updateDialog}
-                                openHistoryPlayerDialog={updateHistoryPlayerDialog}
-                                updateHistoryPlayer={updateHistoryPlayer}
+                                getHistoryPlayer={getHistoryPlayer}
                                 setEditForm={setEditForm}/>
                         </Grid>) : (
                         <Grid item xs={12}>
@@ -101,7 +104,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                             />
                         </Grid>)
                     }
-                    <FullScreenDialog openDialog={updateHistoryPlayerDialog} dialog={historyPlayerDialog} data={historyPlayer} items={[]}/>
+                    <FullScreenDialog openDialog={updateHistoryPlayerDialog} dialog={historyPlayerDialog} data={historyPlayer}/>
                     <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected} deleteFunction={onDeletePlayer}/>
                 </Grid>
             </Container>
@@ -123,6 +126,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),
         historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
+        statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };
 

@@ -10,7 +10,7 @@ import {amber, green} from "@material-ui/core/colors";
 import {TranslationsStore} from "../../store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import {StatusState} from "../../store/status/types";
 import {TransitionProps} from "@material-ui/core/transitions";
 import {setStatus} from "../../store/status/actions";

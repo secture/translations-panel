@@ -1,5 +1,11 @@
-import {SET_PLAYERS, PlayerState, PlayersActionTypes} from "./types";
+import {SET_PLAYERS, PlayerState, PlayersActionTypes, PlayerHistoryState} from "./types";
 import {initialUserState} from "../user/reducers";
+
+export const initialHistoryPlayerState: PlayerHistoryState = {
+    id: '',
+    deleted: false,
+    history: [],
+};
 
 export const initialPlayerState: PlayerState = {
     id: '',
