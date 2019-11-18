@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {LanguageState} from "store/languages/types";
+import {AssociatedLanguage, UserState} from "store/user/types";
 
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -11,12 +13,10 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {AssociatedLanguage, UserState} from "store/user/types";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
-import {LanguageState} from "../../../store/languages/types";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
     root: {

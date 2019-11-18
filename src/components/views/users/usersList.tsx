@@ -1,22 +1,23 @@
 import React from 'react';
+import {AssociatedLanguage, UserState} from "store/user/types";
+import {initialUserState} from "store/user/reducers";
+import {LanguageState} from "store/languages/types";
+
+import {Toolbar, Typography} from "@material-ui/core";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {AssociatedLanguage, UserState} from "store/user/types";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {initialUserState} from "store/user/reducers";
 import Chip from '@material-ui/core/Chip';
-
+import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
-import {Toolbar, Typography} from "@material-ui/core";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {tableStyles} from 'styles/table'
-import {LanguageState} from "../../../store/languages/types";
+
 
 interface PropsUsersList {
     users: UserState[],

@@ -1,22 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 import {TranslationsStore} from "store/types";
+import {initialUserState} from "store/user/reducers";
+import {UserState} from "store/user/types";
+
+/* Services */
+import {createUser, deleteUser, getUsers, updateUser} from "services/user";
+import {getAllLanguages} from "services/languages";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-
 import {dashboardViewStyles} from "styles/dashboard";
+
+/* Components */
 import UsersList from "components/views/users/usersList";
 import UsersForm from "components/views/users/usersForm";
 import DeleteDialog from "components/common/deleteDialog";
-
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {createUser, deleteUser, getUsers, updateUser} from "services/user";
-import {initialUserState} from "store/user/reducers";
-import {UserState} from "../store/user/types";
-import {getAllLanguages} from "../services/languages";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

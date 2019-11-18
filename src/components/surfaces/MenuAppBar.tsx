@@ -1,19 +1,19 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {UserState} from "store/user/types";
+import {connect, useSelector} from "react-redux";
+import {TranslationsStore} from "store/types";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import CssConditional from "clsx";
-import {UserState} from "store/user/types";
-import {connect, useSelector} from "react-redux";
-import {TranslationsStore} from "store/types";
-
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
+
 import {logOut} from "services/auth";
 import history from "../../history";
 

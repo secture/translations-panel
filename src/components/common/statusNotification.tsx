@@ -1,5 +1,12 @@
 import React, {SyntheticEvent, useEffect, useState} from "react";
-import clsx from 'clsx';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {connect} from "react-redux";
+import {StatusState} from "store/status/types";
+import {setStatus} from "store/status/actions";
+import {initialStatus} from "store/status/reducers";
+import {TranslationsStore} from "store/types";
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -7,14 +14,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import WarningIcon from '@material-ui/icons/Warning';
 import {IconButton, makeStyles, Slide, Snackbar, SnackbarContent, Theme} from "@material-ui/core";
 import {amber, green} from "@material-ui/core/colors";
-import {TranslationsStore} from "../../store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
-import {StatusState} from "../../store/status/types";
 import {TransitionProps} from "@material-ui/core/transitions";
-import {setStatus} from "../../store/status/actions";
-import {initialStatus} from "../../store/status/reducers";
+import clsx from 'clsx';
 
 const variantIcon: any = {
     success: CheckCircleIcon,

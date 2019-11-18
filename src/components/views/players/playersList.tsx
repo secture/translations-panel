@@ -1,15 +1,17 @@
 import React, {useState} from "react";
+import {PlayerState} from "store/players/types";
+import {UserState} from "store/user/types";
+import {LanguageState} from "store/languages/types";
+import {initialPlayerState} from "store/players/reducers";
+import {initialLanguage} from "store/languages/reducers";
+
+import MaterialTable, {MTableToolbar} from "material-table";
 import Paper from "@material-ui/core/Paper";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import IconButton from "@material-ui/core/IconButton";
-import MaterialTable, {MTableToolbar} from "material-table";
 import {enhancedTableStyles} from 'styles/table';
-import {PlayerState} from "store/players/types";
-import {initialPlayerState} from "store/players/reducers";
-import {LanguageState} from "store/languages/types";
-import {initialLanguage} from "store/languages/reducers";
+
 import {getColumns} from 'components/common/utilsTable';
-import {UserState} from "../../../store/user/types";
 import LanguageSelector from 'components/common/languageSelector'
 
 interface PropsPlayerList {

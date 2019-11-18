@@ -17,7 +17,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import {dashboardViewStyles} from "../styles/dashboard";
+import {dashboardViewStyles} from "styles/dashboard";
 
 const DashboardView = () => {
     const classes = dashboardViewStyles();

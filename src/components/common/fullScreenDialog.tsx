@@ -1,4 +1,6 @@
 import React, {ReactElement} from "react";
+import {PlayerState} from "store/players/types";
+
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
-import {PlayerState} from "../../store/players/types";
 
 const fullScreenDialogStyles = makeStyles((theme: Theme) =>
     createStyles({

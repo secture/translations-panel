@@ -1,24 +1,28 @@
 import React, {useEffect, useState} from 'react';
+import {ThunkDispatch} from "redux-thunk";
+import {connect} from "react-redux";
+import {AnyAction} from "redux";
+import {setStatus} from "store/status/actions";
+import {StatusState} from "store/status/types";
+import {LanguageState} from "store/languages/types";
+import {TranslationsStore} from "store/types";
+import {PlayerHistoryState, PlayerState} from "store/players/types";
+import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
+
+/* Services */
+import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers, historyPlayer} from "services/players";
+import {getAllLanguages} from "services/languages";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-import {dashboardViewStyles} from "../styles/dashboard";
-import {TranslationsStore} from "../store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
+import {dashboardViewStyles} from "styles/dashboard";
+
+/* Components */
 import PlayersList from "components/views/players/playersList";
 import PlayersForm from "components/views/players/playersForm";
-import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers, historyPlayer} from "../services/players";
-import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
 import DeleteDialog from "components/common/deleteDialog";
-import {LanguageState} from "store/languages/types";
-import {PlayerHistoryState, PlayerState} from "store/players/types";
-import FullScreenDialog from "../components/common/fullScreenDialog";
-import {setStatus} from "../store/status/actions";
-import {StatusState} from "../store/status/types";
-import {getAllLanguages} from "../services/languages";
+import FullScreenDialog from "components/common/fullScreenDialog";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
