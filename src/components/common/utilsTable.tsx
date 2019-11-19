@@ -4,6 +4,8 @@ import Avatar from "@material-ui/core/Avatar";
 import React, {ReactElement} from "react";
 import {LanguageState} from "store/languages/types";
 
+const NO_FIELD = 'NO_TEXT';
+
 const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
         <div>
@@ -38,28 +40,16 @@ const customSearch = (filter: any, rowData: PlayerState, language: LanguageState
 };
 
 const filterByTranslated = (filter: any, rowData: PlayerState, language: LanguageState) => {
-    if (filter instanceof Array) {
-        if (filter.length === 1) {
-            return (filter[0] === 'true') ? (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT'):
-                (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] === 'NO_TEXT')
-
-        } else if (filter.length === 2) {
-            return (filter[0] === 'true' && filter[1] === 'true') ?
-                (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT') && (rowData.shortName[language.key] !== 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT'):
-                (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT') && (rowData.shortName[language.key] === 'NO_TEXT' && rowData.largeName[language.key] !== 'NO_TEXT');
-        }
-        return true;
-    }
-    return false;
+    return (filter.length > 0) ?
+        (filter.indexOf('translated') > -1 && (rowData.shortName[language.key] !== NO_FIELD && rowData.largeName[language.key] !== NO_FIELD) ||
+        filter.indexOf('unTranslated') > -1 && (rowData.shortName[language.key] === NO_FIELD && rowData.largeName[language.key] === NO_FIELD)) :
+        true;
 };
 
 const filterByConfirmed = (filter: any, rowData: PlayerState, language: LanguageState) => {
-    if (filter.length === 1) {
-        return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true'));
-    } else if (filter.length === 2) {
-        return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true') && rowData.confirmedTranslations[language.key] === (filter[1] === 'true'));
-    }
-    return true;
+    return (filter.length > 0) ?
+        (filter.indexOf('confirmed') > -1 && rowData.confirmedTranslations[language.key]) || (filter.indexOf('unConfirmed') > -1 && !rowData.confirmedTranslations[language.key]) :
+        true;
 };
 
 interface ColumnsPlayer {
@@ -81,10 +71,10 @@ export const getColumns = (language: LanguageState) => {
             customFilterAndSearch: (filter: string, rowData: PlayerState) => customSearch(filter, rowData, language),
             render: (rowData: PlayerState) => playerNames(rowData, true)
         },
-        {title: 'Large name', field: 'largeName', lookup: { true: 'Translated', false: 'Untranslated' }, disablePadding: false, searchable: false, filtering: true, label: 'Large name',
+        {title: 'Large name', field: 'largeName', lookup: {translated: 'Translated', unTranslated: 'Untranslated'}, disablePadding: false, searchable: false, filtering: true, label: 'Large name',
             customFilterAndSearch: (filter: string, rowData: PlayerState) => filterByTranslated(filter, rowData, language),
             render: (rowData: PlayerState) => playerNames(rowData, false)},
-        {title: 'Confirmed', field: 'confirmedTranslations', lookup: { true: 'Confirmed', false: 'No Confirmed' }, disablePadding: false, searchable: false, filtering: true, label: 'Confirmed',
+        {title: 'Confirmed', field: 'confirmedTranslations', lookup: {confirmed: 'Confirmed', unConfirmed: 'No Confirmed'}, disablePadding: false, searchable: false, filtering: true, label: 'Confirmed',
             customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, language),
             render: (rowData: PlayerState) => confirmedTranslations(rowData)},
         {title: 'Insertion date', field: 'insertionDate', disablePadding: false, searchable: true, filtering: false, label: 'IDate', render: (rowData: PlayerState) => <div>{new Date(rowData.insertionDate).toDateString()}</div>},

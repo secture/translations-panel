@@ -10,7 +10,14 @@ import {PlayerHistoryState, PlayerState} from "store/players/types";
 import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
 
 /* Services */
-import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers, historyPlayer} from "services/players";
+import {
+    addPlayer,
+    confirmPlayerTranslations,
+    deletePlayerById,
+    editPlayerById,
+    getAllPlayers,
+    historyPlayer
+} from "services/players";
 import {getAllLanguages} from "services/languages";
 
 /* Material UI */
@@ -69,6 +76,12 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
         })
     };
 
+    const onConfirmPlayerTranslation = (id: string, languageKey: string) => {
+        props.confirmPlayerTranslationAction(id, languageKey).then((confirmPlayer: PlayerState) => {
+            (confirmPlayer !== null) ? alert('Player confirmado') : alert('no ha sido posible confirmar el player')
+        });
+    };
+
     const getHistoryPlayer = (rowData: any) => {
         props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
             setHistoryPlayer(historyPlayer);
@@ -102,6 +115,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                 playerSelected={playerSelected}
                                 onAddPlayer={onAddPlayer}
                                 onEditPlayer={onEditPlayer}
+                                onConfirmPlayerTranslation={onConfirmPlayerTranslation}
                                 languages={props.languages}
                                 setShowForm={setShowForm}
                                 setEditForm={setEditForm}
@@ -132,6 +146,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),
         historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
+        confirmPlayerTranslationAction: (id: string, languageKey: string) => dispatch(confirmPlayerTranslations(id, languageKey)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };
