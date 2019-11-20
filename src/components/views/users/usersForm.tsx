@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {LanguageState} from "store/languages/types";
-import {AssociatedLanguage, UserState} from "store/user/types";
+import {UserState} from "store/user/types";
 
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -66,7 +66,7 @@ const UsersForm = (props: PropsUserForm) => {
     useEffect(() => {
         let languagesView: any = {};
         props.languages.forEach((language: any) => {
-            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: AssociatedLanguage) => associatedLanguage.key === language.key)) ?
+            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: LanguageState) => associatedLanguage.key === language.key)) ?
                 languagesView[language.key] = {
                     isUserLanguage: true,
                     data: language,

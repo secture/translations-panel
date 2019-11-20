@@ -38,7 +38,7 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
         props.setShowForm(true);
     };
 
-    const loadFormEditPlayer= (player: PlayerState) => {
+    const loadFormEditPlayer = (player: PlayerState) => {
         props.setEditForm(true);
         props.setPlayerSelected(player);
         props.setShowForm(true);

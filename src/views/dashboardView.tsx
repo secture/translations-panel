@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { TranslationsStore } from "store/types";
-import {AssociatedLanguage, UserState} from "store/user/types";
+import {UserState} from "store/user/types";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import {dashboardViewStyles} from "styles/dashboard";
+import {LanguageState} from "store/languages/types";
 
 const DashboardView = () => {
     const classes = dashboardViewStyles();
@@ -45,7 +46,7 @@ const DashboardView = () => {
                                 <Chip icon={<MailOutlineIcon />} label={user.email} color="primary" />
                                 <Box mt={2} px={2} border={1} borderColor="grey.300" borderRadius={6}>
                                     <List>
-                                        {user.associatedLanguages.map((language: AssociatedLanguage) =>  (
+                                        {user.associatedLanguages.map((language: LanguageState) =>  (
                                             <Box key={language.id}>
                                                 <ListItem disableGutters>
                                                     <ListItemAvatar>

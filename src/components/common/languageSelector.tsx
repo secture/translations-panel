@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 interface PropsLanguageSelector {
+    forPlayers: boolean,
     language: LanguageState,
     handleLanguage: (language: LanguageState) => void
 }
@@ -27,21 +28,21 @@ const languageSelectorStyles = makeStyles((theme: Theme) =>
 
 const LanguageSelector: React.FC<any> = (props: PropsLanguageSelector) => {
     const classes = languageSelectorStyles();
+    const languages = useSelector((state: TranslationsStore) => state.languages);
+    const user = useSelector((state: TranslationsStore) => state.user);
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const language = languages.find((language: LanguageState) => language.name === event.target.value);
-        if (typeof language !== 'undefined') {
-            props.handleLanguage(language);
+        const lng = languages.find((language: LanguageState) => language.name === event.target.value);
+        if (typeof lng !== 'undefined') {
+            props.handleLanguage(lng);
         }
     };
-
     const inputLabel = React.useRef<HTMLLabelElement>(null);
     const [labelWidth, setLabelWidth] = useState(0);
     React.useEffect(() => {
         setLabelWidth(inputLabel.current!.offsetWidth);
     }, []);
 
-    const languages = useSelector((state: TranslationsStore) => state.languages);
 
     return (
         <FormControl className={classes.formControl} style={{margin: '0 26px'}}>
@@ -55,11 +56,17 @@ const LanguageSelector: React.FC<any> = (props: PropsLanguageSelector) => {
                 onChange={handleChange}
                 labelWidth={labelWidth}
             >
-                {
-                    languages.map((language: LanguageState) => (
-                        language.localeForPlayers &&
-                        <MenuItem value={language.name}>{language.icon} {language.name}</MenuItem>
-                    ))
+                {props.forPlayers ?
+                    languages.map((languageItem: LanguageState) => (
+                        languageItem.localeForPlayers &&
+                        <MenuItem key={languageItem.id}
+                                  value={languageItem.name}>{languageItem.icon} {languageItem.name}</MenuItem>
+                    )) :
+                    user.associatedLanguages.map((languageItem: LanguageState) => {
+                            return <MenuItem key={languageItem.id}
+                                             value={languageItem.name}>{languageItem.icon} {languageItem.name}</MenuItem>
+                        }
+                    )
                 }
             </Select>
         </FormControl>

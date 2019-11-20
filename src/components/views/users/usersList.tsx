@@ -1,5 +1,5 @@
 import React from 'react';
-import {AssociatedLanguage, UserState} from "store/user/types";
+import {UserState} from "store/user/types";
 import {initialUserState} from "store/user/reducers";
 import {LanguageState} from "store/languages/types";
 
@@ -78,7 +78,7 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                             <TableCell align="left">{userRow.email}</TableCell>
                             <TableCell align="left">{userRow.privilege}</TableCell>
                             <TableCell align="left">
-                                {userRow.associatedLanguages.map((language: AssociatedLanguage) =>
+                                {userRow.associatedLanguages.map((language: LanguageState) =>
                                     <Chip label={language.key} variant="outlined" color="primary"/>
                                 )}
                             </TableCell>

@@ -3,16 +3,17 @@ import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import React, {ReactElement} from "react";
 import {LanguageState} from "store/languages/types";
+import {ConfirmedTranslations} from "../../store/translations/types";
 
 const NO_FIELD = 'NO_TEXT';
 
 const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
         <div>
-            {Object.keys(shortName ? rowData.shortName: rowData.largeName).map((key: any)=> (
+            {Object.keys(shortName ? rowData.shortName : rowData.largeName).map((key: any) => (
                 <Chip style={{marginBottom: "5px"}}
                       avatar={<Avatar color="secondary">{key}</Avatar>}
-                      label={ shortName ? rowData.shortName[key]: rowData.largeName[key]}
+                      label={shortName ? rowData.shortName[key] : rowData.largeName[key]}
                       color="primary"
                 />)
             )}
@@ -20,21 +21,22 @@ const playerNames = (rowData: PlayerState, shortName: boolean) => {
     )
 };
 
-const confirmedTranslations = (rowData: PlayerState) => {
+export const confirmedTranslations = (data: ConfirmedTranslations) => {
     return (
         <div>
-            {Object.keys(rowData.confirmedTranslations).map((key: any)=> (
-                <Chip style={{marginBottom: "5px"}}
+            {Object.keys(data).map((key: string) => (
+                <Chip key={'cT_' + data.id + '_' + key}
+                      style={{marginBottom: "5px"}}
                       avatar={<Avatar>{key}</Avatar>}
-                      label={rowData.confirmedTranslations[key] ? 'confirm' : 'unconfirmed'}
-                      color={rowData.confirmedTranslations[key] ? 'primary' : 'secondary'}
+                      label={data[key] ? 'confirm' : 'unconfirmed'}
+                      color={data[key] ? 'primary' : 'secondary'}
                 />)
             )}
         </div>
     )
 };
 
-const customSearch = (filter: any, rowData: PlayerState, language: LanguageState) => {
+export const customSearch = (filter: any, rowData: PlayerState, language: LanguageState) => {
     return (rowData.shortName[language.key].toLowerCase().includes(filter.toLocaleLowerCase()) &&
         rowData.largeName[language.key].toLowerCase().includes(filter.toLocaleLowerCase()));
 };
@@ -76,7 +78,7 @@ export const getColumns = (language: LanguageState) => {
             render: (rowData: PlayerState) => playerNames(rowData, false)},
         {title: 'Confirmed', field: 'confirmedTranslations', lookup: {confirmed: 'Confirmed', unConfirmed: 'No Confirmed'}, disablePadding: false, searchable: false, filtering: true, label: 'Confirmed',
             customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, language),
-            render: (rowData: PlayerState) => confirmedTranslations(rowData)},
+            render: (rowData: PlayerState) => confirmedTranslations(rowData.confirmedTranslations)},
         {title: 'Insertion date', field: 'insertionDate', disablePadding: false, searchable: true, filtering: false, label: 'IDate', render: (rowData: PlayerState) => <div>{new Date(rowData.insertionDate).toDateString()}</div>},
         {title: 'Updated date', field: 'updateDate', disablePadding: false, searchable: true, filtering: false, label: 'UDate', render: (rowData: PlayerState) => <div>{new Date(rowData.updateDate).toDateString()}</div>},
         {title: 'Insertion user', field: 'insertionUser', disablePadding: false, searchable: true, filtering: false, label: 'IUser', render: (rowData: PlayerState) => <div>{rowData.insertionUser.name}</div>},
