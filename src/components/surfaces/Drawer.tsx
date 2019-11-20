@@ -7,17 +7,14 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import List from '@material-ui/core/List';
 import {makeStyles} from '@material-ui/core/styles';
-
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import LanguageIcon from '@material-ui/icons/Language';
 import PeopleIcon from '@material-ui/icons/People';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import ClassIcon from '@material-ui/icons/Class';
 

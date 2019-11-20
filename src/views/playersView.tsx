@@ -1,24 +1,35 @@
 import React, {useEffect, useState} from 'react';
+import {ThunkDispatch} from "redux-thunk";
+import {connect} from "react-redux";
+import {AnyAction} from "redux";
+import {setStatus} from "store/status/actions";
+import {StatusState} from "store/status/types";
+import {LanguageState} from "store/languages/types";
+import {TranslationsStore} from "store/types";
+import {PlayerHistoryState, PlayerState} from "store/players/types";
+import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
+
+/* Services */
+import {
+    addPlayer,
+    confirmPlayerTranslations,
+    deletePlayerById,
+    editPlayerById,
+    getAllPlayers,
+    historyPlayer
+} from "services/players";
+import {getAllLanguages} from "services/languages";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-import {dashboardViewStyles} from "../styles/dashboard";
-import {TranslationsStore} from "../store/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect} from "react-redux";
+import {dashboardViewStyles} from "styles/dashboard";
+
+/* Components */
 import PlayersList from "components/views/players/playersList";
 import PlayersForm from "components/views/players/playersForm";
-import {addPlayer, deletePlayerById, editPlayerById, getAllPlayers, historyPlayer} from "../services/players";
-import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
 import DeleteDialog from "components/common/deleteDialog";
-import {LanguageState} from "store/languages/types";
-import {PlayerHistoryState, PlayerState} from "store/players/types";
-import FullScreenDialog from "../components/common/fullScreenDialog";
-import {setStatus} from "../store/status/actions";
-import {StatusState} from "../store/status/types";
-import {getAllLanguages} from "../services/languages";
+import FullScreenDialog from "components/common/fullScreenDialog";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -65,6 +76,12 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
         })
     };
 
+    const onConfirmPlayerTranslation = (id: string, languageKey: string) => {
+        props.confirmPlayerTranslationAction(id, languageKey).then((confirmPlayer: PlayerState) => {
+            (confirmPlayer !== null) ? alert('Player confirmado') : alert('no ha sido posible confirmar el player')
+        });
+    };
+
     const getHistoryPlayer = (rowData: any) => {
         props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
             setHistoryPlayer(historyPlayer);
@@ -87,6 +104,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                         <Grid item xs={12}>
                             <PlayersList
                                 players={props.players}
+                                user={props.user}
                                 setPlayerSelected={setPlayerSelected}
                                 setShowForm={setShowForm}
                                 openDialog={updateDialog}
@@ -98,6 +116,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                                 playerSelected={playerSelected}
                                 onAddPlayer={onAddPlayer}
                                 onEditPlayer={onEditPlayer}
+                                onConfirmPlayerTranslation={onConfirmPlayerTranslation}
                                 languages={props.languages}
                                 setShowForm={setShowForm}
                                 setEditForm={setEditForm}
@@ -128,6 +147,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),
         historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
+        confirmPlayerTranslationAction: (id: string, languageKey: string) => dispatch(confirmPlayerTranslations(id, languageKey)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };

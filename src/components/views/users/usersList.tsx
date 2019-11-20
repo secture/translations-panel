@@ -1,22 +1,23 @@
 import React from 'react';
+import {UserState} from "store/user/types";
+import {initialUserState} from "store/user/reducers";
+import {LanguageState} from "store/languages/types";
+
+import {Toolbar, Typography} from "@material-ui/core";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {UserState} from "store/user/types";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {initialUserState} from "store/user/reducers";
 import Chip from '@material-ui/core/Chip';
-
+import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
-import {Toolbar, Typography} from "@material-ui/core";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {tableStyles} from 'styles/table'
-import {LanguageState} from "../../../store/languages/types";
+
 
 interface PropsUsersList {
     users: UserState[],
@@ -65,7 +66,7 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                         <TableCell align="left">Email</TableCell>
                         <TableCell align="left">Role</TableCell>
                         <TableCell align="left">Languages</TableCell>
-                        <TableCell align="left">Actions</TableCell>
+                        {props.user.privilege === 'Admin' && <TableCell align="left">Actions</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -81,14 +82,14 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                                     <Chip label={language.key} variant="outlined" color="primary"/>
                                 )}
                             </TableCell>
-                            <TableCell align="left" className={classes.actions}>
-                                {(props.user.id === userRow.id || props.user.privilege === 'Admin') && <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
+                            {props.user.privilege === 'Admin' && <TableCell align="left" className={classes.actions}>
+                                <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
                                     <EditIcon color="primary" />
-                                </IconButton>}
+                                </IconButton>
                                 <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
                                     <DeleteIcon color="secondary" />
                                 </IconButton>
-                            </TableCell>
+                            </TableCell>}
                         </TableRow>
                     ))}
                 </TableBody>

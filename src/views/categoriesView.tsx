@@ -1,19 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 import {TranslationsStore} from "store/types";
+import {initialCategory} from "store/categories/reducers";
+import {CategoryState} from "store/categories/types";
+
+/* Services */
+import {addCategory, deleteCategoryById, editCategoryById, getAllCategories} from "services/categories";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-
 import {dashboardViewStyles} from "styles/dashboard";
+
+/* Components */
 import CategoriesList from "components/views/categories/categoriesList";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {addCategory, deleteCategoryById, editCategoryById, getAllCategories} from "services/categories";
-import {CategoryState} from "store/categories/types";
 import DeleteDialog from "components/common/deleteDialog";
-import {initialCategory} from "store/categories/reducers";
 import CategoriesForm from "components/views/categories/categoriesForm";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
@@ -21,7 +24,6 @@ type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const CategoriesView: React.FC<any> = (props: AppProps) => {
-
     const [categorySelected, setCategorySelected] = useState(initialCategory);
     const [showForm, setShowForm] = useState(false);
     const [editForm, setEditForm] = useState(false);

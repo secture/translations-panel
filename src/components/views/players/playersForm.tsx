@@ -1,25 +1,28 @@
 import {formStyles} from 'styles/form'
 import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
-import Container from "@material-ui/core/Container";
-import {Button, Grid, TextField, Typography} from "@material-ui/core";
 import {PlayerState} from "store/players/types";
 import {LanguageState} from "store/languages/types";
+import {ConfirmedTranslations} from "store/translations/types";
+
+import {Button, Grid, TextField, Typography, Paper, Switch, Container, FormControl, FormLabel, FormControlLabel} from "@material-ui/core";
+import {formStyles} from 'styles/form';
 
 interface PropsPlayersForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
-    languages: LanguageState[],
-    editForm: boolean,
+    onConfirmPlayerTranslation: (id: string, languageKey: string) => void,
+    languages: LanguageState[]
+    editForm: boolean
     showForm: boolean,
     setShowForm: (show: boolean) => void,
 }
 
 const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
-
     const classes = formStyles();
     const [player, setPlayer] = useState(props.playerSelected);
+    const [confirmedPlayers, setConfirmedPlayers] = useState<ConfirmedTranslations>(props.playerSelected.confirmedTranslations);
 
     const changedValues = (value: any, property: string, key: string, shortName?: boolean) => {
         setPlayer({
@@ -31,8 +34,16 @@ const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
         });
     };
 
+    const changedConfirmedPlayers = (value: any, key: string) => {
+        setConfirmedPlayers({
+            ...confirmedPlayers,
+            [key]: (value === 'false')
+        });
+    };
+
     const confirmEditPlayer = () => {
         props.setShowForm(false);
+        player.confirmedTranslations = confirmedPlayers;
         props.onEditPlayer(player);
     };
 
@@ -46,15 +57,35 @@ const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
             <div>
                 {props.languages.map((language: LanguageState) => (
                     language.localeForPlayers && <TextField
-                    id={language.key}
-                    name={language.key}
-                    label={language.key}
-                    fullWidth
-                    autoComplete="fname"
-                    onChange={(e) => changedValues(e.target.value, shortName ? 'shortName': 'largeName',`${language.key}`, shortName)}
-                    value={shortName ? player.shortName[language.key]: player.largeName[language.key]}
-                />))}
+                        id={language.key}
+                        name={language.key}
+                        label={language.key}
+                        fullWidth
+                        autoComplete="fname"
+                        onChange={(e) => changedValues(e.target.value, shortName ? 'shortName': 'largeName',`${language.key}`, shortName)}
+                        value={shortName ? player.shortName[language.key]: player.largeName[language.key]}
+                    />))}
             </div>
+        )
+    };
+
+    const confirmedPlayersByLanguage = () => {
+        return (
+            <FormControl component="fieldset">
+                <FormLabel component="legend">Confirm player translations by language</FormLabel>
+                {props.languages.map((language: LanguageState) => {
+                    return (language.localeForPlayers && <FormControlLabel
+                        control={<Switch
+                            disabled={confirmedPlayers[language.key] || !props.editForm}
+                            checked={confirmedPlayers[language.key]}
+                            onChange={(e) => {changedConfirmedPlayers(e.target.value, `${language.key}`);
+                                props.onConfirmPlayerTranslation(props.playerSelected.id, language.key)}}
+                            value={confirmedPlayers[language.key]}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}/>}
+                        label={language.key}
+                    />)
+                })}
+            </FormControl>
         )
     };
 
@@ -94,6 +125,9 @@ const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
                                 Large Name
                             </Typography>
                             {namePlayersByLanguage(false)}
+                        </Grid>
+                        <Grid item xs={12}>
+                            {confirmedPlayersByLanguage()}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

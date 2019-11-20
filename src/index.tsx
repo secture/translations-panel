@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 
 /* LAYOUTS */
 import FullLayout from 'layouts/FullLayout';
