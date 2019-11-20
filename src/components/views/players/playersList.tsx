@@ -49,6 +49,37 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
         props.openDialog();
     };
 
+    const toolbar = (propsTable: any) => {
+        return (
+            <div>
+                <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
+                    <MTableToolbar {...propsTable} />
+                    <LanguageSelector language={language} handleLanguage={handleLanguage}/>
+                    { props.user.privilege === 'Admin' && <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
+                        <AddCircleOutlineIcon color="primary"/>
+                    </IconButton>}
+                </div>
+            </div>
+        )
+    };
+
+    const actions = (): any[] => {
+        return (props.user.privilege === 'Admin') ? [
+            {
+                icon: 'edit',
+                tooltip: 'Edit User',
+                iconProps: {color: 'primary'},
+                onClick: (event: any, rowData: any) => loadFormEditPlayer(rowData)
+            },
+            {
+                icon: 'delete',
+                tooltip: 'Delete User',
+                iconProps: {color: 'secondary'},
+                onClick: (event: any, rowData: any) => deletePlayer(rowData)
+            }
+        ] : []
+    };
+
     return (
         <Paper className={classes.root}>
             <MaterialTable
@@ -56,32 +87,9 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
                 columns={getColumns(language)}
                 data={props.players}
                 components={{
-                    Toolbar: (props) => (
-                        <div>
-                            <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
-                                <MTableToolbar {...props} />
-                                <LanguageSelector language={language} handleLanguage={handleLanguage}/>
-                                <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
-                                    <AddCircleOutlineIcon color="primary"/>
-                                </IconButton>
-                            </div>
-                        </div>
-                    ),
+                    Toolbar: (props: any) => toolbar(props),
                 }}
-                actions={[
-                    {
-                        icon: 'edit',
-                        tooltip: 'Edit User',
-                        iconProps: {color: 'primary'},
-                        onClick: (event, rowData: any) => loadFormEditPlayer(rowData)
-                    },
-                    {
-                        icon: 'delete',
-                        tooltip: 'Delete User',
-                        iconProps: {color: 'secondary'},
-                        onClick: (event, rowData: any) => deletePlayer(rowData)
-                    }
-                ]}
+                actions={actions()}
                 options={{
                     search: true,
                     filtering: true,

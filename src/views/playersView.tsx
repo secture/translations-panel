@@ -104,6 +104,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                         <Grid item xs={12}>
                             <PlayersList
                                 players={props.players}
+                                user={props.user}
                                 setPlayerSelected={setPlayerSelected}
                                 setShowForm={setShowForm}
                                 openDialog={updateDialog}
