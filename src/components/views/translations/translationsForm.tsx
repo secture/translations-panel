@@ -121,9 +121,11 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                                 }
                             </Typography>
                             <Divider variant="middle"/>
+                            {props.editForm &&
                             <Typography variant="overline" display="block" gutterBottom>
                                 Last updated by: {data.updateUser.name}({data.updateUser.privilege})
                             </Typography>
+                            }
                         </Grid>
 
                         <Grid item xs={6} sm={6}>

@@ -36,7 +36,7 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
         props.setShowForm(true);
     };
 
-    const loadFormEditPlayer= (player: PlayerState) => {
+    const loadFormEditPlayer = (player: PlayerState) => {
         props.setEditForm(true);
         props.setPlayerSelected(player);
         props.setShowForm(true);
@@ -58,8 +58,9 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
                         <div>
                             <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                                 <MTableToolbar {...props} />
-                                <LanguageSelector language={language} handleLanguage={handleLanguage}/>
-                                <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
+                                <LanguageSelector language={language} handleLanguage={handleLanguage} />
+                                <IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                            onClick={() => loadFormAddPlayer()}>
                                     <AddCircleOutlineIcon color="primary"/>
                                 </IconButton>
                             </div>

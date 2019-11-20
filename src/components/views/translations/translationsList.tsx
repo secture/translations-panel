@@ -13,15 +13,14 @@ import Paper from "@material-ui/core/Paper";
 import MaterialTable, {MTableToolbar} from "material-table";
 import LanguageSelector from "components/common/languageSelector";
 import {LanguageState} from "store/languages/types";
-import {initialLanguage} from "store/languages/reducers";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {connect} from "react-redux";
+import {connect, useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
-import {PlayerState} from "store/players/types";
-import {confirmedTranslations} from "../../common/utilsTable";
+import {confirmedTranslations} from "components/common/utilsTable";
+import {CategoryState} from "store/categories/types";
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -42,7 +41,8 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const TranslationsList: React.FC<any> = (props: AppProps) => {
     const classes = enhancedTableStyles();
-    const [language, setLanguage] = useState(initialLanguage);
+    const user = useSelector((state: TranslationsStore) => state.user);
+    const [language, setLanguage] = useState(user.associatedLanguages[0]);
     const handleLanguage = (language: LanguageState) => {
         setLanguage(language)
     };
@@ -52,27 +52,57 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
         props.setShowForm(true);
     };
 
-    const loadFormEditData = (player: TranslationState) => {
+    const loadFormEditData = (data: TranslationState) => {
         props.setEditForm(true);
-        props.setDataSelected(player);
+        props.setDataSelected(data);
         props.setShowForm(true);
     };
 
-    const deleteData = (player: TranslationState) => {
-        props.setDataSelected(player);
+    const deleteData = (data: TranslationState) => {
+        props.setDataSelected(data);
         props.openDialog();
+    };
+
+    const getFilterTags = () => {
+        let items: { [key: string]: string } = {};
+        props.tags.map((tagItem: string) => {
+            items[tagItem] = tagItem;
+        });
+        return items;
+    };
+
+    const getFilterCategories = () => {
+        let items: { [key: string]: string } = {};
+        props.categories.map((catItem: CategoryState | any) => {
+            items[catItem.id] = catItem.name;
+        });
+        return items;
     };
 
     const getColumns = (language: LanguageState) => {
         const columns: any[] = [
-            {title: 'Key', field: 'key', disablePadding: false, searchable: true, filtering: false, label: 'Key'},
+            {
+                title: 'Key',
+                field: 'key',
+                disablePadding: false,
+                searchable: true,
+                filtering: false,
+                sorting: false,
+                label: 'Key'
+            },
             {
                 title: 'Tags',
                 field: 'tags',
                 disablePadding: false,
+                lookup: getFilterTags(),
                 searchable: false,
-                filtering: false,
+                filtering: true,
+                sorting: false,
                 label: 'Tags',
+                customFilterAndSearch: (filter: Array<any>, rowData: TranslationState) => {
+                    return filter.length !== 0 ? filter.sort().join(',') === rowData.tags.sort().join(',') : true;
+
+                },
                 render: (rowData: TranslationState) => {
                     return rowData.tags.map((tag: any) => (
                         <GetPlatformIcon key={tag} tag={tag} classes={classes}/>
@@ -83,9 +113,14 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                 title: 'Category',
                 field: 'category',
                 disablePadding: false,
+                lookup: getFilterCategories(),
                 searchable: false,
-                filtering: false,
+                filtering: true,
+                sorting: false,
                 label: 'Category',
+                customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+                    return (filter.length !== 0 ? filter.indexOf(rowData.category.id) > -1 : true);
+                },
                 render: (rowData: TranslationState) =>
                     <div>{rowData.category !== null ? rowData.category.name : ''}</div>
             },
@@ -94,10 +129,17 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                 field: 'translations',
                 disablePadding: false,
                 searchable: false,
-                filtering: false,
+                filtering: true,
+                sorting: false,
+                filterCellStyle: {
+                    padding: '16px 15px 0px 15px'
+                },
                 label: 'Translations',
+                customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+                    return (filter.length !== 0 ? rowData.translations[language.key].search(filter) !== -1 : true);
+                },
                 render: (rowData: TranslationState) =>
-                    <div>{rowData.translations !== null ? rowData.translations['es'] : ''}</div>
+                    <div>{rowData.translations !== null ? rowData.translations[language.key] : ''}</div>
             },
             {
                 title: 'Confirmed',
@@ -105,6 +147,7 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                 lookup: {true: 'Confirmed', false: 'No Confirmed'},
                 disablePadding: false,
                 searchable: false,
+                sorting: false,
                 filtering: true,
                 label: 'Confirmed',
                 customFilterAndSearch: (filter: any, rowData: TranslationState) => {
@@ -115,14 +158,15 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                     }
                     return true;
                 },
-                render: (rowData: PlayerState) => confirmedTranslations(rowData)
+                render: (rowData: TranslationState) => confirmedTranslations(rowData.confirmedTranslations)
             },
             {
                 title: 'Updated date',
                 field: 'updateDate',
                 disablePadding: false,
-                searchable: true,
+                searchable: false,
                 filtering: false,
+                sorting: true,
                 label: 'UDate',
                 render: (rowData: TranslationState) => <div>{new Date(rowData.updateDate).toDateString()}</div>
             },
@@ -141,7 +185,8 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                         <div>
                             <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                                 <MTableToolbar {...props} />
-                                <LanguageSelector language={language} handleLanguage={handleLanguage}/>
+                                <LanguageSelector language={language} forPlayers={false}
+                                                  handleLanguage={handleLanguage}/>
                                 <IconButton style={{width: '50px', height: '50px'}} aria-label="add"
                                             onClick={() => loadFormAddData()}>
                                     <AddCircleOutlineIcon color="primary"/>
@@ -168,7 +213,7 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                     search: true,
                     filtering: true,
                 }}
-                isLoading={props.data.length === 0}/>
+                isLoading={props.data.length === 1}/>
         </Paper>
     );
 };
@@ -176,6 +221,8 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
 const mapStateToProps = (store: TranslationsStore, props: any) => {
     return {
         data: props.translations,
+        categories: props.categories,
+        tags: props.tags,
         setDataSelected: props.setDataSelected,
         setEditForm: props.setEditForm,
         setShowForm: props.setShowForm,

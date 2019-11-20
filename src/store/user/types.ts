@@ -1,3 +1,5 @@
+import {LanguageState} from "../languages/types";
+
 export const GET_USER = 'GET USER';
 export const SET_USER = 'UPDATE USER';
 
@@ -7,14 +9,7 @@ export interface UserState {
     name: string,
     privilege: string,
     password?: string,
-    associatedLanguages: AssociatedLanguage[]
-}
-
-export interface AssociatedLanguage {
-    id: string,
-    key: string,
-    name: string,
-    localeForPlayers: boolean
+    associatedLanguages: LanguageState[]
 }
 
 //Actions interface

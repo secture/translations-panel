@@ -5,7 +5,7 @@ export interface LanguageState {
     id: string,
     key: string,
     name: string,
-    icon: string,
+    icon?: string,
     localeForPlayers: boolean
 }
 

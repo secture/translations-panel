@@ -5,7 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {AssociatedLanguage, UserState} from "store/user/types";
+import {UserState} from "store/user/types";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -77,7 +77,7 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                             <TableCell align="left">{userRow.email}</TableCell>
                             <TableCell align="left">{userRow.privilege}</TableCell>
                             <TableCell align="left">
-                                {userRow.associatedLanguages.map((language: AssociatedLanguage) =>
+                                {userRow.associatedLanguages.map((language: LanguageState) =>
                                     <Chip label={language.key} variant="outlined" color="primary"/>
                                 )}
                             </TableCell>

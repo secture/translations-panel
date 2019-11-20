@@ -3,6 +3,7 @@ import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import React, {ReactElement} from "react";
 import {LanguageState} from "store/languages/types";
+import {ConfirmedTranslations} from "../../store/translations/types";
 
 export const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
@@ -18,15 +19,15 @@ export const playerNames = (rowData: PlayerState, shortName: boolean) => {
     )
 };
 
-export const confirmedTranslations = (rowData: PlayerState) => {
+export const confirmedTranslations = (data: ConfirmedTranslations) => {
     return (
         <div>
-            {Object.keys(rowData.confirmedTranslations).map((key: any) => (
-                <Chip key={'cT_' + rowData.id + '_' + key}
+            {Object.keys(data).map((key: string) => (
+                <Chip key={'cT_' + data.id + '_' + key}
                       style={{marginBottom: "5px"}}
                       avatar={<Avatar>{key}</Avatar>}
-                      label={rowData.confirmedTranslations[key] ? 'confirm' : 'unconfirmed'}
-                      color={rowData.confirmedTranslations[key] ? 'primary' : 'secondary'}
+                      label={data[key] ? 'confirm' : 'unconfirmed'}
+                      color={data[key] ? 'primary' : 'secondary'}
                 />)
             )}
         </div>
@@ -108,7 +109,7 @@ export const getColumns = (language: LanguageState) => {
             filtering: true,
             label: 'Confirmed',
             customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, language),
-            render: (rowData: PlayerState) => confirmedTranslations(rowData)
+            render: (rowData: PlayerState) => confirmedTranslations(rowData.confirmedTranslations)
         },
         {
             title: 'Insertion date',

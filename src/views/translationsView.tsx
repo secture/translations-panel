@@ -16,7 +16,7 @@ import {
     confirmTranslationLanguageById,
     deleteTranslationById,
     editTranslationById,
-    getAllTranslations, searchTranslations
+    getAllTranslations,
 } from "services/translations";
 import TranslationsForm from "components/views/translations/translationsForm";
 import {TranslationState} from "store/translations/types";
@@ -49,9 +49,9 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         });
     }, []);
 
-    const onDeleteEntity = (data: TranslationState) => {
+    const onDeleteEntity = () => {
         setOpenDialog(false);
-        props.deleteTranslationByIdActions(data).then((response: any) => {
+        props.deleteTranslationByIdActions(dataSelected).then((response: any) => {
         })
     };
     const onEditEntity = (data: TranslationState) => {
@@ -79,6 +79,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                         {!showForm ? (
                             <Grid item xs={12}>
                                 <TranslationsList translations={props.translations}
+                                                  categories={props.categories}
+                                                  tags={props.tags}
                                                   setDataSelected={setDataSelected}
                                                   setEditForm={setEditForm}
                                                   setShowForm={setShowForm}

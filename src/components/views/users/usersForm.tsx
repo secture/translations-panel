@@ -11,7 +11,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {AssociatedLanguage, UserState} from "store/user/types";
+import {UserState} from "store/user/types";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Paper from '@material-ui/core/Paper';
@@ -66,7 +66,7 @@ const UsersForm = (props: PropsUserForm) => {
     useEffect(() => {
         let languagesView: any = {};
         props.languages.forEach((language: any) => {
-            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: AssociatedLanguage) => associatedLanguage.key === language.key)) ?
+            (userSelected.associatedLanguages !== [] && userSelected.associatedLanguages.find((associatedLanguage: LanguageState) => associatedLanguage.key === language.key)) ?
                 languagesView[language.key] = {
                     isUserLanguage: true,
                     data: language,
