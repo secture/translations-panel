@@ -66,14 +66,10 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     };
 
     const onEditPlayer = (player: PlayerState) => {
-        props.editPlayerAction(player).then((player: LanguageState) => {
-            (player !== null) ? alert('Player editado') : alert('no ha sido posible editar el Player')
-        })
+        props.editPlayerAction(player);
     };
     const onAddPlayer = (player: PlayerState) => {
-        props.addPlayerAction(player).then((player: LanguageState) => {
-            (player !== null) ? alert('Player creado') : alert('no ha sido posible crear el Player')
-        })
+        props.addPlayerAction(player);
     };
 
     const onConfirmPlayerTranslation = (id: string, languageKey: string) => {

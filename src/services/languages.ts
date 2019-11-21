@@ -3,7 +3,7 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setAllLanguages} from "store/languages/actions";
 import {LanguageState} from "store/languages/types";
-import {setStatus} from "../store/status/actions";
+import {setStatus} from "store/status/actions";
 
 export const getAllLanguages = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {

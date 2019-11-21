@@ -13,14 +13,15 @@ import Paper from "@material-ui/core/Paper";
 import MaterialTable, {MTableToolbar} from "material-table";
 import LanguageSelector from "components/common/languageSelector";
 import {LanguageState} from "store/languages/types";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {connect, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
 import {confirmedTranslations} from "components/common/utilsTable";
+import PermissionsProvider, {checkPermissions} from "components/common/PermissionsProvider";
 import {CategoryState} from "store/categories/types";
+import {UserState} from "../../../store/user/types";
+import {allowedRoles} from "../../../store";
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -35,11 +36,18 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
     }
 }
 
-type AppStateProps = ReturnType<typeof mapStateToProps>;
-type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type AppProps = AppStateProps & AppDispatchProps;
+interface PropsTranslationsList {
+    translations: TranslationState[],
+    user: UserState,
+    categories: CategoryState[],
+    tags: string[],
+    setDataSelected: (data: TranslationState) => void,
+    setEditForm: (editForm: boolean) => void,
+    setShowForm: (showForm: boolean) => void,
+    openDialog: () => void
+}
 
-const TranslationsList: React.FC<any> = (props: AppProps) => {
+const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     const classes = enhancedTableStyles();
     const user = useSelector((state: TranslationsStore) => state.user);
     const [language, setLanguage] = useState(user.associatedLanguages[0]);
@@ -77,6 +85,23 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
             items[catItem.id] = catItem.name;
         });
         return items;
+    };
+
+    const actions = (): any[] => {
+        return checkPermissions(allowedRoles, props.user.privilege) ? [
+            {
+                icon: 'edit',
+                tooltip: 'Edit Translation',
+                iconProps: {color: 'primary'},
+                onClick: (event: any, rowData: any) => loadFormEditData(rowData)
+            },
+            {
+                icon: 'delete',
+                tooltip: 'Delete Translation',
+                iconProps: {color: 'secondary'},
+                onClick: (event: any, rowData: any) => deleteData(rowData)
+            }
+        ] : []
     };
 
     const getColumns = (language: LanguageState) => {
@@ -179,7 +204,7 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
             <MaterialTable
                 title={'Translations'}
                 columns={getColumns(language)}
-                data={props.data}
+                data={props.translations}
                 components={{
                     Toolbar: (props) => (
                         <div>
@@ -187,55 +212,24 @@ const TranslationsList: React.FC<any> = (props: AppProps) => {
                                 <MTableToolbar {...props} />
                                 <LanguageSelector language={language} forPlayers={false}
                                                   handleLanguage={handleLanguage}/>
-                                <IconButton style={{width: '50px', height: '50px'}} aria-label="add"
-                                            onClick={() => loadFormAddData()}>
+
+                                <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                                                        onClick={() => loadFormAddData()}>
                                     <AddCircleOutlineIcon color="primary"/>
-                                </IconButton>
+                                </IconButton>} privileges={['Admin']}/>
                             </div>
                         </div>
                     ),
                 }}
-                actions={[
-                    {
-                        icon: 'edit',
-                        tooltip: 'Edit Translation',
-                        iconProps: {color: 'primary'},
-                        onClick: (event, rowData: any) => loadFormEditData(rowData)
-                    },
-                    {
-                        icon: 'delete',
-                        tooltip: 'Delete Translation',
-                        iconProps: {color: 'secondary'},
-                        onClick: (event, rowData: any) => deleteData(rowData)
-                    }
-                ]}
+                actions={actions()}
                 options={{
                     search: true,
                     filtering: true,
                 }}
-                isLoading={props.data.length === 1}/>
+                isLoading={props.translations.length === 1}/>
         </Paper>
     );
 };
 
-const mapStateToProps = (store: TranslationsStore, props: any) => {
-    return {
-        data: props.translations,
-        categories: props.categories,
-        tags: props.tags,
-        setDataSelected: props.setDataSelected,
-        setEditForm: props.setEditForm,
-        setShowForm: props.setShowForm,
-        openDialog: props.openDialog
-    };
-};
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
-    return {};
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(TranslationsList);
+export default TranslationsList;
 

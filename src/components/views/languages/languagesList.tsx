@@ -12,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import PermissionsProvider from "components/common/PermissionsProvider";
 
 import {LanguageState} from "store/languages/types";
 import {
@@ -21,6 +22,7 @@ import {
     Typography
 } from "@material-ui/core";
 import {initialLanguage} from "store/languages/reducers";
+import {allowedRoles} from "store";
 
 const languagesListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -82,9 +84,9 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Languages
                 </Typography>
-                <IconButton aria-label="add" onClick={() => loadFormAddLanguage()}>
+                <PermissionsProvider child={<IconButton aria-label="add" onClick={() => loadFormAddLanguage()}>
                     <AddCircleOutlineIcon/>
-                </IconButton>
+                </IconButton>} privileges={['Admin']}/>
             </Toolbar>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -94,7 +96,7 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
                         <TableCell align="right">FLAG</TableCell>
                         <TableCell align="right">NAME</TableCell>
                         <TableCell align="right">FOR PLAYERS</TableCell>
-                        <TableCell align="right">OPTIONS</TableCell>
+                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>} privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -107,7 +109,7 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
                             <TableCell align="right">
                                 {row.localeForPlayers ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                             </TableCell>
-                            <TableCell align="right">
+                            <PermissionsProvider child={<TableCell align="right">
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
                                      onClick={() => loadFormEditLanguage(row)}>
                                     <EditIcon/>
@@ -116,7 +118,7 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
                                      onClick={() => openDeleteModal(row)}>
                                     <DeleteIcon/>
                                 </Fab>
-                            </TableCell>
+                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>

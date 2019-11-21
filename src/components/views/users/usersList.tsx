@@ -17,7 +17,8 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
 import {tableStyles} from 'styles/table'
-
+import PermissionsProvider from "components/common/PermissionsProvider";
+import {allowedRoles} from "store";
 
 interface PropsUsersList {
     users: UserState[],
@@ -55,9 +56,9 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Users
                 </Typography>
-                {props.user.privilege === 'Admin' && <IconButton aria-label="add" onClick={() => loadFormAddUser()}>
+                <PermissionsProvider child={<IconButton aria-label="add" onClick={() => loadFormAddUser()}>
                     <AddCircleOutlineIcon color="primary"/>
-                </IconButton>}
+                </IconButton>} privileges={allowedRoles}/>
             </Toolbar>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -66,7 +67,7 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                         <TableCell align="left">Email</TableCell>
                         <TableCell align="left">Role</TableCell>
                         <TableCell align="left">Languages</TableCell>
-                        {props.user.privilege === 'Admin' && <TableCell align="left">Actions</TableCell>}
+                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>} privileges={allowedRoles} />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -82,14 +83,15 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                                     <Chip label={language.key} variant="outlined" color="primary"/>
                                 )}
                             </TableCell>
-                            {props.user.privilege === 'Admin' && <TableCell align="left" className={classes.actions}>
-                                <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
-                                    <EditIcon color="primary" />
-                                </IconButton>
-                                <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
-                                    <DeleteIcon color="secondary" />
-                                </IconButton>
-                            </TableCell>}
+                            <PermissionsProvider child={
+                                <TableCell align="left" className={classes.actions}>
+                                    <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
+                                        <EditIcon color="primary" />
+                                    </IconButton>
+                                    <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
+                                        <DeleteIcon color="secondary" />
+                                    </IconButton>
+                                </TableCell>} privileges={allowedRoles} />
                         </TableRow>
                     ))}
                 </TableBody>

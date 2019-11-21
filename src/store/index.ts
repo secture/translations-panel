@@ -13,6 +13,21 @@ import {categoriesReducer} from "store/categories/reducers";
 import {playersReducer} from "store/players/reducers";
 import {statusReducer} from "./status/reducers";
 
+export const roles = {
+    admin: 'Admin',
+    developer: 'Developer',
+    interpreter: 'Interpreter',
+    user: 'User'
+};
+
+export const tags = {
+    android: 'android',
+    ios: 'ios',
+    web: 'web'
+};
+
+export const allowedRoles = [roles.admin];
+
 const persistedState = loadState();
 const rootReducers = combineReducers({
     auth: authReducer,
@@ -23,8 +38,8 @@ const rootReducers = combineReducers({
     categories: categoriesReducer,
     players: playersReducer,
     status: statusReducer,
-    tags: () => { return ['android', 'ios', 'web']; },
-    roles: () => { return ['Admin', 'Developer', 'Interpreter', 'User']; }
+    tags: () => { return [tags.android, tags.ios, tags.web]; },
+    roles: () => { return [roles.admin, roles.developer, roles.interpreter, roles.user]; }
 });
 
 const middleWares = [thunk];

@@ -3,6 +3,9 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setAllPlayers} from "store/players/actions";
 import {PlayerState} from "store/players/types";
+import {handleError, handleResponse} from "./common/axios-response";
+import {TranslationState} from "../store/translations/types";
+import {TranslationsStore} from "../store/types";
 
 export const getAllPlayers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
@@ -32,35 +35,33 @@ export const deletePlayerById = (id: string): ThunkAction<Promise<any>, {}, {}, 
     }
 };
 
-export const editPlayerById = (player: PlayerState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const editPlayerById = (player: PlayerState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let editPlayer = null;
         try {
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}`, createPlayerDTO(player));
-            if (response !== null && typeof response.data !== 'undefined') {
-                editPlayer = response.data;
-                dispatch(getAllPlayers());
-            }
+            handleResponse(response, dispatch(getAllPlayers()), {
+                type: 'success',
+                message: `player`,
+                show: true
+            });
         } catch (error) {
-            console.log(error);
+            handleError(error)
         }
-        return editPlayer;
     }
 };
 
-export const addPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const addPlayer = (player: PlayerState): ThunkAction<void, TranslationsStore, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let newPlayer = null;
         try {
             const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/players`, createPlayerDTO(player));
-            if (response !== null && typeof response.data !== 'undefined') {
-                newPlayer = response.data;
-                dispatch(getAllPlayers());
-            }
+            handleResponse(response, dispatch(getAllPlayers()), {
+                type: 'success',
+                message: `ok`,
+                show: true
+            });
         } catch (error) {
-            console.log(error);
+            handleError(error);
         }
-        return newPlayer;
     }
 };
 

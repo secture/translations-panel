@@ -13,6 +13,8 @@ import {enhancedTableStyles} from 'styles/table';
 
 import {getColumns} from 'components/common/utilsTable';
 import LanguageSelector from 'components/common/languageSelector'
+import PermissionsProvider, {checkPermissions} from "components/common/PermissionsProvider";
+import {allowedRoles} from "store";
 
 interface PropsPlayerList {
     players: PlayerState[],
@@ -55,16 +57,16 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
                 <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                     <MTableToolbar {...propsTable} />
                     <LanguageSelector language={language} handleLanguage={handleLanguage}/>
-                    { props.user.privilege === 'Admin' && <IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
+                    <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
                         <AddCircleOutlineIcon color="primary"/>
-                    </IconButton>}
+                    </IconButton>} privileges={['Admin']}/>
                 </div>
             </div>
         )
     };
 
     const actions = (): any[] => {
-        return (props.user.privilege === 'Admin') ? [
+        return checkPermissions(allowedRoles, props.user.privilege) ? [
             {
                 icon: 'edit',
                 tooltip: 'Edit User',
