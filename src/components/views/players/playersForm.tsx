@@ -1,5 +1,3 @@
-import {formStyles} from 'styles/form'
-import Paper from "@material-ui/core/Paper";
 import React, {useState} from "react";
 import {PlayerState} from "store/players/types";
 import {LanguageState} from "store/languages/types";
