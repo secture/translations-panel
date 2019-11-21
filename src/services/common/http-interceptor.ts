@@ -1,11 +1,15 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import store from 'store/index'
+import {setStatus} from "store/status/actions";
 
 let config: AxiosRequestConfig = {
     /**
      * Cambiar cuando se tengan las variables de entorno de la aplicación
      */
-    baseURL: 'https://localhost:3001'
+    baseURL: 'https://localhost:3001',
+    validateStatus: (status: any) => {
+        return status < 400;
+    }
 };
 
 const httpClient = axios.create(config);
@@ -33,7 +37,7 @@ const errorInterceptor = (error: any) => {
         localStorage.removeItem('user-token');
         store.dispatch(logoutAction(initialUserState));
     }*/
-    return error;
+    return Promise.reject(error);
 };
 
 httpClient.interceptors.request.use(authInterceptor);

@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import PermissionsProvider from "components/common/PermissionsProvider";
 
 import {CategoryState} from "store/categories/types";
 import {
@@ -19,6 +20,7 @@ import {
     Typography
 } from "@material-ui/core";
 import {initialCategory} from "store/categories/reducers";
+import {allowedRoles} from "store";
 
 const categoriesListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -74,16 +76,16 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Categories
                 </Typography>
-                <IconButton aria-label="add" onClick={() => loadFormAddData()}>
+                <PermissionsProvider child={<IconButton aria-label="add" onClick={() => loadFormAddData()}>
                     <AddCircleOutlineIcon/>
-                </IconButton>
+                </IconButton>} privileges={['Admin']}/>
             </Toolbar>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell align="left">ID</TableCell>
                         <TableCell align="right">NAME</TableCell>
-                        <TableCell align="right">OPTIONS</TableCell>
+                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>} privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -91,7 +93,7 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">{row.id}</TableCell>
                             <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">
+                            <PermissionsProvider child={<TableCell align="right">
                                 <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
                                      onClick={() => loadFormEditData(row)}>
                                     <EditIcon/>
@@ -100,7 +102,7 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
                                      onClick={() => openDeleteModal(row)}>
                                     <DeleteIcon/>
                                 </Fab>
-                            </TableCell>
+                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -82,6 +82,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                 <TranslationsList translations={props.translations}
                                                   categories={props.categories}
                                                   tags={props.tags}
+                                                  user={props.user}
                                                   setDataSelected={setDataSelected}
                                                   setEditForm={setEditForm}
                                                   setShowForm={setShowForm}
@@ -118,6 +119,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 const mapStateToProps = (store: TranslationsStore) => {
     return {
         translations: store.translations,
+        user: store.user,
         tags: store.tags,
         languages: store.languages,
         categories: store.categories
