@@ -57,7 +57,7 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     const [language, setLanguage] = useState(props.filters.language ? props.filters.language : user.associatedLanguages[0]);
     const [filterTags, setFilterTags] = useState<Array<any>>(props.filters.tags);
     const [filterCategory, setFilterCategory] = useState(props.filters.category);
-    const [filterTranslation, setFilterTranslation] = useState('');
+    const [filterConfirmed, setFilterConfirmed] = useState('');
     const handleLanguage = (language: LanguageState) => {
         setLanguage(language)
     };
@@ -185,8 +185,10 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 searchable: false,
                 sorting: false,
                 filtering: true,
+                defaultFilter: filterConfirmed,
                 label: 'Confirmed',
                 customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+                    setFilterConfirmed(filter);
                     if (filter.length === 1) {
                         return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true'));
                     } else if (filter.length === 2) {
@@ -224,10 +226,11 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                                 <LanguageSelector language={language} forPlayers={false}
                                                   handleLanguage={handleLanguage}/>
 
-                                <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
-                                                                        onClick={() => loadFormAddData()}>
-                                    <AddCircleOutlineIcon color="primary"/>
-                                </IconButton>} privileges={['Admin']}/>
+                                <PermissionsProvider
+                                    child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                                       onClick={() => loadFormAddData()}>
+                                        <AddCircleOutlineIcon color="primary"/>
+                                    </IconButton>} privileges={['Admin']}/>
                             </div>
                         </div>
                     ),
