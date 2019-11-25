@@ -57,6 +57,7 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     const [language, setLanguage] = useState(props.filters.language ? props.filters.language : user.associatedLanguages[0]);
     const [filterTags, setFilterTags] = useState<Array<any>>(props.filters.tags);
     const [filterCategory, setFilterCategory] = useState(props.filters.category);
+    const [filterTranslations, setFilterTranslations] = useState(props.filters.category);
     const [filterConfirmed, setFilterConfirmed] = useState('');
     const handleLanguage = (language: LanguageState) => {
         setLanguage(language)
@@ -170,8 +171,10 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 filterCellStyle: {
                     padding: '16px 15px 0px 15px'
                 },
+                defaultFilter: filterTranslations,
                 label: 'Translations',
                 customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+                    setFilterTranslations(filter);
                     return (filter.length !== 0 ? rowData.translations[language.key].search(filter) !== -1 : true);
                 },
                 render: (rowData: TranslationState) =>
