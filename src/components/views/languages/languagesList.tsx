@@ -12,7 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import PermissionsProvider from "components/common/PermissionsProvider";
+import PermissionsProvider from "components/common/permissionsProvider";
 
 import {LanguageState} from "store/languages/types";
 import {

@@ -41,20 +41,13 @@ const UsersView = (props: AppProps) => {
     }, []);
 
     const onEditUser = (user: UserState) => {
-        props.editUserAction(user).then((user: UserState) => {
-            (user !== null) ? alert('User editado') : alert('no ha sido posible editar el User')
-        })
+        props.editUserAction(user);
     };
     const onAddUser= (user: UserState) => {
-        props.addUserAction(user).then((user: UserState) => {
-            (user !== null) ? alert('User creado') : alert('no ha sido posible crear el User')
-        })
+        props.addUserAction(user);
     };
-
     const deleteUser = () => {
-        props.deleteUserAction(userSelected.id).then((deleteOk: boolean) => {
-            (deleteOk) ? alert('User eliminado') : alert('no ha sido posible elimar el User')
-        });
+        props.deleteUserAction(userSelected.id);
         updateDialog();
     };
 

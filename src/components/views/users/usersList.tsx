@@ -17,7 +17,7 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
 import {tableStyles} from 'styles/table'
-import PermissionsProvider from "components/common/PermissionsProvider";
+import PermissionsProvider from "components/common/permissionsProvider";
 import {allowedRoles} from "store";
 
 interface PropsUsersList {

@@ -5,26 +5,17 @@ import {setAllTranslations, setDeleteTranslations} from "store/translations/acti
 import {TranslationState} from "store/translations/types";
 import {LanguageState} from "store/languages/types";
 import {setStatus} from "../store/status/actions";
+import {handleError, handleResponse} from "./common/axios-response";
+import {PlayerState} from "../store/players/types";
 
-export const getAllTranslations = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const getAllTranslations = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let translations = null;
         try {
-            translations = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/translations');
-            dispatch(setAllTranslations(translations.data));
-            dispatch(setStatus({
-                type: 'success',
-                message: 'All translations have been obtained successfully ',
-                show: true
-            }));
+            const response = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/translations');
+            handleResponse(response, dispatch(setAllTranslations(response.data)));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error getting translations',
-                show: true
-            }));
+            handleError(error);
         }
-        return translations;
     }
 };
 
@@ -40,11 +31,7 @@ export const getDeletedTranslations = (): ThunkAction<Promise<any>, {}, {}, AnyA
                 show: true
             }));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error getting deleted translation',
-                show: true
-            }));
+            handleError(error);
         }
         return translations;
     }
@@ -69,11 +56,7 @@ export const addTranslation = (translation: TranslationState): ThunkAction<Promi
                 show: true
             }));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error adding translation',
-                show: true
-            }));
+            handleError(error);
         }
         return translations;
     }
@@ -91,15 +74,12 @@ export const deleteTranslationById = (translation: TranslationState): ThunkActio
                 show: true
             }));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error deleting translation',
-                show: true
-            }));
+           handleError(error);
         }
         return translations;
     }
 };
+
 export const editTranslationById = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
         let translations = null;
@@ -120,34 +100,24 @@ export const editTranslationById = (translation: TranslationState): ThunkAction<
                 show: true
             }));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error editing translation',
-                show: true
-            }));
+            handleError(error);
         }
         return translations;
     }
 };
-export const confirmTranslationLanguageById = (translation: TranslationState, language: LanguageState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+
+export const confirmTranslationLanguageById = (translation: TranslationState, language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let translations = null;
         try {
-            translations = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}/confirm/${language.id}`);
-            dispatch(getAllTranslations());
-            dispatch(setStatus({
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}/confirm/${language.id}`);
+            handleResponse(response, dispatch(getAllTranslations()), {
                 type: 'success',
                 message: 'Confirmed translation successfully',
                 show: true
-            }));
+            });
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error confirming translation',
-                show: true
-            }));
+            handleError(error);
         }
-        return translations;
     }
 };
 export const searchTranslations = (search: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
@@ -157,13 +127,24 @@ export const searchTranslations = (search: string): ThunkAction<Promise<any>, {}
             translations = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/translations/search?text=' + search);
             dispatch(setAllTranslations(translations.data));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error searching translation',
-                show: true
-            }));
+            handleError(error)
         }
         return translations;
+    }
+};
+
+export const historyTranslation = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function() {
+        let historyTranslation = null;
+        try {
+            const response = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}/history`);
+            if (response !== null && typeof response.data !== 'undefined') {
+                historyTranslation = response.data;
+            }
+        } catch (error) {
+            handleError(error);
+        }
+        return historyTranslation;
     }
 };
 

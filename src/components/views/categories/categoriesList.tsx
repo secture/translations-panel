@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import PermissionsProvider from "components/common/PermissionsProvider";
+import PermissionsProvider from "components/common/permissionsProvider";
 
 import {CategoryState} from "store/categories/types";
 import {

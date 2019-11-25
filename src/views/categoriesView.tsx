@@ -33,25 +33,18 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
     };
 
     useEffect(() => {
-        props.getAllCategoriesActions().then(r => {
-        });
+        props.getAllCategoriesActions();
     }, []);
 
     const onDeleteCategory = () => {
-        props.deleteCategoryByIdActions(categorySelected).then((language: CategoryState) => {
-            (language !== null) ? alert('Category eliminaro') : alert('no ha sido posible eliminar el language')
-        });
+        props.deleteCategoryByIdActions(categorySelected);
         setOpenDialog(false);
     };
     const onEditCategory = (language: CategoryState) => {
-        props.editCategoryByIdActions(language).then((language: CategoryState) => {
-            (language !== null) ? alert('Category editado') : alert('no ha sido posible editar el language')
-        })
+        props.editCategoryByIdActions(language);
     };
     const onAddCategory = (language: CategoryState) => {
-        props.addCategoryActions(language).then((language: CategoryState) => {
-            (language !== null) ? alert('Category creado') : alert('no ha sido posible crear el language')
-        })
+        props.addCategoryActions(language);
     };
 
     const classes = dashboardViewStyles();

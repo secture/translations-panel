@@ -38,20 +38,14 @@ const LanguageView: React.FC<any> = (props: AppProps) => {
     }, []);
 
     const onDeleteLanguage = () => {
-        props.deleteLanguageByIdActions(languageSelected).then((language: LanguageState) => {
-            (language !== null) ? alert('Language deleted') : alert('no ha sido posible eliminar el language')
-        });
+        props.deleteLanguageByIdActions(languageSelected);
         setOpenDialog(false);
     };
     const onEditLanguage = (language: LanguageState) => {
-        props.editLanguageByIdActions(language).then((language: LanguageState) => {
-            (language !== null) ? alert('Language editado') : alert('no ha sido posible editar el language')
-        })
+        props.editLanguageByIdActions(language);
     };
     const onAddLanguage = (language: LanguageState) => {
-        props.addLanguageActions(language).then((language: LanguageState) => {
-            (language !== null) ? alert('Language creado') : alert('no ha sido posible crear el language')
-        })
+        props.addLanguageActions(language);
     };
 
     const classes = dashboardViewStyles();

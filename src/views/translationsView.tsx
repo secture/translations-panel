@@ -20,12 +20,16 @@ import {
     confirmTranslationLanguageById,
     deleteTranslationById,
     editTranslationById,
-    getAllTranslations,
+    getAllTranslations, historyTranslation,
 } from "services/translations";
 import TranslationsForm from "components/views/translations/translationsForm";
 import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
 import DeleteDialog from "components/common/deleteDialog";
+import {PlayerHistoryState} from "../store/players/types";
+import {StatusState} from "../store/status/types";
+import {setStatus} from "../store/status/actions";
+import {initialHistoryPlayerState} from "../store/players/reducers";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -41,13 +45,16 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
     const [editForm, setEditForm] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [historyTranslation, setHistoryTranslation] = useState({});
+    const [historyTranslationDialog, setHistoryTranslationDialog] = useState(false);
+    const updateHistoryTranslationDialog = () => {
+        setHistoryTranslationDialog(!historyTranslation);
+    };
 
     useEffect(() => {
-        props.getAllTranslationsActions().then((response: any) => {
-        });
+        props.getAllTranslationsActions();
         props.getAllLanguagesActions();
-        props.getAllCategoriesActions().then((response: any) => {
-        });
+        props.getAllCategoriesActions();
     }, []);
 
     const onDeleteEntity = () => {
@@ -67,8 +74,20 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     };
 
     const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
-        props.confirmTranslationLanguageByIdActions(data, language).then((response: any) => {
-        })
+        props.confirmTranslationLanguageByIdActions(data, language);
+    };
+
+    const getHistoryTranslation= (rowData: any) => {
+        props.historyTranslationAction(rowData).then((historyTranslation: any) => {
+            setHistoryTranslation(historyTranslation);
+            if (historyTranslation.history.length === 0) {
+                props.statusAction({type: 'info',
+                    message: 'Translation has no history changes',
+                    show: true})
+            } else {
+                updateHistoryTranslationDialog();
+            }
+        });
     };
 
     return (
@@ -84,6 +103,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                                   tags={props.tags}
                                                   user={props.user}
                                                   setDataSelected={setDataSelected}
+                                                  getHistoryTranslation={getHistoryTranslation}
                                                   setEditForm={setEditForm}
                                                   setShowForm={setShowForm}
                                                   openDialog={updateDialog}/>
@@ -135,6 +155,8 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
         confirmTranslationLanguageByIdActions: (data: TranslationState, language: LanguageState) =>
             dispatch(confirmTranslationLanguageById(data, language)),
+        historyTranslationAction: (data: TranslationState) => dispatch(historyTranslation(data)),
+        statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };
 

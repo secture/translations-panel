@@ -30,6 +30,10 @@ import PlayersList from "components/views/players/playersList";
 import PlayersForm from "components/views/players/playersForm";
 import DeleteDialog from "components/common/deleteDialog";
 import FullScreenDialog from "components/common/fullScreenDialog";
+import {TableCell, TableRow} from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
+import SimpleTable from "../components/common/table/simpleTable";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -59,9 +63,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     }, []);
 
     const onDeletePlayer = () => {
-        props.deletePlayerAction(playerSelected.id).then((deleteOk: boolean) => {
-            (deleteOk) ? alert('Player eliminado') : alert('no ha sido posible elimar el Player')
-        });
+        props.deletePlayerAction(playerSelected.id);
         updateDialog();
     };
 
@@ -90,6 +92,58 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
             }
         });
     };
+
+    const columns = () => {
+        return (
+            <TableRow>
+                {Object.keys(historyPlayer.history[historyPlayer.history.length - 1]).map((key: string) => (
+                    <TableCell>{key}</TableCell>
+                ))}
+            </TableRow>
+        )
+    };
+
+    const data = () => {
+        return (
+            historyPlayer.history.map((item: any) => {
+                Object.keys(item).map((key: string) => (
+                    <TableRow key={item.id}>
+                        {
+                            (item[key] instanceof Object) ? (
+                                Object.keys(item[key]).map((keyObject: any) => (
+                                    <Chip key={'cT_' + item[keyObject] + '_' + keyObject}
+                                          style={{marginBottom: "5px"}}
+                                          avatar={<Avatar>{keyObject}</Avatar>}
+                                          label={item[keyObject]}
+                                          color={'primary'}
+                                    />
+                                ))
+                            ) : (
+                                <TableCell component="th" scope="row">{item[key]}</TableCell>
+                            )
+                        }
+                    </TableRow>
+                ))
+            })
+        )
+    };
+
+    /*const printTableCell = (item: any) => {
+        return (
+            (item instanceof Object) ? (
+                Object.keys(item).map((key: any) => (
+                    <Chip key={'cT_' + item[key] + '_' + key}
+                                          style={{marginBottom: "5px"}}
+                                          avatar={<Avatar>{key}</Avatar>}
+                                          label={item[key]}
+                                          color={'primary'}
+                    />
+                ))
+            ) : (
+                <TableCell component="th" scope="row">{item}</TableCell>
+            )
+        )
+    };*/
 
     return (
         <main className={classes.content}>
@@ -120,7 +174,12 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                             />
                         </Grid>)
                     }
-                    <FullScreenDialog openDialog={updateHistoryPlayerDialog} dialog={historyPlayerDialog} data={historyPlayer}/>
+                    {(historyPlayer.history.length > 0) ? <FullScreenDialog
+                        openDialog={updateHistoryPlayerDialog}
+                        dialog={historyPlayerDialog}
+                        data={historyPlayer}
+                        componentRendered={<SimpleTable columns={columns()} data={data()}/>
+                        }/> : null}
                     <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected} deleteFunction={onDeletePlayer}/>
                 </Grid>
             </Container>
