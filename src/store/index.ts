@@ -12,6 +12,7 @@ import {translationsReducer} from "store/translations/reducers";
 import {categoriesReducer} from "store/categories/reducers";
 import {playersReducer} from "store/players/reducers";
 import {statusReducer} from "./status/reducers";
+import {filterReducer} from "./filters/reducers";
 
 export const roles = {
     admin: 'Admin',
@@ -38,6 +39,7 @@ const rootReducers = combineReducers({
     categories: categoriesReducer,
     players: playersReducer,
     status: statusReducer,
+    filters: filterReducer,
     tags: () => { return [tags.android, tags.ios, tags.web]; },
     roles: () => { return [roles.admin, roles.developer, roles.interpreter, roles.user]; }
 });

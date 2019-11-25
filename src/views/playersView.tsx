@@ -33,7 +33,7 @@ import FullScreenDialog from "components/common/fullScreenDialog";
 import {TableCell, TableRow} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
-import SimpleTable from "../components/common/table/simpleTable";
+
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -84,9 +84,11 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
         props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
             setHistoryPlayer(historyPlayer);
             if (historyPlayer.history.length === 0) {
-                props.statusAction({type: 'info',
+                props.statusAction({
+                    type: 'info',
                     message: 'The player has no history changes',
-                    show: true})
+                    show: true
+                })
             } else {
                 updateHistoryPlayerDialog();
             }
@@ -147,7 +149,7 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
 
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
+            <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
@@ -178,9 +180,9 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                         openDialog={updateHistoryPlayerDialog}
                         dialog={historyPlayerDialog}
                         data={historyPlayer}
-                        componentRendered={<SimpleTable columns={columns()} data={data()}/>
-                        }/> : null}
-                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected} deleteFunction={onDeletePlayer}/>
+                        componentRendered={<span/>}/> : null}
+                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected}
+                                  deleteFunction={onDeletePlayer}/>
                 </Grid>
             </Container>
         </main>

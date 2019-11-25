@@ -1,87 +1,142 @@
-import React from 'react';
-import { useSelector } from 'react-redux'
-import { TranslationsStore } from "store/types";
+import React, {useEffect} from 'react';
+import {connect, useSelector} from 'react-redux'
+import {TranslationsStore} from "store/types";
 import {UserState} from "store/user/types";
+import {Bar} from 'react-chartjs-2';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import history from "../history";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-import Chip from '@material-ui/core/Chip';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
 import {dashboardViewStyles} from "styles/dashboard";
-import {LanguageState} from "store/languages/types";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
-const DashboardView = () => {
-    const classes = dashboardViewStyles();
-    const user: UserState = useSelector((state: TranslationsStore) => state.user);
-    return (
-        <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Container maxWidth={false} className={classes.container}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <Paper className={classes.root}>
-                            <Box display="flex" alignItems="center">
-                                <Avatar className={classes.orangeAvatar}>{user.privilege.charAt(0).toUpperCase()}</Avatar>
-                                <Box display="flex" flexDirection="column" letterSpacing={6} >
-                                    <Typography variant="h5" component="h3">
-                                        {user.name}
-                                    </Typography>
-                                    <Typography variant="caption" >
-                                        {user.privilege}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Divider variant="middle" />
-                            <Box m={2}>
-                                <Chip icon={<MailOutlineIcon />} label={user.email} color="primary" />
-                                <Box mt={2} px={2} border={1} borderColor="grey.300" borderRadius={6}>
-                                    <List>
-                                        {user.associatedLanguages.map((language: LanguageState) =>  (
-                                            <Box key={language.id}>
-                                                <ListItem disableGutters>
-                                                    <ListItemAvatar>
-                                                        <Avatar className={classes.avatar}><span>🇪🇸</span></Avatar>
-                                                    </ListItemAvatar>
-                                                    <ListItemText
-                                                        primary={language.name}
-                                                        secondary={language.key}
-                                                    />
-                                                </ListItem>
-                                            </Box>
-                                        ))}
-                                    </List>
-                                </Box>
-                            </Box>
-                        </Paper>
+import {
+    getTranslationsStats
+} from "services/translations";
+import {TranslationStatsState} from "../store/translations/types";
+import {Box, Button, Card, CardActionArea, CardActions, CardContent} from "@material-ui/core";
+import {LanguageState} from "../store/languages/types";
+import {setLanguageFilter} from "../store/filters/actions";
+
+type AppStateProps = ReturnType<typeof mapStateToProps>;
+type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type AppProps = AppStateProps & AppDispatchProps;
+
+const DashboardView: React.FC<any> = (props: AppProps) => {
+        const classes = dashboardViewStyles();
+        const user: UserState = useSelector((state: TranslationsStore) => state.user);
+        useEffect(() => {
+            props.getTranslationsStatsActions().then((response: any) => {
+            });
+        }, []);
+
+
+        const navigateToTranslation = (language: LanguageState) => {
+            props.setLanguageFilterActions(language);
+            history.push('/dashboard/translations');
+        };
+
+        return (
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer}/>
+                <Container maxWidth={false} className={classes.container}>
+                    <Grid container spacing={3}>
+                        {props.translationsStats.map((stat: TranslationStatsState) => (
+                            props.user.associatedLanguages.find(element => element.key === stat.locale.key) ?
+                                <Grid item xs={12} md={6} lg={3}>
+                                    <Card>
+                                        <CardActionArea>
+                                            <CardContent>
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <Typography gutterBottom variant="h5" component="h2">
+                                                            {stat.locale.name}
+                                                            ({stat.locale.key})
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <Typography className={classes.subHeader} color="textSecondary">
+                                                            ForPlayers:
+                                                            {stat.locale.localeForPlayers ? <CheckCircleIcon/> :
+                                                                <CancelIcon/>}
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <Bar
+                                                    data={{
+                                                        labels: [
+                                                            'Confirmed',
+                                                            'Unconfirmed',
+                                                            'Translated',
+                                                            'Untranslated'
+                                                        ],
+                                                        datasets: [{
+                                                            label: false,
+                                                            data: [
+                                                                stat.translatedAndConfirmed,
+                                                                stat.translatedAndUnconfirmed,
+                                                                stat.translatedAndConfirmed + stat.translatedAndUnconfirmed,
+                                                                stat.untranslated,
+                                                            ],
+                                                            backgroundColor: [
+                                                                '#3cffa4',
+                                                                '#ebc66e',
+                                                                '#ff6b68'
+                                                            ],
+                                                            hoverBackgroundColor: [
+                                                                '#3cffa4',
+                                                                '#ebc66e',
+                                                                '#ff6b68'
+                                                            ]
+                                                        }]
+                                                    }}
+                                                    width={100}
+                                                    height={50}
+                                                    options={{
+                                                        legend: {
+                                                            display: false
+                                                        },
+                                                    }}
+                                                />
+                                            </CardContent>
+                                        </CardActionArea>
+                                        <CardActions>
+                                            <Button size="small" color="primary"
+                                                    onClick={() => {
+                                                        navigateToTranslation(stat.locale)
+                                                    }}>
+                                                Show translations
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid> : null
+                        ))}
                     </Grid>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <Paper className={classes.root}>
-                            <Typography>
-                                Chart % traducciones confirmadas / no confirmadas para cada idioma
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <Paper className={classes.root}>
-                            <Typography>
-                                Chart % claves traducidas / no traducidas del idioma X
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        </main>
-    )
+                </Container>
+            </main>
+        )
+    }
+;
+
+const mapStateToProps = (store: TranslationsStore) => {
+    return {
+        translationsStats: store.translations.stats,
+        user: store.user,
+    };
+};
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+    return {
+        getTranslationsStatsActions: () => dispatch(getTranslationsStats()),
+        setLanguageFilterActions: (data: LanguageState) => dispatch(setLanguageFilter(data)),
+    };
 };
 
-export default DashboardView;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DashboardView);

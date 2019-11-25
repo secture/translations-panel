@@ -21,6 +21,13 @@ export const dashboardViewStyles = makeStyles((theme: Theme) => ({
         color: '#fff',
         backgroundColor: deepOrange[500],
     },
+    card: {
+        maxWidth: 345,
+    },
+    subHeader: {
+        display: 'inline-flex',
+        float: 'right',
+    },
     /***** AVATAR *****/
     avatar: {
         backgroundColor: theme.palette.grey.A100

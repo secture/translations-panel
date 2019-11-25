@@ -1,7 +1,7 @@
 import httpClient from "./common/http-interceptor";
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
-import {setAllTranslations, setDeleteTranslations} from "store/translations/actions";
+import {setAllTranslations, setDeleteTranslations, setTranslationsStats} from "store/translations/actions";
 import {TranslationState} from "store/translations/types";
 import {LanguageState} from "store/languages/types";
 import {setStatus} from "../store/status/actions";
@@ -130,6 +130,22 @@ export const searchTranslations = (search: string): ThunkAction<Promise<any>, {}
             handleError(error)
         }
         return translations;
+    }
+};
+export const getTranslationsStats = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+    return async function (dispatch: any) {
+        let stats = null;
+        try {
+            stats = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/translations/stats');
+            dispatch(setTranslationsStats(stats.data));
+        } catch (error) {
+            dispatch(setStatus({
+                type: 'error',
+                message: 'Error getting stats',
+                show: true
+            }));
+        }
+        return stats;
     }
 };
 

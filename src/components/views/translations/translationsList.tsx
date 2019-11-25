@@ -22,6 +22,8 @@ import PermissionsProvider, {checkPermissions} from "components/common/permissio
 import {CategoryState} from "store/categories/types";
 import {UserState} from "store/user/types";
 import {allowedRoles} from "store";
+import {FiltersState} from "store/filters/types";
+
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -41,6 +43,7 @@ interface PropsTranslationsList {
     user: UserState,
     categories: CategoryState[],
     tags: string[],
+    filters: FiltersState,
     setDataSelected: (data: TranslationState) => void,
     getHistoryTranslation: (data: any) => void,
     setEditForm: (editForm: boolean) => void,
@@ -51,7 +54,10 @@ interface PropsTranslationsList {
 const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     const classes = enhancedTableStyles();
     const user = useSelector((state: TranslationsStore) => state.user);
-    const [language, setLanguage] = useState(user.associatedLanguages[0]);
+    const [language, setLanguage] = useState(props.filters.language ? props.filters.language : user.associatedLanguages[0]);
+    const [filterTags, setFilterTags] = useState<Array<any>>(props.filters.tags);
+    const [filterCategory, setFilterCategory] = useState(props.filters.category);
+    const [filterTranslation, setFilterTranslation] = useState('');
     const handleLanguage = (language: LanguageState) => {
         setLanguage(language)
     };
@@ -124,8 +130,10 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 searchable: false,
                 filtering: true,
                 sorting: false,
+                defaultFilter: filterTags,
                 label: 'Tags',
                 customFilterAndSearch: (filter: Array<any>, rowData: TranslationState) => {
+                    setFilterTags(filter);
                     return filter.length !== 0 ? filter.sort().join(',') === rowData.tags.sort().join(',') : true;
 
                 },
@@ -143,9 +151,11 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 searchable: false,
                 filtering: true,
                 sorting: false,
+                defaultFilter: filterCategory,
                 label: 'Category',
                 customFilterAndSearch: (filter: any, rowData: TranslationState) => {
-                    return (filter.length !== 0 ? filter.indexOf(rowData.category.id) > -1 : true);
+                    setFilterCategory(filter);
+                    return (filter.length !== 0 ? filter.indexOf(rowData.category !== null ? rowData.category.id : '') > -1 : true);
                 },
                 render: (rowData: TranslationState) =>
                     <div>{rowData.category !== null ? rowData.category.name : ''}</div>
