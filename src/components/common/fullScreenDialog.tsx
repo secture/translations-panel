@@ -1,12 +1,7 @@
 import React, {ReactElement} from "react";
-import {PlayerState} from "store/players/types";
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Chip from '@material-ui/core/Chip';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -35,29 +30,15 @@ const Transition = React.forwardRef<unknown, TransitionProps>(function Transitio
 });
 
 interface PropsFullScreenDialog {
-    items: ReactElement[],
     data: any,
+    componentRendered: any,
     openDialog: () => void,
     dialog: boolean
 }
 
-const nodeList = (player: PlayerState) => {
-    const marginRightChip = {marginRight: '10px'};
-    return (
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-            <Chip style={marginRightChip} label={player.id} />
-            <Chip style={marginRightChip} label={player.shortName['es']} />
-            <Chip style={marginRightChip} label={player.shortName['he']} />
-            <Chip style={marginRightChip} label={player.largeName['es']} />
-            <Chip style={marginRightChip} label={player.largeName['he']} />
-            {player.team !== ' ' && <Chip style={marginRightChip} label={player.team} />}
-            {player.comments !== ' ' && <Chip style={marginRightChip} label={player.comments} />}
-        </div>
-    )
-};
-
 const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
     const classes = fullScreenDialogStyles();
+
     return (
         <div>
             <Dialog fullScreen open={props.dialog} onClose={props.openDialog} TransitionComponent={Transition}>
@@ -71,13 +52,7 @@ const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <List>
-                    {props.data.history.map((player: PlayerState) => (
-                        <ListItem button>
-                            <ListItemText primary={nodeList(player)} secondary={new Date(player.updateDate).toDateString()} />
-                        </ListItem>
-                    ))}
-                </List>
+                {props.componentRendered}
             </Dialog>
         </div>
     )

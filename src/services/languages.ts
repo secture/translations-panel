@@ -4,92 +4,58 @@ import {AnyAction} from "redux";
 import {setAllLanguages} from "store/languages/actions";
 import {LanguageState} from "store/languages/types";
 import {setStatus} from "store/status/actions";
+import {handleError, handleResponse} from "./common/axios-response";
 
 export const getAllLanguages = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let languages: any = null;
         try {
-            languages = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/locales');
-            dispatch(setAllLanguages(languages.data));
-            dispatch(setStatus({
-                type: 'success',
-                message: 'All languages have been obtained successfully ',
-                show: true
-            }));
+            const response = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/locales');
+            handleResponse(response, dispatch(setAllLanguages(response.data)));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error getting languages',
-                show: true
-            }));
+            handleError(error);
         }
     }
 };
 
-export const deleteLanguageById = (language: LanguageState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const deleteLanguageById = (language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let deleteLanguage = null;
         try {
             const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/locales/${language.id}`);
-            if (response !== null && typeof response.data !== 'undefined') {
-                deleteLanguage = response.data;
-                dispatch(getAllLanguages());
-                dispatch(setStatus({
-                    type: 'success',
-                    message: 'Deleted language successfully',
-                    show: true
-                }));
-            }
-        } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error deleting language',
+            handleResponse(response, dispatch(getAllLanguages()), {
+                type: 'success',
+                message: 'Deleted language successfully',
                 show: true
-            }));
+            });
+        } catch (error) {
+            handleError(error);
         }
-        return deleteLanguage.data;
     }
 };
 
-export const editLanguageById = (language: LanguageState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const editLanguageById = (language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let editLanguage = null;
         try {
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/locales/${language.id}`, language);
-            if (response !== null && typeof response.data !== 'undefined') {
-                editLanguage = response.data;
-                dispatch(getAllLanguages());
-                dispatch(setStatus({
-                    type: 'success',
-                    message: 'Edited language successfully',
-                    show: true
-                }));
-            }
-        } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error editing language',
+            handleResponse(response, dispatch(getAllLanguages()), {
+                type: 'success',
+                message: 'Edited language successfully',
                 show: true
-            }));
+            });
+        } catch (error) {
+            handleError(error);
         }
-        return editLanguage;
     }
 };
 
-export const addLanguage = (language: LanguageState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const addLanguage = (language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let newLanguage = null;
         try {
             const response = await httpClient.post(`${process.env.REACT_APP_API_URL}/v1/locales`, language);
-            if (response !== null && typeof response.data !== 'undefined') {
-                newLanguage = response.data;
-                dispatch(getAllLanguages());
-                dispatch(setStatus({
-                    type: 'success',
-                    message: 'Added language successfully',
-                    show: true
-                }));
-            }
+            handleResponse(response, dispatch(getAllLanguages()), {
+                type: 'success',
+                message: 'Added language successfully',
+                show: true
+            });
         } catch (error) {
             dispatch(setStatus({
                 type: 'error',
@@ -97,6 +63,5 @@ export const addLanguage = (language: LanguageState): ThunkAction<Promise<any>, 
                 show: true
             }));
         }
-        return newLanguage;
     }
 };

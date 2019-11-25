@@ -4,120 +4,76 @@ import {AnyAction} from "redux";
 import {setUserAction} from "store/user/actions";
 import {setUsersAction} from "store/users/actions";
 import {UserState} from "store/user/types";
-import {setStatus} from "../store/status/actions";
+import {handleError, handleResponse} from "./common/axios-response";
 
 export const getUsers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let users: any = null;
         try {
-            users = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users');
-            dispatch(setUsersAction(users.data));
-            dispatch(setStatus({
-                type: 'success',
-                message: 'All users have been obtained successfully ',
-                show: true
-            }));
+            const response = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users');
+            handleResponse(response, dispatch(setUsersAction(response.data)));
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error getting users',
-                show: true
-            }));
+            handleError(error);
         }
     }
 };
 
-export const getUser = (): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const getUser = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let user = null;
         try{
-            user = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users/me');
-            dispatch(setUserAction(user.data));
-            dispatch(setStatus({
+            const response = await httpClient.get(process.env.REACT_APP_API_URL + '/v1/users/me');
+            handleResponse(response, dispatch(setUserAction(response.data)), {
                 type: 'success',
                 message: 'Users have been obtained successfully',
                 show: true
-            }));
+            });
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error getting user',
-                show: true
-            }));
+            handleError(error);
         }
-        return user;
     }
 };
 
-export const createUser = (createdUser: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const createUser = (createdUser: UserState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let user = null;
         try{
             const response = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/register', createdUser);
-            if (response !== null && typeof response.data !== 'undefined') {
-                user = response.data;
-                dispatch(getUsers());
-            }
-            dispatch(setStatus({
+            handleResponse(response, dispatch(getUsers()), {
                 type: 'success',
                 message: 'Added user successfully',
                 show: true
-            }));
+            });
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error adding user',
-                show: true
-            }));
+            handleError(error);
         }
-        return user;
     }
 };
 
-export const updateUser = (updatedUser: UserState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const updateUser = (updatedUser: UserState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let user = null;
         try{
             const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/users/${updatedUser.id}`, updatedUser);
-            if (response !== null && typeof response.data !== 'undefined') {
-                user = response.data;
-                dispatch(getUsers());
-            }
-            dispatch(setStatus({
+            handleResponse(response, dispatch(getUsers()), {
                 type: 'success',
                 message: 'Updated user successfully',
                 show: true
-            }));
+            });
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error updating user',
-                show: true
-            }));
+            handleError(error);
         }
-        return user
     }
 };
 
-export const deleteUser = (id: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const deleteUser = (id: string): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let user = null;
         try{
-            user = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/users/${id}`);
-            dispatch(getUsers());
-            dispatch(setStatus({
+            const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/users/${id}`);
+            handleResponse(response, dispatch(getUsers()), {
                 type: 'success',
                 message: 'Deleted user successfully',
                 show: true
-            }));
+            });
         } catch (error) {
-            dispatch(setStatus({
-                type: 'error',
-                message: 'Error deleting user',
-                show: true
-            }));
+            handleError(error);
         }
-        return user;
     }
 };
 

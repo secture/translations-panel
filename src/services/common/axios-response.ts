@@ -3,12 +3,18 @@ import {setStatus} from "store/status/actions";
 import {AnyAction} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 
-export const handleResponse = (response: any, thunkAction: AnyAction, status: any) => {
+export const handleResponse = (response: any, thunkAction: AnyAction, status?: any) => {
     if (response !== null && typeof response.data !== 'undefined') {
-        store.dispatch(setStatus(status));
+        if (typeof status !== 'undefined') store.dispatch(setStatus(status));
         return function (dispatch: ThunkDispatch<{}, {}, any>) {
             dispatch(thunkAction);
         }
+    } else {
+        store.dispatch(setStatus({
+            type: 'error',
+            message: `Something has been wrong, please try again`,
+            show: true
+        }));
     }
 };
 

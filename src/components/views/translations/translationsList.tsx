@@ -18,10 +18,10 @@ import {TranslationsStore} from "store/types";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
 import {confirmedTranslations} from "components/common/utilsTable";
-import PermissionsProvider, {checkPermissions} from "components/common/PermissionsProvider";
+import PermissionsProvider, {checkPermissions} from "components/common/permissionsProvider";
 import {CategoryState} from "store/categories/types";
-import {UserState} from "../../../store/user/types";
-import {allowedRoles} from "../../../store";
+import {UserState} from "store/user/types";
+import {allowedRoles} from "store";
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -42,6 +42,7 @@ interface PropsTranslationsList {
     categories: CategoryState[],
     tags: string[],
     setDataSelected: (data: TranslationState) => void,
+    getHistoryTranslation: (data: any) => void,
     setEditForm: (editForm: boolean) => void,
     setShowForm: (showForm: boolean) => void,
     openDialog: () => void
@@ -226,6 +227,7 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                     search: true,
                     filtering: true,
                 }}
+                onRowClick={(event, rowData: any) => props.getHistoryTranslation(rowData)}
                 isLoading={props.translations.length === 1}/>
         </Paper>
     );
