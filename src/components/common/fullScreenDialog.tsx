@@ -30,7 +30,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>(function Transitio
 });
 
 interface PropsFullScreenDialog {
-    data: any,
+    title: string,
     componentRendered: any,
     openDialog: () => void,
     dialog: boolean
@@ -48,7 +48,7 @@ const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            History player {props.data.id}
+                            {props.title}
                         </Typography>
                     </Toolbar>
                 </AppBar>

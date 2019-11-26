@@ -1,11 +1,18 @@
 import {
     SET_ALL_TRANSLATIONS,
-    SET_DELETED_TRANSLATIONS,
+    SET_DELETED_TRANSLATIONS, TranslationHistoryState,
     TranslationsActionsTypes,
     TranslationState,
     UpdateUserState
 } from "./types";
-import {initialCategory} from "../categories/reducers";
+import {initialCategory} from "store/categories/reducers";
+
+export const initialTranslationHistoryState: TranslationHistoryState = {
+    id: '',
+    deleted: false,
+    history: [],
+};
+
 
 export const initialUpdateUserState: UpdateUserState = {
     associatedLanguages: [],
