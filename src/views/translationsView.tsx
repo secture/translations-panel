@@ -28,12 +28,14 @@ import {getAllCategories} from "services/categories";
 import DeleteDialog from "components/common/deleteDialog";
 import {StatusState} from "store/status/types";
 import {setStatus} from "store/status/actions";
+import {PlayerHistoryState} from "store/players/types";
 import SimpleTable from "components/common/simpleTable";
 import FullScreenDialog from "components/common/fullScreenDialog";
+import {initialHistoryPlayerState} from "store/players/reducers";
 import {
     TranslationsHistoryColumns,
     TranslationsHistoryRows
-} from "../components/views/translations/translationsHistoryList";
+} from "components/views/translations/translationsHistoryList";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -45,6 +47,9 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     const [dialog, setOpenDialog] = useState(false);
     const updateDialog = () => {
         setOpenDialog(!dialog);
+    };
+    const updateForm = () => {
+        setShowForm(!showForm);
     };
     const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
     const [editForm, setEditForm] = useState(false);
@@ -81,7 +86,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
         props.confirmTranslationLanguageByIdActions(data, language);
     };
 
-    const getHistoryTranslation= (rowData: any) => {
+    const getHistoryTranslation = (rowData: any) => {
         props.historyTranslationAction(rowData).then((historyTranslation: any) => {
             if (historyTranslation === null) {
                 props.statusAction({type: 'info',
@@ -100,32 +105,33 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        {!showForm ? (
-                            <Grid item xs={12}>
-                                <TranslationsList translations={props.translations}
-                                                  categories={props.categories}
-                                                  tags={props.tags}
-                                                  user={props.user}
-                                                  setDataSelected={setDataSelected}
-                                                  getHistoryTranslation={getHistoryTranslation}
-                                                  setEditForm={setEditForm}
-                                                  setShowForm={setShowForm}
-                                                  openDialog={updateDialog}/>
-                            </Grid>
-                        ) : (
-                            <Grid item xs={12}>
-                                <TranslationsForm dataSelected={dataSelected} tags={props.tags}
-                                                  languages={props.languages}
-                                                  categories={props.categories}
-                                                  onEditEntity={onEditEntity}
-                                                  onCreateEntity={onCreateEntity}
-                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}
-                                                  setEditForm={setEditForm}
-                                                  setShowForm={setShowForm}
-                                                  editForm={editForm}
-                                />
-                            </Grid>
-                        )}
+                        <Grid item xs={12}>
+                            <TranslationsList translations={props.translations}
+                                              categories={props.categories}
+                                              tags={props.tags}
+                                              user={props.user}
+                                              setDataSelected={setDataSelected}
+                                              getHistoryTranslation={getHistoryTranslation}
+                                              setEditForm={setEditForm}
+                                              setShowForm={setShowForm}
+                                              filters={props.filters}
+                                              openDialog={updateDialog}/>
+                        </Grid>
+
+                        <FullScreenDialog
+                            openDialog={updateForm}
+                            dialog={showForm}
+                            title={'Editing translation by id:' + dataSelected.id}
+                            componentRendered={<TranslationsForm dataSelected={dataSelected} tags={props.tags}
+                                                                 languages={props.languages}
+                                                                 categories={props.categories}
+                                                                 onEditEntity={onEditEntity}
+                                                                 onCreateEntity={onCreateEntity}
+                                                                 onConfirmTranslationLanguage={onConfirmTranslationLanguage}
+                                                                 setEditForm={setEditForm}
+                                                                 setShowForm={setShowForm}
+                                                                 editForm={editForm}
+                            />}/>
                         <FullScreenDialog
                             title={`History player ${historyTranslation.id}`}
                             openDialog={updateHistoryTranslationDialog}
@@ -150,10 +156,11 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
 const mapStateToProps = (store: TranslationsStore) => {
     return {
-        translations: store.translations,
+        translations: store.translations.data,
         user: store.user,
         tags: store.tags,
         languages: store.languages,
+        filters: store.filters,
         categories: store.categories
     };
 };

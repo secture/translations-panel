@@ -1,6 +1,8 @@
 import {
     SET_ALL_TRANSLATIONS,
-    SET_DELETED_TRANSLATIONS, TranslationHistoryState,
+    SET_DELETED_TRANSLATIONS,
+    SET_TRANSLATIONS_STATS,
+    TranslationHistoryState,
     TranslationsActionsTypes,
     TranslationState,
     UpdateUserState
@@ -35,13 +37,25 @@ export const initialTranslation: TranslationState = {
     updateUser: initialUpdateUserState,
     confirmedTranslations: {}
 };
-export const initialTranslationState: TranslationState[] = [initialTranslation];
+export const initialTranslationsState: TranslationsState = {
+    data: [initialTranslation],
+    stats: [],
+};
 
-export function translationsReducer(state = initialTranslationState, action: TranslationsActionsTypes): TranslationState[] {
+export function translationsReducer(state = initialTranslationsState, action: TranslationsActionsTypes): TranslationsState {
     switch (action.type) {
         case SET_ALL_TRANSLATIONS:
         case SET_DELETED_TRANSLATIONS: {
-            return action.payload;
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
+        case SET_TRANSLATIONS_STATS: {
+            return {
+                ...state,
+                stats: action.payload
+            };
         }
         default:
             return state

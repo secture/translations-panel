@@ -22,6 +22,8 @@ import PermissionsProvider, {checkPermissions} from "components/common/permissio
 import {CategoryState} from "store/categories/types";
 import {UserState} from "store/user/types";
 import {allowedRoles} from "store";
+import {FiltersState} from "store/filters/types";
+
 
 function GetPlatformIcon(props: { tag: any, classes: any }) {
     switch (props.tag.toLowerCase()) {
@@ -41,6 +43,7 @@ interface PropsTranslationsList {
     user: UserState,
     categories: CategoryState[],
     tags: string[],
+    filters: FiltersState,
     setDataSelected: (data: TranslationState) => void,
     getHistoryTranslation: (data: any) => void,
     setEditForm: (editForm: boolean) => void,
@@ -51,7 +54,11 @@ interface PropsTranslationsList {
 const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     const classes = enhancedTableStyles();
     const user = useSelector((state: TranslationsStore) => state.user);
-    const [language, setLanguage] = useState(user.associatedLanguages[0]);
+    const [language, setLanguage] = useState(props.filters.language ? props.filters.language : user.associatedLanguages[0]);
+    const [filterTags, setFilterTags] = useState<Array<any>>(props.filters.tags);
+    const [filterCategory, setFilterCategory] = useState(props.filters.category);
+    const [filterTranslations, setFilterTranslations] = useState(props.filters.category);
+    const [filterConfirmed, setFilterConfirmed] = useState('');
     const handleLanguage = (language: LanguageState) => {
         setLanguage(language)
     };
@@ -106,96 +113,72 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
     };
 
     const getColumns = (language: LanguageState) => {
+        function getColumnConfig(title: string, field: string, disablePadding: boolean, lookup: any,
+                                 searchable: boolean, filtering: boolean, sorting: boolean,
+                                 defaultFilter: any, label: string, filterCellStyle: any, customFilterAndSearch: any, render: any) {
+            return {
+                title: title,
+                field: field,
+                disablePadding: disablePadding,
+                lookup: lookup,
+                searchable: searchable,
+                filtering: filtering,
+                sorting: sorting,
+                defaultFilter: defaultFilter,
+                label: label,
+                filterCellStyle: filterCellStyle,
+                customFilterAndSearch: customFilterAndSearch,
+                render: render
+
+            };
+        }
+
         const columns: any[] = [
-            {
-                title: 'Key',
-                field: 'key',
-                disablePadding: false,
-                searchable: true,
-                filtering: false,
-                sorting: false,
-                label: 'Key'
-            },
-            {
-                title: 'Tags',
-                field: 'tags',
-                disablePadding: false,
-                lookup: getFilterTags(),
-                searchable: false,
-                filtering: true,
-                sorting: false,
-                label: 'Tags',
-                customFilterAndSearch: (filter: Array<any>, rowData: TranslationState) => {
+            getColumnConfig('Key', 'key', false, true, false,
+                false, false, null, 'Key', null, null, null),
+            getColumnConfig('Tags', 'tags', false, getFilterTags(), false,
+                true, false, filterTags, 'Key', null,
+                (filter: Array<any>, rowData: TranslationState) => {
+                    setFilterTags(filter);
                     return filter.length !== 0 ? filter.sort().join(',') === rowData.tags.sort().join(',') : true;
 
-                },
-                render: (rowData: TranslationState) => {
+                }, (rowData: TranslationState) => {
                     return rowData.tags.map((tag: any) => (
                         <GetPlatformIcon key={tag} tag={tag} classes={classes}/>
                     ))
-                }
-            },
-            {
-                title: 'Category',
-                field: 'category',
-                disablePadding: false,
-                lookup: getFilterCategories(),
-                searchable: false,
-                filtering: true,
-                sorting: false,
-                label: 'Category',
-                customFilterAndSearch: (filter: any, rowData: TranslationState) => {
-                    return (filter.length !== 0 ? filter.indexOf(rowData.category.id) > -1 : true);
-                },
-                render: (rowData: TranslationState) =>
+                }),
+            getColumnConfig('Category', 'category', false, getFilterCategories(),
+                false, true, false, filterCategory, 'Category', null,
+                (filter: any, rowData: TranslationState) => {
+                    setFilterCategory(filter);
+                    return (filter.length !== 0 ? filter.indexOf(rowData.category !== null ? rowData.category.id : '') > -1 : true);
+                }, (rowData: TranslationState) =>
                     <div>{rowData.category !== null ? rowData.category.name : ''}</div>
-            },
-            {
-                title: 'Translations',
-                field: 'translations',
-                disablePadding: false,
-                searchable: false,
-                filtering: true,
-                sorting: false,
-                filterCellStyle: {
-                    padding: '16px 15px 0px 15px'
-                },
-                label: 'Translations',
-                customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+            ),
+            getColumnConfig('Translations', 'translations', false, null,
+                false, true, false, filterTranslations, 'Translations', {padding: '16px 15px 0px 15px'},
+                (filter: any, rowData: TranslationState) => {
+                    setFilterTranslations(filter);
                     return (filter.length !== 0 ? rowData.translations[language.key].search(filter) !== -1 : true);
-                },
-                render: (rowData: TranslationState) =>
+                }, (rowData: TranslationState) =>
                     <div>{rowData.translations !== null ? rowData.translations[language.key] : ''}</div>
-            },
-            {
-                title: 'Confirmed',
-                field: 'confirmedTranslations',
-                lookup: {true: 'Confirmed', false: 'No Confirmed'},
-                disablePadding: false,
-                searchable: false,
-                sorting: false,
-                filtering: true,
-                label: 'Confirmed',
-                customFilterAndSearch: (filter: any, rowData: TranslationState) => {
+            ),
+            getColumnConfig('Confirmed', 'confirmedTranslations', false, {true: 'Confirmed', false: 'No Confirmed'},
+                false, true, false, filterConfirmed, 'Confirmed', null,
+                (filter: any, rowData: TranslationState) => {
+                    setFilterConfirmed(filter);
                     if (filter.length === 1) {
                         return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true'));
                     } else if (filter.length === 2) {
                         return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true') && rowData.confirmedTranslations[language.key] === (filter[1] === 'true'));
                     }
                     return true;
-                },
-                render: (rowData: TranslationState) => confirmedTranslations(rowData.confirmedTranslations)
-            },
-            {
-                title: 'Updated date',
-                field: 'updateDate',
-                disablePadding: false,
-                searchable: false,
-                filtering: false,
-                sorting: true,
-                label: 'UDate',
-                render: (rowData: TranslationState) => <div>{new Date(rowData.updateDate).toDateString()}</div>
-            },
+                }, (rowData: TranslationState) => confirmedTranslations(rowData.confirmedTranslations)
+            ),
+            getColumnConfig('Updated date', 'updateDate', false, null,
+                false, false, true, null, 'UDate', null,
+                null, (rowData: TranslationState) => <div>{new Date(rowData.updateDate).toDateString()}</div>
+            )
         ];
         return columns;
     };
@@ -214,10 +197,11 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                                 <LanguageSelector language={language} forPlayers={false}
                                                   handleLanguage={handleLanguage}/>
 
-                                <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
-                                                                        onClick={() => loadFormAddData()}>
-                                    <AddCircleOutlineIcon color="primary"/>
-                                </IconButton>} privileges={['Admin']}/>
+                                <PermissionsProvider
+                                    child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                                       onClick={() => loadFormAddData()}>
+                                        <AddCircleOutlineIcon color="primary"/>
+                                    </IconButton>} privileges={['Admin']}/>
                             </div>
                         </div>
                     ),

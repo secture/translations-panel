@@ -67,6 +67,7 @@ store.subscribe(() => {
         users: store.getState().users,
         players: store.getState().players,
         translations: store.getState().translations,
+        filters: store.getState().filters,
         categories: store.getState().categories,
         tags: store.getState().tags,
     });

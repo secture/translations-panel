@@ -1,9 +1,11 @@
 import {CategoryState} from "../categories/types";
+import {LanguageState} from "../languages/types";
 
 export const GET_ALL_TRANSLATIONS = 'GET ALL TRANSLATIONS';
 export const GET_DELETED_TRANSLATIONS = 'GET DELETED TRANSLATIONS';
 export const SET_ALL_TRANSLATIONS = 'SET ALL TRANSLATIONS';
 export const SET_DELETED_TRANSLATIONS = 'SET DELETED TRANSLATIONS';
+export const SET_TRANSLATIONS_STATS = 'SET TRANSLATIONS STATS';
 
 export interface NamePlayers {
     [key: string]: string
@@ -27,6 +29,11 @@ export interface UpdateUserState {
     id: string
 }
 
+export interface TranslationsState {
+    data: TranslationState[],
+    stats: TranslationStatsState[]
+}
+
 export interface TranslationState {
     id: string,
     key: string,
@@ -41,6 +48,14 @@ export interface TranslationState {
     insertionUser: {},
     updateUser: UpdateUserState,
     confirmedTranslations: ConfirmedTranslations
+}
+
+export interface TranslationStatsState {
+    locale: LanguageState,
+    translatedAndConfirmed: number,
+    translatedAndUnconfirmed: number,
+    untranslated: number,
+    total: number
 }
 
 interface GetAllTranslationsAction {
@@ -61,8 +76,14 @@ interface SetDeletedTranslationsAction {
     payload: TranslationState[]
 }
 
+interface SetTranslationsStatsAction {
+    type: typeof SET_TRANSLATIONS_STATS,
+    payload: TranslationStatsState[]
+}
+
 export type TranslationsActionsTypes =
     GetAllTranslationsAction |
     SetAllTranslationsAction |
     GetDeletedTranslationsAction |
-    SetDeletedTranslationsAction;
+    SetDeletedTranslationsAction |
+    SetTranslationsStatsAction;
