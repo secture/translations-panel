@@ -154,7 +154,7 @@ export const historyTranslation = (translation: TranslationState): ThunkAction<P
         let historyTranslation = null;
         try {
             const response = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}/history`);
-            if (response !== null && typeof response.data !== 'undefined') {
+            if (response !== null && typeof response.data !== 'undefined' && Object.entries(response.data).length !== 0) {
                 historyTranslation = response.data;
             }
         } catch (error) {

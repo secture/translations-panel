@@ -10,7 +10,7 @@ import TranslationsList from "components/views/translations/translationsList";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {TranslationState} from "store/translations/types";
-import {initialTranslation} from "store/translations/reducers";
+import {initialTranslation, initialTranslationHistoryState} from "store/translations/reducers";
 import {LanguageState} from "store/languages/types";
 import {TranslationsStore} from "store/types";
 
@@ -26,11 +26,16 @@ import TranslationsForm from "components/views/translations/translationsForm";
 import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
 import DeleteDialog from "components/common/deleteDialog";
-import {PlayerHistoryState} from "../store/players/types";
-import {StatusState} from "../store/status/types";
-import {setStatus} from "../store/status/actions";
-import {initialHistoryPlayerState} from "../store/players/reducers";
-import FullScreenDialog from "../components/common/fullScreenDialog";
+import {StatusState} from "store/status/types";
+import {setStatus} from "store/status/actions";
+import {PlayerHistoryState} from "store/players/types";
+import SimpleTable from "components/common/simpleTable";
+import FullScreenDialog from "components/common/fullScreenDialog";
+import {initialHistoryPlayerState} from "store/players/reducers";
+import {
+    TranslationsHistoryColumns,
+    TranslationsHistoryRows
+} from "components/views/translations/translationsHistoryList";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -49,10 +54,10 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     const [dataSelected, setDataSelected] = useState<TranslationState>(initialTranslation);
     const [editForm, setEditForm] = useState(false);
     const [showForm, setShowForm] = useState(false);
-    const [historyTranslation, setHistoryTranslation] = useState({});
+    const [historyTranslation, setHistoryTranslation] = useState(initialTranslationHistoryState);
     const [historyTranslationDialog, setHistoryTranslationDialog] = useState(false);
     const updateHistoryTranslationDialog = () => {
-        setHistoryTranslationDialog(!historyTranslation);
+        setHistoryTranslationDialog(!historyTranslationDialog);
     };
 
     useEffect(() => {
@@ -83,14 +88,12 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
     const getHistoryTranslation = (rowData: any) => {
         props.historyTranslationAction(rowData).then((historyTranslation: any) => {
-            setHistoryTranslation(historyTranslation);
-            if (historyTranslation.history.length === 0) {
-                props.statusAction({
-                    type: 'info',
+            if (historyTranslation === null) {
+                props.statusAction({type: 'info',
                     message: 'Translation has no history changes',
-                    show: true
-                })
+                    show: true})
             } else {
+                setHistoryTranslation(historyTranslation);
                 updateHistoryTranslationDialog();
             }
         });
@@ -129,7 +132,15 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                                                  setShowForm={setShowForm}
                                                                  editForm={editForm}
                             />}/>
-
+                        <FullScreenDialog
+                            title={`History player ${historyTranslation.id}`}
+                            openDialog={updateHistoryTranslationDialog}
+                            dialog={historyTranslationDialog}
+                            componentRendered={<SimpleTable
+                                columns={<TranslationsHistoryColumns columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
+                                rows={<TranslationsHistoryRows data={historyTranslation}/>}
+                            />}
+                        />
                         <DeleteDialog
                             openDialog={updateDialog}
                             dialog={dialog}

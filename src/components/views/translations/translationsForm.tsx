@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import {
     Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Switch, TextField,
     Typography, InputLabel, Select, MenuItem
@@ -17,7 +16,7 @@ import {formStyles} from "styles/form";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 
-function GetPlatformIcon(props: { tag: any, classes: any }) {
+export const GetPlatformIcon = (props: { tag: any, classes: any }) => {
     switch (props.tag.toLowerCase()) {
         case 'ios':
             return (<AppleIcon className={props.classes.tag}/>);
@@ -28,7 +27,7 @@ function GetPlatformIcon(props: { tag: any, classes: any }) {
         default:
             return (<span/>);
     }
-}
+};
 
 function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
     if (typeof obj[key] === "undefined") {

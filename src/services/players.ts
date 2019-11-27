@@ -67,7 +67,7 @@ export const historyPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}
         let historyPlayer = null;
         try {
             const response = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/history`);
-            if (response !== null && typeof response.data !== 'undefined') {
+            if (response !== null && typeof response.data !== 'undefined' && Object.entries(response.data).length !== 0) {
                 historyPlayer = response.data;
             }
         } catch (error) {

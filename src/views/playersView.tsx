@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {AnyAction} from "redux";
 import {setStatus} from "store/status/actions";
 import {StatusState} from "store/status/types";
-import {LanguageState} from "store/languages/types";
 import {TranslationsStore} from "store/types";
 import {PlayerHistoryState, PlayerState} from "store/players/types";
 import {initialHistoryPlayerState, initialPlayerState} from "store/players/reducers";
@@ -30,10 +29,8 @@ import PlayersList from "components/views/players/playersList";
 import PlayersForm from "components/views/players/playersForm";
 import DeleteDialog from "components/common/deleteDialog";
 import FullScreenDialog from "components/common/fullScreenDialog";
-import {TableCell, TableRow} from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-
+import SimpleTable from "components/common/simpleTable";
+import {PlayersHistoryColumns, PlayersHistoryRows} from "../components/views/players/playersHistoryList";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -82,74 +79,20 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
 
     const getHistoryPlayer = (rowData: any) => {
         props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
-            setHistoryPlayer(historyPlayer);
-            if (historyPlayer.history.length === 0) {
-                props.statusAction({
-                    type: 'info',
+            if (historyPlayer === null) {
+                props.statusAction({type: 'info',
                     message: 'The player has no history changes',
-                    show: true
-                })
+                    show: true})
             } else {
+                setHistoryPlayer(historyPlayer);
                 updateHistoryPlayerDialog();
             }
         });
     };
 
-    const columns = () => {
-        return (
-            <TableRow>
-                {Object.keys(historyPlayer.history[historyPlayer.history.length - 1]).map((key: string) => (
-                    <TableCell>{key}</TableCell>
-                ))}
-            </TableRow>
-        )
-    };
-
-    const data = () => {
-        return (
-            historyPlayer.history.map((item: any) => {
-                Object.keys(item).map((key: string) => (
-                    <TableRow key={item.id}>
-                        {
-                            (item[key] instanceof Object) ? (
-                                Object.keys(item[key]).map((keyObject: any) => (
-                                    <Chip key={'cT_' + item[keyObject] + '_' + keyObject}
-                                          style={{marginBottom: "5px"}}
-                                          avatar={<Avatar>{keyObject}</Avatar>}
-                                          label={item[keyObject]}
-                                          color={'primary'}
-                                    />
-                                ))
-                            ) : (
-                                <TableCell component="th" scope="row">{item[key]}</TableCell>
-                            )
-                        }
-                    </TableRow>
-                ))
-            })
-        )
-    };
-
-    /*const printTableCell = (item: any) => {
-        return (
-            (item instanceof Object) ? (
-                Object.keys(item).map((key: any) => (
-                    <Chip key={'cT_' + item[key] + '_' + key}
-                                          style={{marginBottom: "5px"}}
-                                          avatar={<Avatar>{key}</Avatar>}
-                                          label={item[key]}
-                                          color={'primary'}
-                    />
-                ))
-            ) : (
-                <TableCell component="th" scope="row">{item}</TableCell>
-            )
-        )
-    };*/
-
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer}/>
+            <div className={classes.appBarSpacer} />
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
                     {!showForm ? (
@@ -176,13 +119,16 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                             />
                         </Grid>)
                     }
-                    {(historyPlayer.history.length > 0) ? <FullScreenDialog
+                    <FullScreenDialog
+                        title={`History player ${historyPlayer.id}`}
                         openDialog={updateHistoryPlayerDialog}
                         dialog={historyPlayerDialog}
-                        data={historyPlayer}
-                        componentRendered={<span/>}/> : null}
-                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected}
-                                  deleteFunction={onDeletePlayer}/>
+                        componentRendered={<SimpleTable
+                            columns={<PlayersHistoryColumns columns={['User insertion', 'Date insertion', 'User updated', 'Date updated', 'Short name', 'Large name', 'Confirmed', 'Team', 'Comments']}/>}
+                            rows={<PlayersHistoryRows data={historyPlayer}/>}
+                        />}
+                    />
+                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected} deleteFunction={onDeletePlayer}/>
                 </Grid>
             </Container>
         </main>

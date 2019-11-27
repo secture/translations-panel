@@ -15,6 +15,12 @@ export interface ConfirmedTranslations {
     [key: string]: boolean
 }
 
+export interface TranslationHistoryState {
+    id: string,
+    deleted: boolean,
+    history: TranslationState[],
+}
+
 export interface UpdateUserState {
     associatedLanguages: [],
     name: string,
