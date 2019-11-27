@@ -26,14 +26,13 @@ export const TranslationsHistoryRows: React.FC<any> = (props: PropsTranslationsR
     const printTableCells = (translation: TranslationState) => {
         return (
             <TableRow key={translation.id}>
-                <TableCell component="th" scope="row">{translation.id}</TableCell>
-                <TableCell component="th" scope="row">{category(translation.category)}</TableCell>
+                <TableCell component="th" scope="row">{translation.key}</TableCell>
+                <TableCell component="th" scope="row">{translationInfo(translation.translations)}</TableCell>
                 <TableCell component="th" scope="row">{confirmedTranslations(translation.confirmedTranslations)}</TableCell>
+                <TableCell component="th" scope="row">{platformTags(translation.tags)}</TableCell>
+                <TableCell component="th" scope="row">{category(translation.category)}</TableCell>
                 <TableCell component="th" scope="row">{translation.context}</TableCell>
                 <TableCell component="th" scope="row">{new Date(translation.insertionDate).toDateString()}</TableCell>
-                <TableCell component="th" scope="row">{translation.key}</TableCell>
-                <TableCell component="th" scope="row">{platformTags(translation.tags)}</TableCell>
-                <TableCell component="th" scope="row">{translationInfo(translation.translations)}</TableCell>
                 <TableCell component="th" scope="row">{new Date(translation.updateDate).toDateString()}</TableCell>
             </TableRow>
         )

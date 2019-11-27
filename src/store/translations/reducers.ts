@@ -3,7 +3,7 @@ import {
     SET_DELETED_TRANSLATIONS,
     SET_TRANSLATIONS_STATS,
     TranslationHistoryState,
-    TranslationsActionsTypes,
+    TranslationsActionsTypes, TranslationsState,
     TranslationState,
     UpdateUserState
 } from "./types";

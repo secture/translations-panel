@@ -137,7 +137,7 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             openDialog={updateHistoryTranslationDialog}
                             dialog={historyTranslationDialog}
                             componentRendered={<SimpleTable
-                                columns={<TranslationsHistoryColumns columns={['ID', 'Category', 'Confirmed', 'Context', 'Insertion date', 'Key', 'Tags', 'Translations', 'Updated']}/>}
+                                columns={<TranslationsHistoryColumns columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
                                 rows={<TranslationsHistoryRows data={historyTranslation}/>}
                             />}
                         />
