@@ -75,15 +75,16 @@ const UsersView = (props: AppProps) => {
                         openDialog={updateForm}
                         dialog={showForm}
                         title={'Editing User by id:' + userSelected.id}
-                        componentRendered={<UsersForm user={props.user}
-                                                      userSelected={userSelected}
-                                                      languages={props.languages}
-                                                      roles={props.roles}
-                                                      editForm={editForm}
-                                                      showForm={showForm}
-                                                      onAddUser={onAddUser}
-                                                      onEditUser={onEditUser}
-                                                      setShowForm={setShowForm}/>}/>
+                        componentRendered={
+                            <UsersForm user={props.user}
+                                       userSelected={userSelected}
+                                       languages={props.languages}
+                                       roles={props.roles}
+                                       editForm={editForm}
+                                       showForm={showForm}
+                                       onAddUser={onAddUser}
+                                       onEditUser={onEditUser}
+                                       setShowForm={setShowForm}/>}/>
 
                     <DeleteDialog
                         openDialog={updateDialog}

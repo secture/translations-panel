@@ -28,7 +28,8 @@ export const TranslationsHistoryRows: React.FC<any> = (props: PropsTranslationsR
             <TableRow key={translation.id}>
                 <TableCell component="th" scope="row">{translation.key}</TableCell>
                 <TableCell component="th" scope="row">{translationInfo(translation.translations)}</TableCell>
-                <TableCell component="th" scope="row">{confirmedTranslations(translation.confirmedTranslations)}</TableCell>
+                <TableCell component="th" scope="row">
+                    {confirmedTranslations(translation.confirmedTranslations)}</TableCell>
                 <TableCell component="th" scope="row">{platformTags(translation.tags)}</TableCell>
                 <TableCell component="th" scope="row">{category(translation.category)}</TableCell>
                 <TableCell component="th" scope="row">{translation.context}</TableCell>

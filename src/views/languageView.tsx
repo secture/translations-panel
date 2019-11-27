@@ -18,7 +18,7 @@ import {dashboardViewStyles} from "styles/dashboard";
 import LanguagesList from "components/views/languages/languagesList";
 import DeleteDialog from "components/common/deleteDialog";
 import LanguagesForm from "components/views/languages/languagesForm";
-import FullScreenDialog from "../components/common/fullScreenDialog";
+import FullScreenDialog from "components/common/fullScreenDialog";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;

@@ -1,24 +1,28 @@
 import React from 'react';
+import {allowedRoles} from "store";
 import {UserState} from "store/user/types";
 import {initialUserState} from "store/user/reducers";
 import {LanguageState} from "store/languages/types";
 
-import {Fab, Toolbar, Typography} from "@material-ui/core";
+import {
+    Fab,
+    Chip,
+    Paper,
+    Toolbar,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    IconButton
+} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
 import {tableStyles} from 'styles/table'
 import PermissionsProvider from "components/common/permissionsProvider";
-import {allowedRoles} from "store";
 
 interface PropsUsersList {
     users: UserState[],

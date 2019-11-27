@@ -1,7 +1,7 @@
 import React, {ReactElement} from "react";
 
 import {useSelector} from "react-redux";
-import {TranslationsStore} from "../../store/types";
+import {TranslationsStore} from "store/types";
 
 interface PropsPermissionsProvider {
     child: ReactElement,

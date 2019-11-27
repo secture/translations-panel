@@ -6,13 +6,7 @@ import {connect} from "react-redux";
 import {getExportsByPlatform} from "services/exports";
 
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
+import {Card, CardHeader, CardContent, CardActions, IconButton, Typography, Avatar} from '@material-ui/core';
 import AndroidIcon from '@material-ui/icons/Android';
 import AppleIcon from '@material-ui/icons/Apple';
 import ComputerIcon from '@material-ui/icons/Computer';

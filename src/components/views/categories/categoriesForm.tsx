@@ -1,8 +1,6 @@
 import React, {useState} from "react";
-import {Button, createStyles, Grid, makeStyles, TextField, Theme, Typography} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import {Button, createStyles, Grid, makeStyles, TextField, Theme, Typography, Paper, Container} from "@material-ui/core";
 import {CategoryState} from "store/categories/types";
-import Container from "@material-ui/core/Container";
 import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
@@ -71,7 +69,8 @@ const CategoriesForm: React.FC<any> = (props: PropsDataForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={globalStyles.button} onClick={() => props.setShowForm(false)}>Back</Button>
+                            <Button className={globalStyles.button}
+                                    onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
                                 <Button variant="contained" color="primary"
                                         onClick={() => {

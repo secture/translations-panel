@@ -1,15 +1,9 @@
 import React from "react";
 import CssConditional from "clsx";
 
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import {Drawer, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import List from '@material-ui/core/List';
 import {makeStyles} from '@material-ui/core/styles';
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -117,11 +111,13 @@ const DrawerApp: React.FC<any> = ({open_state, updateOpen}: any) => {
                         </ListItemIcon>
                         <ListItemText primary="Language"/>
                     </ListItem>
-                    <ListItem button onClick={() => {history.push('/dashboard/players')}}>
+                    <ListItem button onClick={() => {
+                        history.push('/dashboard/players')
+                    }}>
                         <ListItemIcon>
-                            <SportsSoccerIcon />
+                            <SportsSoccerIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Players" />
+                        <ListItemText primary="Players"/>
                     </ListItem>
                     <ListItem button onClick={() => {
                         history.push('/dashboard/users')

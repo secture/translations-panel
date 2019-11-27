@@ -1,24 +1,21 @@
 import React, {useState} from 'react';
-import {
-    IconButton
-} from "@material-ui/core";
+import {useSelector} from "react-redux";
+
+import {IconButton, Paper} from "@material-ui/core";
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AppleIcon from '@material-ui/icons/Apple';
 import AndroidIcon from '@material-ui/icons/Android';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import {enhancedTableStyles} from "styles/table";
-import Paper from "@material-ui/core/Paper";
-
 import MaterialTable, {MTableToolbar} from "material-table";
 import LanguageSelector from "components/common/languageSelector";
+import {confirmedTranslations} from "components/common/utilsTable";
+import PermissionsProvider, {checkPermissions} from "components/common/permissionsProvider";
 import {LanguageState} from "store/languages/types";
-import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
-import {confirmedTranslations} from "components/common/utilsTable";
-import PermissionsProvider, {checkPermissions} from "components/common/permissionsProvider";
 import {CategoryState} from "store/categories/types";
 import {UserState} from "store/user/types";
 import {allowedRoles} from "store";

@@ -7,7 +7,6 @@ import {AnyAction} from "redux";
 import {Grid, Container} from "@material-ui/core";
 import {dashboardViewStyles} from "styles/dashboard";
 
-
 /* Services */
 import {
     addTranslation,
@@ -122,23 +121,25 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             openDialog={updateForm}
                             dialog={showForm}
                             title={'Editing translation by id:' + dataSelected.id}
-                            componentRendered={<TranslationsForm dataSelected={dataSelected} tags={props.tags}
-                                                                 languages={props.languages}
-                                                                 categories={props.categories}
-                                                                 onEditEntity={onEditEntity}
-                                                                 onCreateEntity={onCreateEntity}
-                                                                 onConfirmTranslationLanguage={onConfirmTranslationLanguage}
-                                                                 setEditForm={setEditForm}
-                                                                 setShowForm={setShowForm}
-                                                                 editForm={editForm}
-                            />}/>
+                            componentRendered={
+                                <TranslationsForm dataSelected={dataSelected} tags={props.tags}
+                                                  languages={props.languages}
+                                                  categories={props.categories}
+                                                  onEditEntity={onEditEntity}
+                                                  onCreateEntity={onCreateEntity}
+                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}
+                                                  setEditForm={setEditForm}
+                                                  setShowForm={setShowForm}
+                                                  editForm={editForm}
+                                />}/>
                         <FullScreenDialog
                             title={`History player ${historyTranslation.id}`}
                             openDialog={updateHistoryTranslationDialog}
                             dialog={historyTranslationDialog}
                             componentRendered={<SimpleTable
-                                columns={<TranslationsHistoryColumns
-                                    columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
+                                columns={
+                                    <TranslationsHistoryColumns
+                                        columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
                                 rows={<TranslationsHistoryRows data={historyTranslation}/>}
                             />}
                         />

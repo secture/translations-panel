@@ -8,17 +8,9 @@ import {login} from 'services/auth'
 import history from "../history";
 
 /* Material UI */
+import {Avatar, Button, TextField, FormControlLabel, Checkbox, Link, Paper, Grid, Typography} from '@material-ui/core';
 import {makeStyles, Theme} from "@material-ui/core/styles";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 
 const loginViewStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -76,11 +68,11 @@ const LoginView: React.FC<any> = (props: AppProps) => {
 
     return (
         <Grid container component="main" className={classes.root}>
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -113,7 +105,7 @@ const LoginView: React.FC<any> = (props: AppProps) => {
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
                         <Button

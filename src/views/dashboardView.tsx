@@ -1,5 +1,7 @@
 import React, {useEffect} from 'react';
-import {connect, useSelector} from 'react-redux'
+import {connect, useSelector} from 'react-redux';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 import history from "../history";
 
 /* Material UI */
@@ -8,11 +10,9 @@ import {dashboardViewStyles} from "styles/dashboard";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 
-
 /* Services */
 import {Bar} from 'react-chartjs-2';
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
+
 import {getTranslationsStats} from "services/translations";
 import {TranslationStatsState} from "store/translations/types";
 import {TranslationsStore} from "store/types";
@@ -26,7 +26,6 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const DashboardView: React.FC<any> = (props: AppProps) => {
         const classes = dashboardViewStyles();
-        const user: UserState = useSelector((state: TranslationsStore) => state.user);
         useEffect(() => {
             props.getTranslationsStatsActions().then((response: any) => {
             });
