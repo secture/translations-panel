@@ -43,6 +43,9 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const updateDialog = () => {
         setOpenDialog(!dialog);
     };
+    const updateForm = () => {
+        setShowForm(!showForm);
+    };
     const [historyPlayerDialog, setHistoryPlayerDialog] = useState(false);
     const updateHistoryPlayerDialog = () => {
         setHistoryPlayerDialog(!historyPlayerDialog);
@@ -80,9 +83,11 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const getHistoryPlayer = (rowData: any) => {
         props.historyPlayerAction(rowData).then((historyPlayer: PlayerHistoryState) => {
             if (historyPlayer === null) {
-                props.statusAction({type: 'info',
+                props.statusAction({
+                    type: 'info',
                     message: 'The player has no history changes',
-                    show: true})
+                    show: true
+                })
             } else {
                 setHistoryPlayer(historyPlayer);
                 updateHistoryPlayerDialog();
@@ -92,43 +97,48 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
 
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
+            <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
-                    {!showForm ? (
-                        <Grid item xs={12}>
-                            <PlayersList
-                                players={props.players}
-                                user={props.user}
-                                setPlayerSelected={setPlayerSelected}
-                                setShowForm={setShowForm}
-                                openDialog={updateDialog}
-                                getHistoryPlayer={getHistoryPlayer}
-                                setEditForm={setEditForm}/>
-                        </Grid>) : (
-                        <Grid item xs={12}>
-                            <PlayersForm
-                                playerSelected={playerSelected}
-                                onAddPlayer={onAddPlayer}
-                                onEditPlayer={onEditPlayer}
-                                onConfirmPlayerTranslation={onConfirmPlayerTranslation}
-                                languages={props.languages}
-                                setShowForm={setShowForm}
-                                setEditForm={setEditForm}
-                                editForm={editForm}
-                            />
-                        </Grid>)
-                    }
+                    <Grid item xs={12}>
+                        <PlayersList
+                            players={props.players}
+                            user={props.user}
+                            setPlayerSelected={setPlayerSelected}
+                            setShowForm={setShowForm}
+                            openDialog={updateDialog}
+                            getHistoryPlayer={getHistoryPlayer}
+                            setEditForm={setEditForm}/>
+                    </Grid>
+
+                    <FullScreenDialog
+                        title={'Editing Player by id:' + playerSelected.id}
+                        openDialog={updateForm}
+                        dialog={showForm}
+                        componentRendered={<PlayersForm
+                            playerSelected={playerSelected}
+                            onAddPlayer={onAddPlayer}
+                            onEditPlayer={onEditPlayer}
+                            onConfirmPlayerTranslation={onConfirmPlayerTranslation}
+                            languages={props.languages}
+                            setShowForm={setShowForm}
+                            setEditForm={setEditForm}
+                            editForm={editForm}
+                        />}
+                    />
+
                     <FullScreenDialog
                         title={`History player ${historyPlayer.id}`}
                         openDialog={updateHistoryPlayerDialog}
                         dialog={historyPlayerDialog}
                         componentRendered={<SimpleTable
-                            columns={<PlayersHistoryColumns columns={['User insertion', 'Date insertion', 'User updated', 'Date updated', 'Short name', 'Large name', 'Confirmed', 'Team', 'Comments']}/>}
+                            columns={<PlayersHistoryColumns
+                                columns={['User insertion', 'Date insertion', 'User updated', 'Date updated', 'Short name', 'Large name', 'Confirmed', 'Team', 'Comments']}/>}
                             rows={<PlayersHistoryRows data={historyPlayer}/>}
                         />}
                     />
-                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected} deleteFunction={onDeletePlayer}/>
+                    <DeleteDialog openDialog={updateDialog} dialog={dialog} deleteItem={playerSelected}
+                                  deleteFunction={onDeletePlayer}/>
                 </Grid>
             </Container>
         </main>

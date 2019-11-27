@@ -19,6 +19,8 @@ import {dashboardViewStyles} from "styles/dashboard";
 import UsersList from "components/views/users/usersList";
 import UsersForm from "components/views/users/usersForm";
 import DeleteDialog from "components/common/deleteDialog";
+import FullScreenDialog from "../components/common/fullScreenDialog";
+import LanguagesForm from "../components/views/languages/languagesForm";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -32,7 +34,9 @@ const UsersView = (props: AppProps) => {
     const updateDialog = () => {
         setOpenDialog(!dialog);
     };
-
+    const updateForm = () => {
+        setShowForm(!showForm);
+    };
     const classes = dashboardViewStyles();
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const UsersView = (props: AppProps) => {
     const onEditUser = (user: UserState) => {
         props.editUserAction(user);
     };
-    const onAddUser= (user: UserState) => {
+    const onAddUser = (user: UserState) => {
         props.addUserAction(user);
     };
     const deleteUser = () => {
@@ -51,33 +55,36 @@ const UsersView = (props: AppProps) => {
         updateDialog();
     };
 
+
     return (
         <main className={classes.content}>
             <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
-                    {!showForm ? (
-                        <Grid item xs={12}>
-                            <UsersList users={props.users}
-                                       user={props.user}
-                                       setUserSelected={setUserSelected}
-                                       showForm={showForm}
-                                       setShowForm={setShowForm}
-                                       setEditForm={setEditForm}
-                                       openDialog={updateDialog}/>
-                        </Grid>) : (
-                        <Grid item xs={12}>
-                            <UsersForm user={props.user}
-                                       userSelected={userSelected}
-                                       languages={props.languages}
-                                       roles={props.roles}
-                                       editForm={editForm}
-                                       showForm={showForm}
-                                       onAddUser={onAddUser}
-                                       onEditUser={onEditUser}
-                                       setShowForm={setShowForm}/>
-                        </Grid>)
-                    }
+                    <Grid item xs={12}>
+                        <UsersList users={props.users}
+                                   user={props.user}
+                                   setUserSelected={setUserSelected}
+                                   showForm={showForm}
+                                   setShowForm={setShowForm}
+                                   setEditForm={setEditForm}
+                                   openDialog={updateDialog}/>
+                    </Grid>
+
+                    <FullScreenDialog
+                        openDialog={updateForm}
+                        dialog={showForm}
+                        title={'Editing User by id:' + userSelected.id}
+                        componentRendered={<UsersForm user={props.user}
+                                                      userSelected={userSelected}
+                                                      languages={props.languages}
+                                                      roles={props.roles}
+                                                      editForm={editForm}
+                                                      showForm={showForm}
+                                                      onAddUser={onAddUser}
+                                                      onEditUser={onEditUser}
+                                                      setShowForm={setShowForm}/>}/>
+
                     <DeleteDialog
                         openDialog={updateDialog}
                         dialog={dialog}

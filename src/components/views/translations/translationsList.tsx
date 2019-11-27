@@ -134,7 +134,8 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
         }
 
         const columns: any[] = [
-            getColumnConfig('Key', 'key', false, true, false,
+            getColumnConfig('Key',
+                'key', false, true, false,
                 false, false, null, 'Key', null, null, null),
             getColumnConfig('Tags', 'tags', false, getFilterTags(), false,
                 true, false, filterTags, 'Key', null,

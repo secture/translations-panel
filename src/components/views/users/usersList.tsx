@@ -3,7 +3,7 @@ import {UserState} from "store/user/types";
 import {initialUserState} from "store/user/reducers";
 import {LanguageState} from "store/languages/types";
 
-import {Toolbar, Typography} from "@material-ui/core";
+import {Fab, Toolbar, Typography} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -83,15 +83,17 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                                     <Chip label={language.key} variant="outlined" color="primary"/>
                                 )}
                             </TableCell>
-                            <PermissionsProvider child={
-                                <TableCell align="left" className={classes.actions}>
-                                    <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
-                                        <EditIcon color="primary" />
-                                    </IconButton>
-                                    <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
-                                        <DeleteIcon color="secondary" />
-                                    </IconButton>
-                                </TableCell>} privileges={allowedRoles} />
+
+                            <PermissionsProvider child={<TableCell align="right">
+                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                     onClick={() => loadFormEditUser(userRow)}>
+                                    <EditIcon/>
+                                </Fab>
+                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                     onClick={() => deleteUser(userRow)}>
+                                    <DeleteIcon/>
+                                </Fab>
+                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>
