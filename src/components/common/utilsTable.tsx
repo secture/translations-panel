@@ -1,13 +1,67 @@
+import React, {ReactElement} from "react";
 import {PlayerState} from "store/players/types";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
-import React, {ReactElement} from "react";
+import Typography from '@material-ui/core/Typography';
 import {LanguageState} from "store/languages/types";
-import {ConfirmedTranslations} from "../../store/translations/types";
+import {ConfirmedTranslations} from "store/translations/types";
+import {UserState} from "store/user/types";
+import {CategoryState} from "store/categories/types";
+import {GetPlatformIcon} from "../views/translations/translationsForm";
 
 const NO_FIELD = 'NO_TEXT';
 
-const playerNames = (rowData: PlayerState, shortName: boolean) => {
+export const user = (rowData: UserState, color: string) => {
+    return (
+        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <Avatar aria-label="recipe" style={{background: `${color}`, marginRight: '15px'}}>
+                {rowData.privilege.charAt(0).toUpperCase()}
+            </Avatar>
+            <Typography>
+                {rowData.name}
+            </Typography>
+        </div>
+    )
+};
+
+export const category = (category: CategoryState) => {
+    return (
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <Typography variant="body2" component="p">
+                {category.id}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+                {category.name}
+            </Typography>
+        </div>
+    )
+};
+
+export const platformTags = (tags: string[]) => {
+    return (
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+            {tags.map((tag: string) => (
+                <GetPlatformIcon tag={tag} classes={''}/>
+            ))}
+        </div>
+    )
+};
+
+export const translationInfo = (translation: any) => {
+    return (
+        <div>
+            {Object.keys(translation).map((key: any) => (
+                <Chip style={{marginBottom: "5px"}}
+                      avatar={<Avatar color="secondary">{key}</Avatar>}
+                      label={translation[key]}
+                      color="primary"
+                />)
+            )}
+        </div>
+    )
+};
+
+export const playerNames = (rowData: PlayerState, shortName: boolean) => {
     return (
         <div>
             {Object.keys(shortName ? rowData.shortName : rowData.largeName).map((key: any) => (
