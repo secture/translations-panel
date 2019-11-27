@@ -17,7 +17,7 @@ import {
     Radio,
     RadioGroup,
     Paper
-} from "@material-ui/core/Grid";
+} from "@material-ui/core";
 import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
