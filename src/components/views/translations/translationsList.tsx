@@ -111,7 +111,22 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
             }
         ] : []
     };
-
+    const toolbar = (propsTable: any) => {
+        return (
+            <div>
+                <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
+                    <MTableToolbar {...propsTable} />
+                    <LanguageSelector language={language} forPlayers={false}
+                                      handleLanguage={handleLanguage}/>
+                    <PermissionsProvider
+                        child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                           onClick={() => loadFormAddData()}>
+                            <AddCircleOutlineIcon color="primary"/>
+                        </IconButton>} privileges={['Admin']}/>
+                </div>
+            </div>
+        )
+    };
     const getColumns = (language: LanguageState) => {
         function getColumnConfig(title: string, field: string, disablePadding: boolean, lookup: any,
                                  searchable: boolean, filtering: boolean, sorting: boolean,
@@ -134,12 +149,15 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
         }
 
         const columns: any[] = [
-            getColumnConfig('Key',
-                'key', false, true, false,
-                false, false, null, 'Key', null, null, null),
-            getColumnConfig('Tags', 'tags', false, getFilterTags(), false,
-                true, false, filterTags, 'Key', null,
-                (filter: Array<any>, rowData: TranslationState) => {
+            getColumnConfig('Key', 'key', false,
+                null, true, false,
+                false, null,
+                'Key', null,
+                null, null),
+            getColumnConfig('Tags', 'tags', false,
+                getFilterTags(), false, true,
+                false, filterTags, 'Key',
+                null, (filter: Array<any>, rowData: TranslationState) => {
                     setFilterTags(filter);
                     return filter.length !== 0 ? filter.sort().join(',') === rowData.tags.sort().join(',') : true;
 
@@ -190,28 +208,9 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 title={'Translations'}
                 columns={getColumns(language)}
                 data={props.translations}
-                components={{
-                    Toolbar: (props) => (
-                        <div>
-                            <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
-                                <MTableToolbar {...props} />
-                                <LanguageSelector language={language} forPlayers={false}
-                                                  handleLanguage={handleLanguage}/>
-
-                                <PermissionsProvider
-                                    child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
-                                                       onClick={() => loadFormAddData()}>
-                                        <AddCircleOutlineIcon color="primary"/>
-                                    </IconButton>} privileges={['Admin']}/>
-                            </div>
-                        </div>
-                    ),
-                }}
+                components={{Toolbar: props => toolbar(props)}}
                 actions={actions()}
-                options={{
-                    search: true,
-                    filtering: true,
-                }}
+                options={{search: true, filtering: true}}
                 onRowClick={(event, rowData: any) => props.getHistoryTranslation(rowData)}
                 isLoading={props.translations.length === 1}/>
         </Paper>

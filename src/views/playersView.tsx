@@ -30,7 +30,7 @@ import PlayersForm from "components/views/players/playersForm";
 import DeleteDialog from "components/common/deleteDialog";
 import FullScreenDialog from "components/common/fullScreenDialog";
 import SimpleTable from "components/common/simpleTable";
-import {PlayersHistoryColumns, PlayersHistoryRows} from "../components/views/players/playersHistoryList";
+import {PlayersHistoryColumns, PlayersHistoryRows} from "components/views/players/playersHistoryList";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
