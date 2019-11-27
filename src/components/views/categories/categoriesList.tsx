@@ -1,26 +1,15 @@
 import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
+import {
+    Paper, Table, TableBody, TableCell, TableHead, TableRow, Fab, IconButton, Toolbar, Typography
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import PermissionsProvider from "components/common/permissionsProvider";
-
-import {CategoryState} from "store/categories/types";
-import {
-    Fab,
-    IconButton,
-    Toolbar,
-    Typography
-} from "@material-ui/core";
-import {initialCategory} from "store/categories/reducers";
 import {allowedRoles} from "store";
+import {CategoryState} from "store/categories/types";
+import {initialCategory} from "store/categories/reducers";
 
 const categoriesListStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -52,7 +41,6 @@ interface PropsDataList {
 
 const CategoriesList: React.FC<any> = (props: PropsDataList) => {
     const classes = categoriesListStyles();
-
     const loadFormAddData = () => {
         props.setEditForm(false);
         props.setDataSelected(initialCategory);
@@ -80,12 +68,14 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
                     <AddCircleOutlineIcon/>
                 </IconButton>} privileges={['Admin']}/>
             </Toolbar>
+
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell align="left">ID</TableCell>
                         <TableCell align="right">NAME</TableCell>
-                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>} privileges={allowedRoles}/>
+                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>}
+                                             privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>

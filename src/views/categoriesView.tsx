@@ -64,11 +64,11 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
                                         setShowForm={setShowForm}
                                         openDialog={updateDialog}
                                         setEditForm={setEditForm}/>
-                    </Grid>)
+                    </Grid>
                     <FullScreenDialog
                         openDialog={updateForm}
                         dialog={showForm}
-                        title={'Editing Category by id:' + dataSelected.id}
+                        title={editForm ? 'Editing Category by id:' + dataSelected.id : 'Create Category'}
                         componentRendered={<CategoriesForm onEditCategory={onEditCategory}
                                                            onAddCategory={onAddCategory}
                                                            dataSelected={dataSelected}
