@@ -71,10 +71,8 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
         props.addPlayerAction(player);
     };
 
-    const onConfirmPlayerTranslation = (id: string, languageKey: string) => {
-        props.confirmPlayerTranslationAction(id, languageKey).then((confirmPlayer: PlayerState) => {
-            (confirmPlayer !== null) ? alert('Player confirmado') : alert('no ha sido posible confirmar el player')
-        });
+    const onConfirmPlayerTranslation = (id: string, languageId: string) => {
+        props.confirmPlayerTranslationAction(id, languageId);
     };
 
     const getHistoryPlayer = (rowData: any) => {
@@ -150,7 +148,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),
         historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
-        confirmPlayerTranslationAction: (id: string, languageKey: string) => dispatch(confirmPlayerTranslations(id, languageKey)),
+        confirmPlayerTranslationAction: (id: string, languageId: string) => dispatch(confirmPlayerTranslations(id, languageId)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };

@@ -37,9 +37,7 @@ const Exports: React.FC<any> = (props: AppProps) => {
     const classes = useStylesExports();
 
     const handleDownloadFile = () => {
-        props.getExportsByPlatformAction(props.tag).then((exportOk: boolean) => {
-            (exportOk) ? alert('toaster ok descarga archivo') : alert('error al descargar el archivo');
-        });
+        props.getExportsByPlatformAction(props.tag);
     };
 
     return (

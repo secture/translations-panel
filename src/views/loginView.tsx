@@ -19,6 +19,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import {StatusState} from "../store/status/types";
+import {setStatus} from "../store/status/actions";
 
 const loginViewStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -63,7 +65,9 @@ const LoginView: React.FC<any> = (props: AppProps) => {
 
     const handleSubmit = (e: any) => {
         props.loginAction(user).then((response: any) => {
-            (response !== null) ? history.push('/dashboard') : alert('Error al iniciar sesion');
+            if( response !== null) {
+                history.push('/dashboard');
+            }
         });
         e.preventDefault();
     };
@@ -152,7 +156,7 @@ const mapStateToProps = (store: TranslationsStore) => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
-        loginAction: (user: UserLoginDTO) => dispatch(login(user)),
+        loginAction: (user: UserLoginDTO) => dispatch(login(user))
     };
 };
 

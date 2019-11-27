@@ -10,7 +10,7 @@ interface PropsPlayersForm {
     playerSelected: PlayerState,
     onEditPlayer: (player: PlayerState) => void,
     onAddPlayer: (player: PlayerState) => void,
-    onConfirmPlayerTranslation: (id: string, languageKey: string) => void,
+    onConfirmPlayerTranslation: (id: string, languageId: string) => void,
     languages: LanguageState[]
     editForm: boolean
     showForm: boolean,
@@ -76,8 +76,8 @@ const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
                         control={<Switch
                             disabled={confirmedPlayers[language.key] || !props.editForm}
                             checked={confirmedPlayers[language.key]}
-                            onChange={(e) => {changedConfirmedPlayers(e.target.value, `${language.key}`);
-                                props.onConfirmPlayerTranslation(props.playerSelected.id, language.key)}}
+                            onChange={(e) => {changedConfirmedPlayers(e.target.value, `${language.id}`);
+                                props.onConfirmPlayerTranslation(props.playerSelected.id, language.id)}}
                             value={confirmedPlayers[language.key]}
                             inputProps={{ 'aria-label': 'primary checkbox' }}/>}
                         label={language.key}

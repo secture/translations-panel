@@ -28,10 +28,8 @@ import {getAllCategories} from "services/categories";
 import DeleteDialog from "components/common/deleteDialog";
 import {StatusState} from "store/status/types";
 import {setStatus} from "store/status/actions";
-import {PlayerHistoryState} from "store/players/types";
 import SimpleTable from "components/common/simpleTable";
 import FullScreenDialog from "components/common/fullScreenDialog";
-import {initialHistoryPlayerState} from "store/players/reducers";
 import {
     TranslationsHistoryColumns,
     TranslationsHistoryRows

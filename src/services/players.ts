@@ -77,19 +77,16 @@ export const historyPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}
     }
 };
 
-export const confirmPlayerTranslations = (id: string, languageKey: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const confirmPlayerTranslations = (id: string, languageId: string): ThunkAction<void, {}, {}, AnyAction> => {
     return async function(dispatch: any) {
-        let confirmPlayerTranslations = null;
         try {
-            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${id}/confirm/${languageKey}`);
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${id}/confirm/${languageId}`);
             if (response !== null && typeof response.data !== 'undefined') {
-                confirmPlayerTranslations = response.data;
                 dispatch(getAllPlayers());
             }
         } catch (error) {
             handleError(error);
         }
-        return confirmPlayerTranslations;
     }
 };
 

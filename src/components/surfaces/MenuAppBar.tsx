@@ -16,6 +16,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import {logOut} from "services/auth";
 import history from "../../history";
+import {StatusState} from "../../store/status/types";
+import {setStatus} from "../../store/status/actions";
 
 const drawerWidth = 240;
 
@@ -69,6 +71,9 @@ const MenuAppBar: React.FC<any> = (props: AppProps) => {
         props.logoutAction().then((logoutOk: boolean) => {
             if (logoutOk) {
                 history.push('/login');
+                props.statusAction({type: 'success',
+                    message: 'Logout successfully',
+                    show: true})
             }
         })
     };
@@ -107,6 +112,7 @@ const mapStateToProps = (store: TranslationsStore, props: any) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
         logoutAction: () => dispatch(logOut()),
+        statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };
 
