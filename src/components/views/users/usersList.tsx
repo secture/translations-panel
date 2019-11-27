@@ -67,7 +67,8 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                         <TableCell align="left">Email</TableCell>
                         <TableCell align="left">Role</TableCell>
                         <TableCell align="left">Languages</TableCell>
-                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>} privileges={allowedRoles} />
+                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>}
+                                             privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -80,7 +81,8 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                             <TableCell align="left">{userRow.privilege}</TableCell>
                             <TableCell align="left">
                                 {userRow.associatedLanguages.map((language: LanguageState) =>
-                                    <Chip label={language.key} variant="outlined" color="primary"/>
+                                    <Chip key={'chip_language' + language.key} label={language.key} variant="outlined"
+                                          color="primary"/>
                                 )}
                             </TableCell>
 

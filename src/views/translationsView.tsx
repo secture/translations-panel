@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux'
-
-/* Material UI */
-import Grid from "@material-ui/core/Grid";
-import Container from '@material-ui/core/Container';
-
-import {dashboardViewStyles} from "styles/dashboard";
-import TranslationsList from "components/views/translations/translationsList";
+import {connect} from 'react-redux';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {TranslationState} from "store/translations/types";
-import {initialTranslation, initialTranslationHistoryState} from "store/translations/reducers";
-import {LanguageState} from "store/languages/types";
-import {TranslationsStore} from "store/types";
+
+/* Material UI */
+import {Grid, Container} from "@material-ui/core";
+import {dashboardViewStyles} from "styles/dashboard";
+
 
 /* Services */
 import {
@@ -22,20 +16,24 @@ import {
     editTranslationById,
     getAllTranslations, historyTranslation,
 } from "services/translations";
-import TranslationsForm from "components/views/translations/translationsForm";
 import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
-import DeleteDialog from "components/common/deleteDialog";
 import {StatusState} from "store/status/types";
 import {setStatus} from "store/status/actions";
-import {PlayerHistoryState} from "store/players/types";
-import SimpleTable from "components/common/simpleTable";
-import FullScreenDialog from "components/common/fullScreenDialog";
-import {initialHistoryPlayerState} from "store/players/reducers";
+import {TranslationState} from "store/translations/types";
+import {initialTranslation, initialTranslationHistoryState} from "store/translations/reducers";
+import {LanguageState} from "store/languages/types";
+import {TranslationsStore} from "store/types";
 import {
     TranslationsHistoryColumns,
     TranslationsHistoryRows
 } from "components/views/translations/translationsHistoryList";
+import FullScreenDialog from "components/common/fullScreenDialog";
+import TranslationsForm from "components/views/translations/translationsForm";
+import TranslationsList from "components/views/translations/translationsList";
+import DeleteDialog from "components/common/deleteDialog";
+import SimpleTable from "components/common/simpleTable";
+
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -89,9 +87,11 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     const getHistoryTranslation = (rowData: any) => {
         props.historyTranslationAction(rowData).then((historyTranslation: any) => {
             if (historyTranslation === null) {
-                props.statusAction({type: 'info',
+                props.statusAction({
+                    type: 'info',
                     message: 'Translation has no history changes',
-                    show: true})
+                    show: true
+                })
             } else {
                 setHistoryTranslation(historyTranslation);
                 updateHistoryTranslationDialog();
@@ -137,7 +137,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             openDialog={updateHistoryTranslationDialog}
                             dialog={historyTranslationDialog}
                             componentRendered={<SimpleTable
-                                columns={<TranslationsHistoryColumns columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
+                                columns={<TranslationsHistoryColumns
+                                    columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
                                 rows={<TranslationsHistoryRows data={historyTranslation}/>}
                             />}
                         />

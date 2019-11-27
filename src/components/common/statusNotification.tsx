@@ -85,7 +85,7 @@ const StatusNotification: React.FC<any> = (props: AppProps) => {
                     {props.status.message}</span>
             }
             action={[
-                <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
+                <IconButton key="close" aria-label="close" color="secondary" onClick={handleClose}>
                     <CloseIcon className={classes.icon}/>
                 </IconButton>,
             ]}

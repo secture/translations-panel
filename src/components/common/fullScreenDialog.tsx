@@ -44,7 +44,7 @@ const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
             <Dialog fullScreen open={props.dialog} onClose={props.openDialog} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" onClick={props.openDialog} aria-label="close">
+                        <IconButton edge="start" color="secondary" onClick={props.openDialog} aria-label="close">
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
