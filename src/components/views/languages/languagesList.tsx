@@ -1,11 +1,17 @@
 import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Paper,
+    Fab,
+    IconButton,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,12 +21,6 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PermissionsProvider from "components/common/permissionsProvider";
 
 import {LanguageState} from "store/languages/types";
-import {
-    Fab,
-    IconButton,
-    Toolbar,
-    Typography
-} from "@material-ui/core";
 import {initialLanguage} from "store/languages/reducers";
 import {allowedRoles} from "store";
 
@@ -96,7 +96,8 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
                         <TableCell align="right">FLAG</TableCell>
                         <TableCell align="right">NAME</TableCell>
                         <TableCell align="right">FOR PLAYERS</TableCell>
-                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>} privileges={allowedRoles}/>
+                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>}
+                                             privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>

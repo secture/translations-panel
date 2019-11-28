@@ -5,14 +5,8 @@ import {AnyAction} from "redux";
 import {connect} from "react-redux";
 import {getExportsByPlatform} from "services/exports";
 
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
+import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import {Card, CardHeader, CardContent, CardActions, IconButton, Typography, Avatar} from '@material-ui/core';
 import AndroidIcon from '@material-ui/icons/Android';
 import AppleIcon from '@material-ui/icons/Apple';
 import ComputerIcon from '@material-ui/icons/Computer';
@@ -46,13 +40,13 @@ const Exports: React.FC<any> = (props: AppProps) => {
                 avatar={
                     <Avatar className={classes.avatar}>
                         {(() => {
-                            switch(props.tag) {
+                            switch (props.tag) {
                                 case 'android':
-                                    return <AndroidIcon />;
+                                    return <AndroidIcon/>;
                                 case 'ios':
-                                    return <AppleIcon />;
+                                    return <AppleIcon/>;
                                 case 'web':
-                                    return <ComputerIcon />;
+                                    return <ComputerIcon/>;
                             }
                         })()}
                     </Avatar>
@@ -65,8 +59,10 @@ const Exports: React.FC<any> = (props: AppProps) => {
                 </Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-                <IconButton aria-label="download file" color="secondary">
-                    <GetAppIcon  onClick={() => {handleDownloadFile()}}/>
+                <IconButton aria-label="download file" color="secondary" onClick={() => {
+                    handleDownloadFile()
+                }}>
+                    <GetAppIcon/>
                 </IconButton>
             </CardActions>
         </Card>

@@ -1,9 +1,18 @@
 import React, {useState} from "react";
-import {Button, createStyles, Grid, makeStyles, Switch, TextField, Theme, Typography} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import {
+    Button,
+    createStyles,
+    Grid,
+    makeStyles,
+    Switch,
+    TextField,
+    Theme,
+    Typography,
+    Paper,
+    Container,
+    FormControlLabel
+} from "@material-ui/core";
 import {LanguageState} from "store/languages/types";
-import Container from "@material-ui/core/Container";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
@@ -112,14 +121,19 @@ const LanguagesForm: React.FC<any> = (props: PropsLanguagesForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={globalStyle.button} onClick={() => props.setShowForm(false)}>Back</Button>
+                            <Button className={globalStyle.button}
+                                    onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => {confirmEditLanguage()}}
+                                        onClick={() => {
+                                            confirmEditLanguage()
+                                        }}
                                         className={globalStyle.button}> Save </Button>
                             ) : (
                                 <Button variant="contained" color="primary"
-                                        onClick={() => {confirmCreateLanguage()}}
+                                        onClick={() => {
+                                            confirmCreateLanguage()
+                                        }}
                                         className={globalStyle.button}> Create </Button>
                             )}
                         </Grid>

@@ -13,8 +13,8 @@ const SimpleTable: React.FC<any> = (props: PropsSimpleTable) => {
     return (
         <Paper className={classes.root}>
             <Table className={classes.table} aria-label="simple table">
-                    {props.columns}
-                    {props.rows}
+                {props.columns}
+                {props.rows}
             </Table>
         </Paper>
     )

@@ -57,7 +57,8 @@ const PlayersList: React.FC<any> = (props: PropsPlayerList) => {
                 <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
                     <MTableToolbar {...propsTable} />
                     <LanguageSelector language={language} forPlayers={true} handleLanguage={handleLanguage}/>
-                    <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add" onClick={() => loadFormAddPlayer()}>
+                    <PermissionsProvider child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                                            onClick={() => loadFormAddPlayer()}>
                         <AddCircleOutlineIcon color="primary"/>
                     </IconButton>} privileges={['Admin']}/>
                 </div>

@@ -1,24 +1,28 @@
 import React from 'react';
+import {allowedRoles} from "store";
 import {UserState} from "store/user/types";
 import {initialUserState} from "store/user/reducers";
 import {LanguageState} from "store/languages/types";
 
-import {Toolbar, Typography} from "@material-ui/core";
+import {
+    Fab,
+    Chip,
+    Paper,
+    Toolbar,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    IconButton
+} from "@material-ui/core";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
 import {dashboardViewStyles} from "styles/dashboard";
 import {tableStyles} from 'styles/table'
 import PermissionsProvider from "components/common/permissionsProvider";
-import {allowedRoles} from "store";
 
 interface PropsUsersList {
     users: UserState[],
@@ -67,7 +71,8 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                         <TableCell align="left">Email</TableCell>
                         <TableCell align="left">Role</TableCell>
                         <TableCell align="left">Languages</TableCell>
-                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>} privileges={allowedRoles} />
+                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>}
+                                             privileges={allowedRoles}/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -80,18 +85,21 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
                             <TableCell align="left">{userRow.privilege}</TableCell>
                             <TableCell align="left">
                                 {userRow.associatedLanguages.map((language: LanguageState) =>
-                                    <Chip label={language.key} variant="outlined" color="primary"/>
+                                    <Chip key={'chip_language' + language.key} label={language.key} variant="outlined"
+                                          color="primary"/>
                                 )}
                             </TableCell>
-                            <PermissionsProvider child={
-                                <TableCell align="left" className={classes.actions}>
-                                    <IconButton onClick={() => loadFormEditUser(userRow)} aria-label="edit" className={`${classes.button}`}>
-                                        <EditIcon color="primary" />
-                                    </IconButton>
-                                    <IconButton onClick={() => deleteUser(userRow)} aria-label="delete" className={`${classes.button}`}>
-                                        <DeleteIcon color="secondary" />
-                                    </IconButton>
-                                </TableCell>} privileges={allowedRoles} />
+
+                            <PermissionsProvider child={<TableCell align="right">
+                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                     onClick={() => loadFormEditUser(userRow)}>
+                                    <EditIcon/>
+                                </Fab>
+                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
+                                     onClick={() => deleteUser(userRow)}>
+                                    <DeleteIcon/>
+                                </Fab>
+                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>

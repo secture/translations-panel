@@ -5,13 +5,10 @@ import {TranslationsStore} from "store/types";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import CssConditional from "clsx";
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {AppBar, Toolbar, Typography, IconButton} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import {logOut} from "services/auth";
@@ -36,7 +33,7 @@ const menuAppBarStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
         },
         toolbar: {
-            paddingRight: 24, // keep right padding when drawer closed
+            paddingRight: 24,
         },
         appBar: {
             zIndex: theme.zIndex.drawer + 1,
@@ -88,13 +85,13 @@ const MenuAppBar: React.FC<any> = (props: AppProps) => {
                     onClick={props.updateOpen}
                     className={CssConditional(classes.menuButton, props.open_state && classes.menuButtonHidden)}
                 >
-                    <MenuIcon />
+                    <MenuIcon/>
                 </IconButton>
                 <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                     {userAuthenticated.name}
                 </Typography>
                 <IconButton onClick={exit} className={classes.button} aria-label="exit" color="inherit">
-                    <ExitToAppIcon />
+                    <ExitToAppIcon/>
                 </IconButton>
             </Toolbar>
         </AppBar>

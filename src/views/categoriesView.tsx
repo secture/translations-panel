@@ -18,26 +18,30 @@ import {dashboardViewStyles} from "styles/dashboard";
 import CategoriesList from "components/views/categories/categoriesList";
 import DeleteDialog from "components/common/deleteDialog";
 import CategoriesForm from "components/views/categories/categoriesForm";
+import FullScreenDialog from "../components/common/fullScreenDialog";
+import LanguagesForm from "../components/views/languages/languagesForm";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const CategoriesView: React.FC<any> = (props: AppProps) => {
-    const [categorySelected, setCategorySelected] = useState(initialCategory);
+    const [dataSelected, setDataSelected] = useState(initialCategory);
     const [showForm, setShowForm] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const [dialog, setOpenDialog] = useState(false);
     const updateDialog = () => {
         setOpenDialog(!dialog);
     };
-
+    const updateForm = () => {
+        setShowForm(!showForm);
+    };
     useEffect(() => {
         props.getAllCategoriesActions();
     }, []);
 
     const onDeleteCategory = () => {
-        props.deleteCategoryByIdActions(categorySelected);
+        props.deleteCategoryByIdActions(dataSelected);
         setOpenDialog(false);
     };
     const onEditCategory = (language: CategoryState) => {
@@ -53,27 +57,28 @@ const CategoriesView: React.FC<any> = (props: AppProps) => {
             <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
-                    {!showForm ? (
-                        <Grid item xs={12}>
-                            <CategoriesList data={props.categories}
-                                            setDataSelected={setCategorySelected}
-                                            showForm={showForm}
-                                            setShowForm={setShowForm}
-                                            openDialog={updateDialog}
-                                            setEditForm={setEditForm}/>
-                        </Grid>) : (
-                        <Grid item xs={12}>
-                            <CategoriesForm onEditCategory={onEditCategory}
-                                            onAddCategory={onAddCategory}
-                                            dataSelected={categorySelected}
-                                            showForm={showForm}
-                                            setShowForm={setShowForm}
-                                            editForm={editForm}/>
-                        </Grid>)}
+                    <Grid item xs={12}>
+                        <CategoriesList data={props.categories}
+                                        setDataSelected={setDataSelected}
+                                        showForm={showForm}
+                                        setShowForm={setShowForm}
+                                        openDialog={updateDialog}
+                                        setEditForm={setEditForm}/>
+                    </Grid>
+                    <FullScreenDialog
+                        openDialog={updateForm}
+                        dialog={showForm}
+                        title={editForm ? 'Editing Category by id:' + dataSelected.id : 'Create Category'}
+                        componentRendered={<CategoriesForm onEditCategory={onEditCategory}
+                                                           onAddCategory={onAddCategory}
+                                                           dataSelected={dataSelected}
+                                                           showForm={showForm}
+                                                           setShowForm={setShowForm}
+                                                           editForm={editForm}/>}/>
                     <DeleteDialog openDialog={updateDialog}
                                   dialog={dialog}
                                   dialogTitle={"Are you sure to delete this Category?"}
-                                  deleteItem={categorySelected}
+                                  deleteItem={dataSelected}
                                   deleteFunction={onDeleteCategory}/>
                 </Grid>
             </Container>

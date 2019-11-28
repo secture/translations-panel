@@ -3,10 +3,7 @@ import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 import {LanguageState} from "store/languages/types";
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import {InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
 
 interface PropsLanguageSelector {
     forPlayers: boolean,

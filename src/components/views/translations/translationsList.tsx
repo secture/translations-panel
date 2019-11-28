@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
-import {
-    IconButton
-} from "@material-ui/core";
+import {useSelector} from "react-redux";
+
+import {IconButton, Paper} from "@material-ui/core";
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import {enhancedTableStyles} from "styles/table";
-import Paper from "@material-ui/core/Paper";
-
 import MaterialTable, {MTableToolbar} from "material-table";
 import LanguageSelector from "components/common/languageSelector";
+import {confirmedTranslations} from "components/common/utilsTable";
+import PermissionsProvider, {checkPermissions} from "components/common/permissionsProvider";
 import {LanguageState} from "store/languages/types";
-import {useSelector} from "react-redux";
 import {TranslationsStore} from "store/types";
 import {TranslationState} from "store/translations/types";
 import {initialTranslation} from "store/translations/reducers";
-import {confirmedTranslations} from "components/common/utilsTable";
-import PermissionsProvider, {checkPermissions} from "components/common/permissionsProvider";
 import {CategoryState} from "store/categories/types";
 import {UserState} from "store/user/types";
 import {allowedRoles} from "store";
@@ -95,7 +92,22 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
             }
         ] : []
     };
-
+    const toolbar = (propsTable: any) => {
+        return (
+            <div>
+                <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
+                    <MTableToolbar {...propsTable} />
+                    <LanguageSelector language={language} forPlayers={false}
+                                      handleLanguage={handleLanguage}/>
+                    <PermissionsProvider
+                        child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
+                                           onClick={() => loadFormAddData()}>
+                            <AddCircleOutlineIcon color="primary"/>
+                        </IconButton>} privileges={['Admin']}/>
+                </div>
+            </div>
+        )
+    };
     const getColumns = (language: LanguageState) => {
         function getColumnConfig(title: string, field: string, disablePadding: boolean, lookup: any,
                                  searchable: boolean, filtering: boolean, sorting: boolean,
@@ -117,11 +129,15 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
         }
 
         const columns: any[] = [
-            getColumnConfig('Key', 'key', false, true, false,
-                false, false, null, 'Key', null, null, null),
-            getColumnConfig('Tags', 'tags', false, getFilterTags(), false,
-                true, false, filterTags, 'Key', null,
-                (filter: Array<any>, rowData: TranslationState) => {
+            getColumnConfig('Key', 'key', false,
+                null, true, false,
+                false, null,
+                'Key', null,
+                null, null),
+            getColumnConfig('Tags', 'tags', false,
+                getFilterTags(), false, true,
+                false, filterTags, 'Key',
+                null, (filter: Array<any>, rowData: TranslationState) => {
                     setFilterTags(filter);
                     return filter.length !== 0 ? filter.sort().join(',') === rowData.tags.sort().join(',') : true;
 
@@ -176,28 +192,9 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 title={'Translations'}
                 columns={getColumns(language)}
                 data={props.translations}
-                components={{
-                    Toolbar: (props) => (
-                        <div>
-                            <div style={{display: 'flex', flexDirection: 'row', paddingTop: '15px'}}>
-                                <MTableToolbar {...props} />
-                                <LanguageSelector language={language} forPlayers={false}
-                                                  handleLanguage={handleLanguage}/>
-
-                                <PermissionsProvider
-                                    child={<IconButton style={{width: '50px', height: '50px'}} aria-label="add"
-                                                       onClick={() => loadFormAddData()}>
-                                        <AddCircleOutlineIcon color="primary"/>
-                                    </IconButton>} privileges={['Admin']}/>
-                            </div>
-                        </div>
-                    ),
-                }}
+                components={{Toolbar: props => toolbar(props)}}
                 actions={actions()}
-                options={{
-                    search: true,
-                    filtering: true,
-                }}
+                options={{search: true, filtering: true}}
                 onRowClick={(event, rowData: any) => props.getHistoryTranslation(rowData)}
                 isLoading={props.translations.length === 1}/>
         </Paper>

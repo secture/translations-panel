@@ -7,7 +7,7 @@ import {initialLanguage} from "store/languages/reducers";
 import {LanguageState} from "store/languages/types";
 
 /* Services */
-import {addLanguage,deleteLanguageById, editLanguageById, getAllLanguages} from "services/languages";
+import {addLanguage, deleteLanguageById, editLanguageById, getAllLanguages} from "services/languages";
 
 /* Material UI */
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +18,7 @@ import {dashboardViewStyles} from "styles/dashboard";
 import LanguagesList from "components/views/languages/languagesList";
 import DeleteDialog from "components/common/deleteDialog";
 import LanguagesForm from "components/views/languages/languagesForm";
+import FullScreenDialog from "components/common/fullScreenDialog";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -25,12 +26,15 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const LanguageView: React.FC<any> = (props: AppProps) => {
 
-    const [languageSelected, setLanguageSelected] = useState(initialLanguage);
+    const [dataSelected, setDataSelected] = useState(initialLanguage);
     const [showForm, setShowForm] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const [dialog, setOpenDialog] = useState(false);
     const updateDialog = () => {
         setOpenDialog(!dialog);
+    };
+    const updateForm = () => {
+        setShowForm(!showForm);
     };
 
     useEffect(() => {
@@ -38,7 +42,7 @@ const LanguageView: React.FC<any> = (props: AppProps) => {
     }, []);
 
     const onDeleteLanguage = () => {
-        props.deleteLanguageByIdActions(languageSelected);
+        props.deleteLanguageByIdActions(dataSelected);
         setOpenDialog(false);
     };
     const onEditLanguage = (language: LanguageState) => {
@@ -51,30 +55,31 @@ const LanguageView: React.FC<any> = (props: AppProps) => {
     const classes = dashboardViewStyles();
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
+            <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
-                    {!showForm ? (
-                        <Grid item xs={12}>
-                            <LanguagesList languages={props.languages}
-                                         setLanguageSelected={setLanguageSelected}
-                                         showForm={showForm}
-                                         setShowForm={setShowForm}
-                                         openDialog={updateDialog}
-                                         setEditForm={setEditForm}/>
-                        </Grid>) : (
-                        <Grid item xs={12}>
-                            <LanguagesForm onEditLanguage={onEditLanguage}
-                                         onAddLanguage={onAddLanguage}
-                                         languageSelected={languageSelected}
-                                         showForm={showForm}
-                                         setShowForm={setShowForm}
-                                         editForm={editForm}/>
-                        </Grid>)}
+                    <Grid item xs={12}>
+                        <LanguagesList languages={props.languages}
+                                       setLanguageSelected={setDataSelected}
+                                       showForm={showForm}
+                                       setShowForm={setShowForm}
+                                       openDialog={updateDialog}
+                                       setEditForm={setEditForm}/>
+                    </Grid>
+                    <FullScreenDialog
+                        openDialog={updateForm}
+                        dialog={showForm}
+                        title={'Editing Language by id:' + dataSelected.id}
+                        componentRendered={<LanguagesForm onEditLanguage={onEditLanguage}
+                                                          onAddLanguage={onAddLanguage}
+                                                          languageSelected={dataSelected}
+                                                          showForm={showForm}
+                                                          setShowForm={setShowForm}
+                                                          editForm={editForm}/>}/>
                     <DeleteDialog openDialog={updateDialog}
                                   dialog={dialog}
                                   dialogTitle={"Are you sure to delete this Language?"}
-                                  deleteItem={languageSelected}
+                                  deleteItem={dataSelected}
                                   deleteFunction={onDeleteLanguage}/>
                 </Grid>
             </Container>

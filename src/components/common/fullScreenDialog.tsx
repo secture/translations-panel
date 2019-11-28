@@ -1,14 +1,9 @@
-import React, {ReactElement} from "react";
+import React from "react";
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {Dialog, AppBar, Toolbar, IconButton, Typography, Slide} from '@material-ui/core';
+import {TransitionProps} from '@material-ui/core/transitions';
 import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import { TransitionProps } from '@material-ui/core/transitions';
 
 const fullScreenDialogStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,8 +39,8 @@ const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
             <Dialog fullScreen open={props.dialog} onClose={props.openDialog} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton edge="start" color="inherit" onClick={props.openDialog} aria-label="close">
-                            <CloseIcon />
+                        <IconButton edge="start" color="secondary" onClick={props.openDialog} aria-label="close">
+                            <CloseIcon/>
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             {props.title}

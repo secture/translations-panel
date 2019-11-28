@@ -3,19 +3,21 @@ import {LanguageState} from "store/languages/types";
 import {UserState} from "store/user/types";
 
 import {createStyles, makeStyles, Theme} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import TextField from '@material-ui/core/TextField';
-import Button from "@material-ui/core/Button";
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Paper from '@material-ui/core/Paper';
+import {
+    Grid,
+    Container,
+    TextField,
+    Button,
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormControlLabel,
+    FormHelperText,
+    Checkbox,
+    Radio,
+    RadioGroup,
+    Paper
+} from "@material-ui/core";
 import {dashboardViewStyles} from "styles/dashboard";
 
 const formUserStyles = makeStyles((theme: Theme) => createStyles({
@@ -24,7 +26,7 @@ const formUserStyles = makeStyles((theme: Theme) => createStyles({
         overflowX: 'auto',
     },
     form: {
-       width: '100%'
+        width: '100%'
     }
 }));
 
@@ -51,7 +53,10 @@ const UsersForm = (props: PropsUserForm) => {
 
     const [languagesUser, setLanguagesUser]: any = useState({});
     const handleChangeLanguages = (payload: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setLanguagesUser({ ...languagesUser, [payload.data.key]: {isUserLanguage: event.target.checked, data: payload.data}});
+        setLanguagesUser({
+            ...languagesUser,
+            [payload.data.key]: {isUserLanguage: event.target.checked, data: payload.data}
+        });
     };
 
     const setLanguagesUserUpdated = () => {
@@ -74,7 +79,7 @@ const UsersForm = (props: PropsUserForm) => {
                 languagesView[language.key] = {
                     isUserLanguage: false,
                     data: language
-                 };
+                };
         });
         setLanguagesUser(languagesView)
     }, []);
@@ -129,9 +134,11 @@ const UsersForm = (props: PropsUserForm) => {
                         <Grid item xs={12}>
                             <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Privilege</FormLabel>
-                                <RadioGroup aria-label="gender" name="gender1" value={userSelected.privilege} onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
+                                <RadioGroup aria-label="gender" name="gender1" value={userSelected.privilege}
+                                            onChange={(e) => handleChangedValues('privilege', e.target.value)} row>
                                     {props.roles.map((role: string) => (
-                                        <FormControlLabel value={role} control={<Radio />} label={role} disabled={props.user.privilege !== 'Admin'}/>
+                                        <FormControlLabel value={role} control={<Radio/>} label={role}
+                                                          disabled={props.user.privilege !== 'Admin'}/>
                                     ))}
                                 </RadioGroup>
                             </FormControl>
@@ -140,30 +147,37 @@ const UsersForm = (props: PropsUserForm) => {
                             <FormControl component="fieldset" className={globalStyle.formControl}>
                                 <FormLabel component="legend">Languages</FormLabel>
                                 <FormGroup row>
-                                    {Object.keys(languagesUser).map((key: any) => ( <FormControlLabel
-                                            control={<Checkbox checked={languagesUser[key].isUserLanguage} onChange={handleChangeLanguages(languagesUser[key])} value={key} />}
-                                    label={languagesUser[key].data.name}/>
+                                    {Object.keys(languagesUser).map((key: any) => (<FormControlLabel
+                                            control={<Checkbox checked={languagesUser[key].isUserLanguage}
+                                                               onChange={handleChangeLanguages(languagesUser[key])}
+                                                               value={key}/>}
+                                            label={languagesUser[key].data.name}/>
                                     ))}
                                 </FormGroup>
                                 <FormHelperText>Select languages for user</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} className={globalStyle.actions}>
-                            <Button variant="outlined" color="secondary" className={globalStyle.button} onClick={() => props.setShowForm(false)} >
+                            <Button variant="outlined" color="secondary" className={globalStyle.button}
+                                    onClick={() => props.setShowForm(false)}>
                                 Back
                             </Button>
                             {props.editForm ? (
                                 <Button variant="outlined"
                                         color="primary"
                                         className={globalStyle.button}
-                                        onClick={() => {confirmEditUser()}}>
+                                        onClick={() => {
+                                            confirmEditUser()
+                                        }}>
                                     Save
                                 </Button>
                             ) : (
                                 <Button variant="outlined"
                                         color="primary"
                                         className={globalStyle.button}
-                                        onClick={() => {confirmCreateUser()}}>
+                                        onClick={() => {
+                                            confirmCreateUser()
+                                        }}>
                                     Create
                                 </Button>
                             )}

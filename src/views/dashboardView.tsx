@@ -1,27 +1,24 @@
 import React, {useEffect} from 'react';
-import {connect, useSelector} from 'react-redux'
-import {TranslationsStore} from "store/types";
-import {UserState} from "store/user/types";
-import {Bar} from 'react-chartjs-2';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
+import {connect, useSelector} from 'react-redux';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 import history from "../history";
 
 /* Material UI */
-import Grid from "@material-ui/core/Grid";
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+import {Grid, Container, Typography, Button, Card, CardActionArea, CardActions, CardContent} from "@material-ui/core";
 import {dashboardViewStyles} from "styles/dashboard";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
-import {
-    getTranslationsStats
-} from "services/translations";
-import {TranslationStatsState} from "../store/translations/types";
-import {Box, Button, Card, CardActionArea, CardActions, CardContent} from "@material-ui/core";
-import {LanguageState} from "../store/languages/types";
-import {setLanguageFilter} from "../store/filters/actions";
+/* Services */
+import {Bar} from 'react-chartjs-2';
+
+import {getTranslationsStats} from "services/translations";
+import {TranslationStatsState} from "store/translations/types";
+import {TranslationsStore} from "store/types";
+import {UserState} from "store/user/types";
+import {LanguageState} from "store/languages/types";
+import {setLanguageFilter} from "store/filters/actions";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -29,12 +26,10 @@ type AppProps = AppStateProps & AppDispatchProps;
 
 const DashboardView: React.FC<any> = (props: AppProps) => {
         const classes = dashboardViewStyles();
-        const user: UserState = useSelector((state: TranslationsStore) => state.user);
         useEffect(() => {
             props.getTranslationsStatsActions().then((response: any) => {
             });
         }, []);
-
 
         const navigateToTranslation = (language: LanguageState) => {
             props.setLanguageFilterActions(language);

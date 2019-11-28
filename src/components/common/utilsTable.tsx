@@ -69,6 +69,7 @@ export const playerNames = (rowData: PlayerState, shortName: boolean) => {
                       avatar={<Avatar color="secondary">{key}</Avatar>}
                       label={shortName ? rowData.shortName[key] : rowData.largeName[key]}
                       color="primary"
+                      key={'chip_player_' + key + '_' + rowData.id}
                 />)
             )}
         </div>

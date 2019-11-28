@@ -31,7 +31,7 @@ import DeleteDialog from "components/common/deleteDialog";
 import FullScreenDialog from "components/common/fullScreenDialog";
 import SimpleTable from "components/common/simpleTable";
 import {PlayersHistoryColumns, PlayersHistoryRows} from "../components/views/players/playersHistoryList";
-import {LanguageState} from "../store/languages/types";
+import {LanguageState} from "store/languages/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -43,6 +43,9 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
     const [dialog, setOpenDialog] = useState(false);
     const updateDialog = () => {
         setOpenDialog(!dialog);
+    };
+    const updateForm = () => {
+        setShowForm(!showForm);
     };
     const [historyPlayerDialog, setHistoryPlayerDialog] = useState(false);
     const updateHistoryPlayerDialog = () => {
@@ -104,32 +107,35 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
             <div className={classes.appBarSpacer}/>
             <Container maxWidth={false} className={classes.container}>
                 <Grid container spacing={3}>
-                    {!showForm ? (
-                        <Grid item xs={12}>
-                            <PlayersList
-                                players={props.players}
-                                user={props.user}
-                                setPlayerSelected={setPlayerSelected}
-                                setShowForm={setShowForm}
-                                openDialog={updateDialog}
-                                getHistoryPlayer={getHistoryPlayer}
-                                setEditForm={setEditForm}/>
-                        </Grid>) : (
-                        <Grid item xs={12}>
-                            <PlayersForm
-                                playerSelected={playerSelected}
-                                onAddPlayer={onAddPlayer}
-                                onEditPlayer={onEditPlayer}
-                                onConfirmPlayerTranslation={onConfirmPlayerTranslation}
-                                onUnConfirmPlayerTranslation={onUnConfirmPlayerTranslation}
-                                onRejectPlayerTranslation={onRejectPlayerTranslation}
-                                languages={props.languages}
-                                setShowForm={setShowForm}
-                                setEditForm={setEditForm}
-                                editForm={editForm}
-                            />
-                        </Grid>)
-                    }
+                    <Grid item xs={12}>
+                        <PlayersList
+                            players={props.players}
+                            user={props.user}
+                            setPlayerSelected={setPlayerSelected}
+                            setShowForm={setShowForm}
+                            openDialog={updateDialog}
+                            getHistoryPlayer={getHistoryPlayer}
+                            setEditForm={setEditForm}/>
+                    </Grid>
+
+                    <FullScreenDialog
+                        title={'Editing Player by id:' + playerSelected.id}
+                        openDialog={updateForm}
+                        dialog={showForm}
+                        componentRendered={<PlayersForm
+                            playerSelected={playerSelected}
+                            onAddPlayer={onAddPlayer}
+                            onEditPlayer={onEditPlayer}
+                            onConfirmPlayerTranslation={onConfirmPlayerTranslation}
+                            onUnConfirmPlayerTranslation={onUnConfirmPlayerTranslation}
+                            onRejectPlayerTranslation={onRejectPlayerTranslation}
+                            languages={props.languages}
+                            setShowForm={setShowForm}
+                            setEditForm={setEditForm}
+                            editForm={editForm}
+                        />}
+                    />
+
                     <FullScreenDialog
                         title={`History player ${historyPlayer.id}`}
                         openDialog={updateHistoryPlayerDialog}
