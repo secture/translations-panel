@@ -18,7 +18,8 @@ export const initialPlayerState: PlayerState = {
     updateDate: '',
     insertionUser: initialUserState,
     updateUser: initialUserState,
-    confirmedTranslations: {}
+    confirmedTranslations: {},
+    koTranslations: {}
 };
 
 export const initialPlayersState: PlayerState[] = [];

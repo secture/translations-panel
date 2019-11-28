@@ -41,7 +41,7 @@ export const PlayersHistoryRows: React.FC<any> = (props: PropsPlayersRows) => {
                     {playerNames(player, false)}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {confirmedTranslations(player.confirmedTranslations)}
+                    {confirmedTranslations(player.confirmedTranslations, {true: 'confirmed', false: 'unconfirmed'})}
                 </TableCell>
                 <TableCell component="th" scope="row">{player.team}</TableCell>
                 <TableCell component="th" scope="row">{player.comments}</TableCell>

@@ -35,7 +35,8 @@ export const initialTranslation: TranslationState = {
     updateDate: new Date(),
     insertionUser: {},
     updateUser: initialUpdateUserState,
-    confirmedTranslations: {}
+    confirmedTranslations: {},
+    koTranslations: {}
 };
 export const initialTranslationsState: TranslationsState = {
     data: [initialTranslation],

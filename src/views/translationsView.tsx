@@ -20,7 +20,7 @@ import {
     confirmTranslationLanguageById,
     deleteTranslationById,
     editTranslationById,
-    getAllTranslations, historyTranslation,
+    getAllTranslations, historyTranslation, rejectTranslationByLanguageId, unConfirmTranslationLanguageById,
 } from "services/translations";
 import TranslationsForm from "components/views/translations/translationsForm";
 import {getAllLanguages} from "services/languages";
@@ -81,15 +81,25 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
     };
 
     const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
-        props.confirmTranslationLanguageByIdActions(data, language);
+        props.confirmTranslationAction(data, language);
+    };
+
+    const onUnConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.unConfirmTranslationAction(data, language);
+    };
+
+    const onRejectTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.rejectTranslationAction(data, language);
     };
 
     const getHistoryTranslation = (rowData: any) => {
         props.historyTranslationAction(rowData).then((historyTranslation: any) => {
             if (historyTranslation === null) {
-                props.statusAction({type: 'info',
+                props.statusAction({
+                    type: 'info',
                     message: 'Translation has no history changes',
-                    show: true})
+                    show: true
+                })
             } else {
                 setHistoryTranslation(historyTranslation);
                 updateHistoryTranslationDialog();
@@ -126,6 +136,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                                                                  onEditEntity={onEditEntity}
                                                                  onCreateEntity={onCreateEntity}
                                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}
+                                                                 onUnConfirmTranslationLanguage={onUnConfirmTranslationLanguage}
+                                                                 onRejectTranslationLanguage={onRejectTranslationLanguage}
                                                                  setEditForm={setEditForm}
                                                                  setShowForm={setShowForm}
                                                                  editForm={editForm}
@@ -135,7 +147,8 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             openDialog={updateHistoryTranslationDialog}
                             dialog={historyTranslationDialog}
                             componentRendered={<SimpleTable
-                                columns={<TranslationsHistoryColumns columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
+                                columns={<TranslationsHistoryColumns
+                                    columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
                                 rows={<TranslationsHistoryRows data={historyTranslation}/>}
                             />}
                         />
@@ -170,8 +183,12 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
-        confirmTranslationLanguageByIdActions: (data: TranslationState, language: LanguageState) =>
+        confirmTranslationAction: (data: TranslationState, language: LanguageState) =>
             dispatch(confirmTranslationLanguageById(data, language)),
+        unConfirmTranslationAction: (data: TranslationState, language: LanguageState) =>
+            dispatch(unConfirmTranslationLanguageById(data, language)),
+        rejectTranslationAction: (data: TranslationState, language: LanguageState) =>
+            dispatch(rejectTranslationByLanguageId(data, language)),
         historyTranslationAction: (data: TranslationState) => dispatch(historyTranslation(data)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };

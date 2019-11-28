@@ -7,12 +7,10 @@ import httpClient from "services/common/http-interceptor";
 import {AnyAction} from 'redux';
 import {ThunkDispatch, ThunkAction} from 'redux-thunk'
 import {setStatus} from "../store/status/actions";
-import {handleError} from "./common/axios-response";
 
 export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
     return async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         let loginServiceDTO: any = null;
-        debugger;
         try {
             const apiResponse: any = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/auth/login', user);
             if (typeof apiResponse.isAxiosError === 'undefined' || !apiResponse.isAxiosError) {
@@ -47,7 +45,7 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
 };
 
 export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
-    return async function(dispatch: any) {
+    return async function (dispatch: any) {
         //localStorage.removeItem('user-token');
         dispatch(logoutAction(initialUserState));
         dispatch(setUserAction(initialUserState));
@@ -61,8 +59,8 @@ export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
 };
 
 export const signIn = (user: UserSignInDTO) => {
-    return async function(dispatch: any) {
-        try{
+    return async function (dispatch: any) {
+        try {
             let result: any = await httpClient.post('https://localhost:3000/api/v1/auth/signIn', user);
             console.log(result);
             dispatch(signInAction(result));

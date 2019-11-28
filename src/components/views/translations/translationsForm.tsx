@@ -4,10 +4,6 @@ import {
     Typography, InputLabel, Select, MenuItem
 } from "@material-ui/core";
 
-import AppleIcon from '@material-ui/icons/Apple';
-import AndroidIcon from '@material-ui/icons/Android';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-
 import {TranslationState} from "store/translations/types";
 import {LanguageState} from "store/languages/types";
 import {CategoryState} from "store/categories/types";
@@ -15,27 +11,7 @@ import {CategoryState} from "store/categories/types";
 import {formStyles} from "styles/form";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
-
-export const GetPlatformIcon = (props: { tag: any, classes: any }) => {
-    switch (props.tag.toLowerCase()) {
-        case 'ios':
-            return (<AppleIcon className={props.classes.tag}/>);
-        case 'android':
-            return (<AndroidIcon className={props.classes.tag}/>);
-        case 'web':
-            return (<LaptopMacIcon className={props.classes.tag}/>);
-        default:
-            return (<span/>);
-    }
-};
-
-function prop<T, K extends keyof T>(obj: T, key: K, defaultValue: any) {
-    if (typeof obj[key] === "undefined") {
-        return defaultValue;
-    } else {
-        return obj[key];
-    }
-}
+import {prop, GetPlatformIcon} from "components/common/utilsForm";
 
 interface PropsDataForm {
     dataSelected: TranslationState,
@@ -47,6 +23,8 @@ interface PropsDataForm {
     onEditEntity: (translation: TranslationState) => void,
     onCreateEntity: (translation: TranslationState) => void,
     onConfirmTranslationLanguage: (translation: TranslationState, language: LanguageState) => void,
+    onUnConfirmTranslationLanguage: (translation: TranslationState, language: LanguageState) => void,
+    onRejectTranslationLanguage: (translation: TranslationState, language: LanguageState) => void,
     editForm: boolean,
     showForm: boolean,
     setShowForm: (show: boolean) => void
@@ -61,6 +39,7 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
             [property]: e.target.value
         });
     };
+
     const changeItemValues = (e: any, property: keyof TranslationState, item: string) => {
         setData({
             ...data as TranslationState,
@@ -71,7 +50,7 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
         });
     };
 
-    const changeConfirmLanguageValue = (e: any, property: keyof TranslationState, language: LanguageState) => {
+    const changeValueByLanguage = (e: any, property: keyof TranslationState, language: LanguageState) => {
         setData({
             ...data as TranslationState,
             [property]: {
@@ -79,8 +58,14 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                 [language.key]: e.target.value.toLowerCase() !== "true"
             }
         });
-        props.onConfirmTranslationLanguage(data, language);
     };
+
+    const checkedConfirmUnconfirmed = (value: any, property: keyof TranslationState, language: LanguageState) => {
+        (value !== "true") ?
+            props.onConfirmTranslationLanguage(data, language) :
+            props.onUnConfirmTranslationLanguage(data, language);
+    };
+
     const changeValuesOfArray = (e: any, property: keyof TranslationState, key: string) => {
         let values = (data[property] as Array<string>);
         if (values.some((stag: string) => stag === key)) {
@@ -95,6 +80,54 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
             ...data,
             [property]: values
         });
+    };
+
+    const confirmedTranslations = (language: LanguageState) => {
+        return (
+            <FormGroup row>
+                <FormControlLabel
+                    key={'switch_confirm' + language.key}
+                    disabled={!props.editForm}
+                    control={
+                        <Switch
+                            name={'switch_confirm' + language.key}
+                            checked={prop((data.confirmedTranslations as any), language.key, false)}
+                            onChange={(e) => {
+                                changeValueByLanguage(e, 'confirmedTranslations', language);
+                                checkedConfirmUnconfirmed(e.target.value.toLowerCase(), 'confirmedTranslations', language);
+                            }}
+                            value={prop((data.confirmedTranslations as any), language.key, false)}
+                            color="primary"
+                        />
+                    }
+                    label="Confirmed"
+                />
+            </FormGroup>
+        )
+    };
+
+    const rejectTranslations = (language: LanguageState) => {
+        return (
+            <FormGroup row>
+                <FormControlLabel
+                    key={'switch_reject' + language.key}
+                    disabled={prop((data.koTranslations as any), language.key, false)}
+                    control={
+                        <Switch
+                            name={'switch_reject' + language.key}
+                            checked={prop((data.koTranslations as any), language.key, false)}
+                            onChange={(e) => {
+                                changeValueByLanguage(e, 'koTranslations', language);
+                                props.onRejectTranslationLanguage(data, language);
+                            }}
+                            value={prop((data.koTranslations as any), language.key, false)}
+                            color="primary"
+                        />
+                    }
+                    label="Rejected"
+                />
+            </FormGroup>
+        )
     };
 
     const confirmEditData = () => {
@@ -193,24 +226,11 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                                     defaultValue={prop((data.translations as any), language.key, null)}
                                     onChange={(e) => changeItemValues(e, 'translations', language.key)}
                                 />
-
                                 {props.editForm ? (
-                                    <FormGroup row>
-                                        <FormControlLabel
-                                            key={'switch_' + language.key}
-                                            disabled={prop((data.confirmedTranslations as any), language.key, false)}
-                                            control={
-                                                <Switch
-                                                    name={'switch_' + language.key}
-                                                    checked={prop((data.confirmedTranslations as any), language.key, false)}
-                                                    onChange={(e) => changeConfirmLanguageValue(e, 'confirmedTranslations', language)}
-                                                    value={prop((data.confirmedTranslations as any), language.key, false)}
-                                                    color="primary"
-                                                />
-                                            }
-                                            label="Confirmed"
-                                        />
-                                    </FormGroup>
+                                    <div>
+                                        {confirmedTranslations(language)}
+                                        {rejectTranslations(language)}
+                                    </div>
                                 ) : (<span/>)}
                             </Grid>))}
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>

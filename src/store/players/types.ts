@@ -1,5 +1,4 @@
 import {ConfirmedTranslations, NamePlayers} from "../translations/types";
-import {UserState} from "../user/types";
 
 export const GET_PLAYERS = 'GET PLAYERS';
 export const SET_PLAYERS = 'SET PLAYERS';
@@ -19,9 +18,10 @@ export interface PlayerState {
     comments: string,
     insertionDate: string,
     updateDate: string,
-    insertionUser: UserState,
-    updateUser: UserState,
-    confirmedTranslations: ConfirmedTranslations
+    insertionUser: any,
+    updateUser: any,
+    confirmedTranslations: ConfirmedTranslations,
+    koTranslations: ConfirmedTranslations
 }
 
 //Actions interface
