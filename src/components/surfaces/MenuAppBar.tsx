@@ -1,20 +1,20 @@
 import React from 'react';
-import {UserState} from "store/user/types";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import {TranslationsStore} from "store/types";
+import {StatusState} from "store/status/types";
+import {setStatus} from "store/status/actions";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 
 import CssConditional from "clsx";
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import {AppBar, Toolbar, Typography, IconButton} from '@material-ui/core';
+import {AppBar, Toolbar, IconButton, Box} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import {logOut} from "services/auth";
 import history from "../../history";
-import {StatusState} from "../../store/status/types";
-import {setStatus} from "../../store/status/actions";
+import {user} from "components/common/utilsTable";
 
 const drawerWidth = 240;
 
@@ -61,9 +61,7 @@ type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type AppProps = AppStateProps & AppDispatchProps;
 
 const MenuAppBar: React.FC<any> = (props: AppProps) => {
-    const userAuthenticated: UserState = useSelector((state: TranslationsStore) => state.user);
     const classes = menuAppBarStyles();
-
     const exit = () => {
         props.logoutAction().then((logoutOk: boolean) => {
             if (logoutOk) {
@@ -87,12 +85,12 @@ const MenuAppBar: React.FC<any> = (props: AppProps) => {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                    {userAuthenticated.name}
-                </Typography>
-                <IconButton onClick={exit} className={classes.button} aria-label="exit" color="inherit">
-                    <ExitToAppIcon/>
-                </IconButton>
+                <Box style={{width: '100%'}} display="flex" flexDirection="row" justifyContent="space-between">
+                    {user(props.auth.userAuthenticated, 'red')}
+                    <IconButton onClick={exit} className={classes.button} aria-label="exit" color="inherit">
+                        <ExitToAppIcon/>
+                    </IconButton>
+                </Box>
             </Toolbar>
         </AppBar>
     );

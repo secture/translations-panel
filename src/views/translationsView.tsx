@@ -65,17 +65,14 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
     const onDeleteEntity = () => {
         setOpenDialog(false);
-        props.deleteTranslationByIdActions(dataSelected).then((response: any) => {
-        })
+        props.deleteTranslationByIdActions(dataSelected);
     };
     const onEditEntity = (data: TranslationState) => {
-        props.editTranslationByIdActions(data).then((response: any) => {
-        });
+        props.editTranslationByIdActions(data);
         setShowForm(!showForm);
     };
     const onCreateEntity = (data: TranslationState) => {
-        props.addTranslationActions(data).then((response: any) => {
-        });
+        props.addTranslationActions(data);
         setShowForm(!showForm);
     };
 

@@ -5,7 +5,6 @@ import {initialUserState} from "store/user/reducers";
 import {LanguageState} from "store/languages/types";
 
 import {
-    Fab,
     Chip,
     Paper,
     Toolbar,
@@ -67,39 +66,38 @@ const UsersList: React.FC<any> = (props: PropsUsersList) => {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="left">Email</TableCell>
-                        <TableCell align="left">Role</TableCell>
-                        <TableCell align="left">Languages</TableCell>
-                        <PermissionsProvider child={<TableCell align="left">Actions</TableCell>}
+                        <PermissionsProvider child={<TableCell>Actions</TableCell>}
                                              privileges={allowedRoles}/>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Role</TableCell>
+                        <TableCell>Languages</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.users.map((userRow: UserState) => (
                         <TableRow key={userRow.id}>
+                            <PermissionsProvider child={<TableCell>
+                                <IconButton color="primary" aria-label="edit" className={classes.fab}
+                                            onClick={() => loadFormEditUser(userRow)}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton aria-label="delete" color="secondary" className={classes.fab}
+                                            onClick={() => deleteUser(userRow)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </TableCell>} privileges={allowedRoles}/>
                             <TableCell component="th" scope="row">
                                 {userRow.name}
                             </TableCell>
-                            <TableCell align="left">{userRow.email}</TableCell>
-                            <TableCell align="left">{userRow.privilege}</TableCell>
-                            <TableCell align="left">
+                            <TableCell>{userRow.email}</TableCell>
+                            <TableCell>{userRow.privilege}</TableCell>
+                            <TableCell>
                                 {userRow.associatedLanguages.map((language: LanguageState) =>
                                     <Chip key={'chip_language' + language.key} label={language.key} variant="outlined"
                                           color="primary"/>
                                 )}
                             </TableCell>
-
-                            <PermissionsProvider child={<TableCell align="right">
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => loadFormEditUser(userRow)}>
-                                    <EditIcon/>
-                                </Fab>
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => deleteUser(userRow)}>
-                                    <DeleteIcon/>
-                                </Fab>
-                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>

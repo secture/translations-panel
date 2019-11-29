@@ -217,13 +217,14 @@ const PlayersForm: React.FC<any> = (props: PropsPlayersForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={classes.button} onClick={() => props.setShowForm(false)}>Back</Button>
+                            <Button variant="outlined" color="secondary"
+                                    className={classes.button} onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {confirmEditPlayer()}}
                                         className={classes.button}> Save </Button>
                             ) : (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {confirmCreatePlayer()}}
                                         className={classes.button}> Create </Button>
                             )}

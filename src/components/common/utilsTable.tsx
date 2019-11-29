@@ -1,26 +1,24 @@
 import React, {ReactElement} from "react";
 import {PlayerState} from "store/players/types";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from '@material-ui/core/Typography';
 import {LanguageState} from "store/languages/types";
 import {ConfirmedTranslations} from "store/translations/types";
 import {UserState} from "store/user/types";
 import {CategoryState} from "store/categories/types";
 import {GetPlatformIcon} from "components/common/utilsForm";
+import {Box, Typography, Avatar, Chip} from "@material-ui/core";
 
 const NO_FIELD = 'NO_TEXT';
 
 export const user = (rowData: UserState, color: string) => {
     return (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <Box display="flex" flexDirection="row" alignItems="center">
             <Avatar aria-label="recipe" style={{background: `${color}`, marginRight: '15px'}}>
                 {rowData.privilege.charAt(0).toUpperCase()}
             </Avatar>
             <Typography>
                 {rowData.name}
             </Typography>
-        </div>
+        </Box>
     )
 };
 

@@ -64,7 +64,7 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
                 <Typography className={classes.tableTitle} variant="h6" id="tableTitle">
                     Categories
                 </Typography>
-                <PermissionsProvider child={<IconButton aria-label="add" onClick={() => loadFormAddData()}>
+                <PermissionsProvider child={<IconButton aria-label="add" color="primary" onClick={() => loadFormAddData()}>
                     <AddCircleOutlineIcon/>
                 </IconButton>} privileges={['Admin']}/>
             </Toolbar>
@@ -72,27 +72,27 @@ const CategoriesList: React.FC<any> = (props: PropsDataList) => {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="left">ID</TableCell>
-                        <TableCell align="right">NAME</TableCell>
-                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>}
+                        <PermissionsProvider child={<TableCell>Options</TableCell>}
                                              privileges={allowedRoles}/>
+                        <TableCell>Id </TableCell>
+                        <TableCell>Name</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.data.map((row: CategoryState) => (
                         <TableRow key={row.id}>
-                            <TableCell component="th" scope="row">{row.id}</TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <PermissionsProvider child={<TableCell align="right">
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => loadFormEditData(row)}>
+                            <PermissionsProvider child={<TableCell>
+                                <IconButton color="primary" aria-label="edit" className={classes.fab}
+                                            onClick={() => loadFormEditData(row)}>
                                     <EditIcon/>
-                                </Fab>
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => openDeleteModal(row)}>
+                                </IconButton>
+                                <IconButton color="secondary" aria-label="edit" className={classes.fab}
+                                            onClick={() => openDeleteModal(row)}>
                                     <DeleteIcon/>
-                                </Fab>
+                                </IconButton>
                             </TableCell>} privileges={allowedRoles}/>
+                            <TableCell component="th" scope="row">{row.id}</TableCell>
+                            <TableCell>{row.name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

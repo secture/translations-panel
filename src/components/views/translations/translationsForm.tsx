@@ -234,15 +234,15 @@ const TranslationsForm: React.FC<any> = (props: PropsDataForm) => {
                                 ) : (<span/>)}
                             </Grid>))}
                         <Grid container item direction="row" justify="flex-end" xs={12} sm={12}>
-                            <Button className={classes.button}
+                            <Button variant="outlined" color="secondary" className={classes.button}
                                     onClick={() => props.setShowForm(false)}>Return</Button>
                             {props.editForm ? (
-                                <Button variant="contained" color="primary"
-                                        onClick={e => confirmEditData()}
+                                <Button variant="outlined" color="primary"
+                                        onClick={() => confirmEditData()}
                                         className={classes.button}> Save </Button>
                             ) : (
-                                <Button variant="contained" color="primary"
-                                        onClick={e => confirmCreateData()}
+                                <Button variant="outlined" color="primary"
+                                        onClick={() => confirmCreateData()}
                                         className={classes.button}> Create </Button>
                             )}
                         </Grid>

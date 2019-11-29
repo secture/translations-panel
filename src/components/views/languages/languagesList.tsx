@@ -7,7 +7,6 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Fab,
     IconButton,
     Toolbar,
     Typography
@@ -91,35 +90,35 @@ const LanguagesList: React.FC<any> = (props: PropsLanguagesList) => {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell align="right">KEY</TableCell>
-                        <TableCell align="right">FLAG</TableCell>
-                        <TableCell align="right">NAME</TableCell>
-                        <TableCell align="right">FOR PLAYERS</TableCell>
-                        <PermissionsProvider child={<TableCell align="right">OPTIONS</TableCell>}
+                        <PermissionsProvider child={<TableCell>Options</TableCell>}
                                              privileges={allowedRoles}/>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Key</TableCell>
+                        <TableCell>Flag</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>For players</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.languages.map((row: LanguageState) => (
                         <TableRow key={row.id}>
+                            <PermissionsProvider child={<TableCell>
+                                <IconButton color="primary" aria-label="edit" className={classes.fab}
+                                            onClick={() => loadFormEditLanguage(row)}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton color="secondary" aria-label="edit" className={classes.fab}
+                                            onClick={() => openDeleteModal(row)}>
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </TableCell>} privileges={allowedRoles}/>
                             <TableCell component="th" scope="row">{row.id}</TableCell>
-                            <TableCell align="right">{row.key}</TableCell>
-                            <TableCell align="right" className={classes.icon}>{row.icon}</TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">
+                            <TableCell>{row.key}</TableCell>
+                            <TableCell className={classes.icon}>{row.icon}</TableCell>
+                            <TableCell>{row.name}</TableCell>
+                            <TableCell>
                                 {row.localeForPlayers ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                             </TableCell>
-                            <PermissionsProvider child={<TableCell align="right">
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => loadFormEditLanguage(row)}>
-                                    <EditIcon/>
-                                </Fab>
-                                <Fab size="small" color="primary" aria-label="edit" className={classes.fab}
-                                     onClick={() => openDeleteModal(row)}>
-                                    <DeleteIcon/>
-                                </Fab>
-                            </TableCell>} privileges={allowedRoles}/>
                         </TableRow>
                     ))}
                 </TableBody>

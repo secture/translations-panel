@@ -36,11 +36,10 @@ export const getDeletedTranslations = (): ThunkAction<Promise<any>, {}, {}, AnyA
     }
 };
 
-export const addTranslation = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const addTranslation = (translation: TranslationState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let translations = null;
         try {
-            translations = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/translations',
+            const response = await httpClient.post(process.env.REACT_APP_API_URL + '/v1/translations',
                 {
                     key: translation.key,
                     translations: translation.translations,
@@ -48,42 +47,36 @@ export const addTranslation = (translation: TranslationState): ThunkAction<Promi
                     context: translation.context,
                     category: translation.category.id
                 });
-            dispatch(getAllTranslations());
-            dispatch(setStatus({
+            handleResponse(response, dispatch(getAllTranslations()), {
                 type: 'success',
                 message: 'Added translation successfully',
                 show: true
-            }));
+            });
         } catch (error) {
             handleError(error);
         }
-        return translations;
     }
 };
 
-export const deleteTranslationById = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const deleteTranslationById = (translation: TranslationState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let translations = null;
         try {
-            translations = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}`);
-            dispatch(getAllTranslations());
-            dispatch(setStatus({
+            const response = await httpClient.delete(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}`);
+            handleResponse(response, dispatch(getAllTranslations()), {
                 type: 'success',
                 message: 'Deleted translation successfully',
                 show: true
-            }));
+            });
         } catch (error) {
             handleError(error);
         }
-        return translations;
     }
 };
 
-export const editTranslationById = (translation: TranslationState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
+export const editTranslationById = (translation: TranslationState): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
-        let translations = null;
         try {
-            translations = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}`,
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/translations/${translation.id}`,
                 {
                     key: translation.key,
                     translations: translation.translations,
@@ -92,16 +85,14 @@ export const editTranslationById = (translation: TranslationState): ThunkAction<
                     context: translation.context,
                     category: translation.category.id
                 });
-            dispatch(getAllTranslations());
-            dispatch(setStatus({
+            handleResponse(response, dispatch(getAllTranslations()), {
                 type: 'success',
                 message: 'Edited translation successfully',
                 show: true
-            }));
+            });
         } catch (error) {
             handleError(error);
         }
-        return translations;
     }
 };
 
