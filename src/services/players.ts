@@ -3,8 +3,9 @@ import {ThunkAction} from "redux-thunk";
 import {AnyAction} from "redux";
 import {setAllPlayers} from "store/players/actions";
 import {PlayerState} from "store/players/types";
+import {TranslationsStore} from "store/types";
+import {LanguageState} from "store/languages/types";
 import {handleError, handleResponse} from "./common/axios-response";
-import {TranslationsStore} from "../store/types";
 
 export const getAllPlayers = (): ThunkAction<void, {}, {}, AnyAction> => {
     return async function (dispatch: any) {
@@ -63,7 +64,7 @@ export const addPlayer = (player: PlayerState): ThunkAction<void, TranslationsSt
 };
 
 export const historyPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
-    return async function() {
+    return async function () {
         let historyPlayer = null;
         try {
             const response = await httpClient.get(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/history`);
@@ -77,19 +78,48 @@ export const historyPlayer = (player: PlayerState): ThunkAction<Promise<any>, {}
     }
 };
 
-export const confirmPlayerTranslations = (id: string, languageKey: string): ThunkAction<Promise<any>, {}, {}, AnyAction> => {
-    return async function(dispatch: any) {
-        let confirmPlayerTranslations = null;
+export const confirmPlayerTranslation = (player: PlayerState, language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
+    return async function (dispatch: any) {
         try {
-            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${id}/confirm/${languageKey}`);
-            if (response !== null && typeof response.data !== 'undefined') {
-                confirmPlayerTranslations = response.data;
-                dispatch(getAllPlayers());
-            }
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/confirm/${language.id}`);
+            handleResponse(response, dispatch(getAllPlayers()), {
+                type: 'success',
+                message: 'Confirmed player successfully',
+                show: true
+            });
         } catch (error) {
             handleError(error);
         }
-        return confirmPlayerTranslations;
+    }
+};
+
+export const unConfirmPlayerTranslation = (player: PlayerState, language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
+    return async function (dispatch: any) {
+        try {
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/unconfirm/${language.id}`);
+            handleResponse(response, dispatch(getAllPlayers()), {
+                type: 'success',
+                message: 'Unconfirmed player successfully',
+                show: true
+            });
+        } catch (error) {
+            handleError(error);
+        }
+    }
+};
+
+export const rejectPlayerTranslation = (player: PlayerState, language: LanguageState): ThunkAction<void, {}, {}, AnyAction> => {
+    return async function (dispatch: any) {
+        try {
+            const response = await httpClient.put(`${process.env.REACT_APP_API_URL}/v1/players/${player.id}/reject/${language.id}`);
+            handleResponse(response, dispatch(getAllPlayers()), {
+                type: 'success',
+                message: 'Rejected player successfully',
+                show: true
+            });
+        } catch (error) {
+            handleError(error);
+        }
     }
 };
 

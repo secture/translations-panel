@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
+import StatusNotification from "../components/common/statusNotification";
 
 interface FullLayoutProps {
     view: React.ComponentClass
@@ -16,6 +17,7 @@ class FullLayout extends Component <FullLayoutProps, FullLayoutState> {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <View/>
+                    <StatusNotification/>
                 </Grid>
             </Grid>
         );

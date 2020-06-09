@@ -13,7 +13,7 @@ import {
     confirmTranslationLanguageById,
     deleteTranslationById,
     editTranslationById,
-    getAllTranslations, historyTranslation,
+    getAllTranslations, historyTranslation, rejectTranslationByLanguageId, unConfirmTranslationLanguageById,
 } from "services/translations";
 import {getAllLanguages} from "services/languages";
 import {getAllCategories} from "services/categories";
@@ -65,22 +65,27 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
 
     const onDeleteEntity = () => {
         setOpenDialog(false);
-        props.deleteTranslationByIdActions(dataSelected).then((response: any) => {
-        })
+        props.deleteTranslationByIdActions(dataSelected);
     };
     const onEditEntity = (data: TranslationState) => {
-        props.editTranslationByIdActions(data).then((response: any) => {
-        });
+        props.editTranslationByIdActions(data);
         setShowForm(!showForm);
     };
     const onCreateEntity = (data: TranslationState) => {
-        props.addTranslationActions(data).then((response: any) => {
-        });
+        props.addTranslationActions(data);
         setShowForm(!showForm);
     };
 
     const onConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
-        props.confirmTranslationLanguageByIdActions(data, language);
+        props.confirmTranslationAction(data, language);
+    };
+
+    const onUnConfirmTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.unConfirmTranslationAction(data, language);
+    };
+
+    const onRejectTranslationLanguage = (data: TranslationState, language: LanguageState) => {
+        props.rejectTranslationAction(data, language);
     };
 
     const getHistoryTranslation = (rowData: any) => {
@@ -121,25 +126,25 @@ const TranslationsView: React.FC<any> = (props: AppProps) => {
                             openDialog={updateForm}
                             dialog={showForm}
                             title={'Editing translation by id:' + dataSelected.id}
-                            componentRendered={
-                                <TranslationsForm dataSelected={dataSelected} tags={props.tags}
-                                                  languages={props.languages}
-                                                  categories={props.categories}
-                                                  onEditEntity={onEditEntity}
-                                                  onCreateEntity={onCreateEntity}
-                                                  onConfirmTranslationLanguage={onConfirmTranslationLanguage}
-                                                  setEditForm={setEditForm}
-                                                  setShowForm={setShowForm}
-                                                  editForm={editForm}
-                                />}/>
+                            componentRendered={<TranslationsForm dataSelected={dataSelected} tags={props.tags}
+                                                                 languages={props.languages}
+                                                                 categories={props.categories}
+                                                                 onEditEntity={onEditEntity}
+                                                                 onCreateEntity={onCreateEntity}
+                                                                 onConfirmTranslationLanguage={onConfirmTranslationLanguage}
+                                                                 onUnConfirmTranslationLanguage={onUnConfirmTranslationLanguage}
+                                                                 onRejectTranslationLanguage={onRejectTranslationLanguage}
+                                                                 setEditForm={setEditForm}
+                                                                 setShowForm={setShowForm}
+                                                                 editForm={editForm}
+                            />}/>
                         <FullScreenDialog
                             title={`History player ${historyTranslation.id}`}
                             openDialog={updateHistoryTranslationDialog}
                             dialog={historyTranslationDialog}
                             componentRendered={<SimpleTable
-                                columns={
-                                    <TranslationsHistoryColumns
-                                        columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
+                                columns={<TranslationsHistoryColumns
+                                    columns={['Key', 'Translations', 'Confirmed', 'Tags', 'Category', 'Context', 'Added', 'Updated']}/>}
                                 rows={<TranslationsHistoryRows data={historyTranslation}/>}
                             />}
                         />
@@ -174,8 +179,12 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         deleteTranslationByIdActions: (data: TranslationState) => dispatch(deleteTranslationById(data)),
         editTranslationByIdActions: (data: TranslationState) => dispatch(editTranslationById(data)),
         addTranslationActions: (data: TranslationState) => dispatch(addTranslation(data)),
-        confirmTranslationLanguageByIdActions: (data: TranslationState, language: LanguageState) =>
+        confirmTranslationAction: (data: TranslationState, language: LanguageState) =>
             dispatch(confirmTranslationLanguageById(data, language)),
+        unConfirmTranslationAction: (data: TranslationState, language: LanguageState) =>
+            dispatch(unConfirmTranslationLanguageById(data, language)),
+        rejectTranslationAction: (data: TranslationState, language: LanguageState) =>
+            dispatch(rejectTranslationByLanguageId(data, language)),
         historyTranslationAction: (data: TranslationState) => dispatch(historyTranslation(data)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };

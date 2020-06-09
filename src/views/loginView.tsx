@@ -55,7 +55,9 @@ const LoginView: React.FC<any> = (props: AppProps) => {
 
     const handleSubmit = (e: any) => {
         props.loginAction(user).then((response: any) => {
-            (response !== null) ? history.push('/dashboard') : alert('Error al iniciar sesion');
+            if( response !== null) {
+                history.push('/dashboard');
+            }
         });
         e.preventDefault();
     };
@@ -144,7 +146,7 @@ const mapStateToProps = (store: TranslationsStore) => {
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     return {
-        loginAction: (user: UserLoginDTO) => dispatch(login(user)),
+        loginAction: (user: UserLoginDTO) => dispatch(login(user))
     };
 };
 

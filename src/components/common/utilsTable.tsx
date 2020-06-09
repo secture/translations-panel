@@ -1,26 +1,24 @@
 import React, {ReactElement} from "react";
 import {PlayerState} from "store/players/types";
-import Chip from "@material-ui/core/Chip";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from '@material-ui/core/Typography';
 import {LanguageState} from "store/languages/types";
 import {ConfirmedTranslations} from "store/translations/types";
 import {UserState} from "store/user/types";
 import {CategoryState} from "store/categories/types";
-import {GetPlatformIcon} from "../views/translations/translationsForm";
+import {GetPlatformIcon} from "components/common/utilsForm";
+import {Box, Typography, Avatar, Chip} from "@material-ui/core";
 
 const NO_FIELD = 'NO_TEXT';
 
 export const user = (rowData: UserState, color: string) => {
     return (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+        <Box display="flex" flexDirection="row" alignItems="center">
             <Avatar aria-label="recipe" style={{background: `${color}`, marginRight: '15px'}}>
                 {rowData.privilege.charAt(0).toUpperCase()}
             </Avatar>
             <Typography>
                 {rowData.name}
             </Typography>
-        </div>
+        </Box>
     )
 };
 
@@ -76,14 +74,14 @@ export const playerNames = (rowData: PlayerState, shortName: boolean) => {
     )
 };
 
-export const confirmedTranslations = (data: ConfirmedTranslations) => {
+export const confirmedTranslations = (data: ConfirmedTranslations, text: { true: string, false: string }) => {
     return (
         <div>
             {Object.keys(data).map((key: string) => (
                 <Chip key={'cT_' + data.id + '_' + key}
                       style={{marginBottom: "5px"}}
                       avatar={<Avatar>{key}</Avatar>}
-                      label={data[key] ? 'confirm' : 'unconfirmed'}
+                      label={data[key] ? text.true : text.false}
                       color={data[key] ? 'primary' : 'secondary'}
                 />)
             )}
@@ -154,7 +152,22 @@ export const getColumns = (language: LanguageState) => {
             filtering: true,
             label: 'Confirmed',
             customFilterAndSearch: (filter: any, rowData: PlayerState) => filterByConfirmed(filter, rowData, language),
-            render: (rowData: PlayerState) => confirmedTranslations(rowData.confirmedTranslations)
+            render: (rowData: PlayerState) => confirmedTranslations(rowData.confirmedTranslations, {
+                true: 'confirmed',
+                false: 'unconfirmed'
+            })
+        },
+        {
+            title: 'Rejected',
+            field: 'koTranslations',
+            disablePadding: false,
+            searchable: false,
+            filtering: false,
+            label: 'Rejected',
+            render: (rowData: PlayerState) => confirmedTranslations(rowData.koTranslations, {
+                true: 'true',
+                false: 'false'
+            })
         },
         {
             title: 'Insertion date',

@@ -45,7 +45,7 @@ export const login = (user: UserLoginDTO): ThunkAction<Promise<any>, {}, {}, Any
 };
 
 export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
-    return async function(dispatch: any) {
+    return async function (dispatch: any) {
         //localStorage.removeItem('user-token');
         dispatch(logoutAction(initialUserState));
         dispatch(setUserAction(initialUserState));
@@ -59,8 +59,8 @@ export const logOut = (): ThunkAction<Promise<boolean>, {}, {}, AnyAction> => {
 };
 
 export const signIn = (user: UserSignInDTO) => {
-    return async function(dispatch: any) {
-        try{
+    return async function (dispatch: any) {
+        try {
             let result: any = await httpClient.post('https://localhost:3000/api/v1/auth/signIn', user);
             console.log(result);
             dispatch(signInAction(result));

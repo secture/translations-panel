@@ -69,16 +69,16 @@ const CategoriesForm: React.FC<any> = (props: PropsDataForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={globalStyles.button}
+                            <Button variant="outlined" color="secondary" className={globalStyles.button}
                                     onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {
                                             confirmEditCategory()
                                         }}
                                         className={globalStyles.button}> Save </Button>
                             ) : (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {
                                             confirmCreateCategory()
                                         }}

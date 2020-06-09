@@ -45,9 +45,10 @@ export interface TranslationState {
     category: CategoryState
     insertionDate: Date,
     updateDate: Date,
-    insertionUser: {},
-    updateUser: UpdateUserState,
-    confirmedTranslations: ConfirmedTranslations
+    insertionUser: any,
+    updateUser: any,
+    confirmedTranslations: ConfirmedTranslations,
+    koTranslations: ConfirmedTranslations
 }
 
 export interface TranslationStatsState {

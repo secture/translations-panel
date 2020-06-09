@@ -121,16 +121,16 @@ const LanguagesForm: React.FC<any> = (props: PropsLanguagesForm) => {
                             />
                         </Grid>
                         <Grid container item direction="row" justify="flex-end" xs={12}>
-                            <Button className={globalStyle.button}
+                            <Button variant="outlined" color="secondary" className={globalStyle.button}
                                     onClick={() => props.setShowForm(false)}>Back</Button>
                             {props.editForm ? (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {
                                             confirmEditLanguage()
                                         }}
                                         className={globalStyle.button}> Save </Button>
                             ) : (
-                                <Button variant="contained" color="primary"
+                                <Button variant="outlined" color="primary"
                                         onClick={() => {
                                             confirmCreateLanguage()
                                         }}

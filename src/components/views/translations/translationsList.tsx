@@ -4,9 +4,6 @@ import {useSelector} from "react-redux";
 import {IconButton, Paper} from "@material-ui/core";
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import AppleIcon from '@material-ui/icons/Apple';
-import AndroidIcon from '@material-ui/icons/Android';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import {enhancedTableStyles} from "styles/table";
 import MaterialTable, {MTableToolbar} from "material-table";
 import LanguageSelector from "components/common/languageSelector";
@@ -20,20 +17,7 @@ import {CategoryState} from "store/categories/types";
 import {UserState} from "store/user/types";
 import {allowedRoles} from "store";
 import {FiltersState} from "store/filters/types";
-
-
-function GetPlatformIcon(props: { tag: any, classes: any }) {
-    switch (props.tag.toLowerCase()) {
-        case 'ios':
-            return (<AppleIcon className={props.classes.tag}/>);
-        case 'android':
-            return (<AndroidIcon className={props.classes.tag}/>);
-        case 'web':
-            return (<LaptopMacIcon className={props.classes.tag}/>);
-        default:
-            return (<span/>);
-    }
-}
+import {GetPlatformIcon} from "components/common/utilsForm";
 
 interface PropsTranslationsList {
     translations: TranslationState[],
@@ -141,7 +125,6 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                 filterCellStyle: filterCellStyle,
                 customFilterAndSearch: customFilterAndSearch,
                 render: render
-
             };
         }
 
@@ -189,7 +172,11 @@ const TranslationsList: React.FC<any> = (props: PropsTranslationsList) => {
                         return (rowData.confirmedTranslations[language.key] === (filter[0] === 'true') && rowData.confirmedTranslations[language.key] === (filter[1] === 'true'));
                     }
                     return true;
-                }, (rowData: TranslationState) => confirmedTranslations(rowData.confirmedTranslations)
+                }, (rowData: TranslationState) => confirmedTranslations(rowData.confirmedTranslations, {true: 'confirmed', false: 'unconfirmed'})
+            ),
+            getColumnConfig('Rejected', 'koTranslations', false, null,
+                false, false,false, null, 'ko', null, null,
+                (rowData: TranslationState) => confirmedTranslations(rowData.koTranslations, {true: 'true', false: 'false'})
             ),
             getColumnConfig('Updated date', 'updateDate', false, null,
                 false, false, true, null, 'UDate', null,

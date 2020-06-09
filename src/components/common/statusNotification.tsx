@@ -62,9 +62,13 @@ const StatusNotification: React.FC<any> = (props: AppProps) => {
     const classes = snackbarsStyle();
     const Icon = variantIcon[props.status.type];
     const [open, setOpen] = useState(props.status.show);
-    const handleClose = (event?: SyntheticEvent, reason?: string) => {
+    const handleClose = () => {
         setOpen(false);
-        props.setStatusActions(initialStatus);
+        props.setStatusActions({
+            type: props.status.type,
+            message: '',
+            show: false
+        });
     };
 
     useEffect(() => {

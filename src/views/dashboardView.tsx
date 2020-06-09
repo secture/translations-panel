@@ -43,7 +43,7 @@ const DashboardView: React.FC<any> = (props: AppProps) => {
                     <Grid container spacing={3}>
                         {props.translationsStats.map((stat: TranslationStatsState) => (
                             props.user.associatedLanguages.find(element => element.key === stat.locale.key) ?
-                                <Grid item xs={12} md={6} lg={3} key={'language_' + stat.locale.key}>
+                                <Grid item xs={12} md={6} xl={3}>
                                     <Card onClick={() => {
                                         navigateToTranslation(stat.locale)
                                     }}>

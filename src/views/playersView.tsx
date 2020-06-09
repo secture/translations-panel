@@ -11,11 +11,11 @@ import {initialHistoryPlayerState, initialPlayerState} from "store/players/reduc
 /* Services */
 import {
     addPlayer,
-    confirmPlayerTranslations,
+    confirmPlayerTranslation,
     deletePlayerById,
     editPlayerById,
     getAllPlayers,
-    historyPlayer
+    historyPlayer, rejectPlayerTranslation, unConfirmPlayerTranslation
 } from "services/players";
 import {getAllLanguages} from "services/languages";
 
@@ -30,7 +30,8 @@ import PlayersForm from "components/views/players/playersForm";
 import DeleteDialog from "components/common/deleteDialog";
 import FullScreenDialog from "components/common/fullScreenDialog";
 import SimpleTable from "components/common/simpleTable";
-import {PlayersHistoryColumns, PlayersHistoryRows} from "components/views/players/playersHistoryList";
+import {PlayersHistoryColumns, PlayersHistoryRows} from "../components/views/players/playersHistoryList";
+import {LanguageState} from "store/languages/types";
 
 type AppStateProps = ReturnType<typeof mapStateToProps>;
 type AppDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -74,10 +75,16 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
         props.addPlayerAction(player);
     };
 
-    const onConfirmPlayerTranslation = (id: string, languageKey: string) => {
-        props.confirmPlayerTranslationAction(id, languageKey).then((confirmPlayer: PlayerState) => {
-            (confirmPlayer !== null) ? alert('Player confirmado') : alert('no ha sido posible confirmar el player')
-        });
+    const onConfirmPlayerTranslation = (player: PlayerState, language: LanguageState) => {
+        props.confirmPlayerTranslationAction(player, language);
+    };
+
+    const onUnConfirmPlayerTranslation = (player: PlayerState, language: LanguageState) => {
+        props.unConfirmPlayerTranslationAction(player, language);
+    };
+
+    const onRejectPlayerTranslation = (player: PlayerState, language: LanguageState) => {
+        props.rejectPlayerTranslationAction(player, language);
     };
 
     const getHistoryPlayer = (rowData: any) => {
@@ -120,6 +127,8 @@ const PlayersView: React.FC<any> = (props: AppProps) => {
                             onAddPlayer={onAddPlayer}
                             onEditPlayer={onEditPlayer}
                             onConfirmPlayerTranslation={onConfirmPlayerTranslation}
+                            onUnConfirmPlayerTranslation={onUnConfirmPlayerTranslation}
+                            onRejectPlayerTranslation={onRejectPlayerTranslation}
                             languages={props.languages}
                             setShowForm={setShowForm}
                             setEditForm={setEditForm}
@@ -160,7 +169,9 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
         editPlayerAction: (player: PlayerState) => dispatch(editPlayerById(player)),
         deletePlayerAction: (id: string) => dispatch(deletePlayerById(id)),
         historyPlayerAction: (player: PlayerState) => dispatch(historyPlayer(player)),
-        confirmPlayerTranslationAction: (id: string, languageKey: string) => dispatch(confirmPlayerTranslations(id, languageKey)),
+        confirmPlayerTranslationAction: (player: PlayerState, language: LanguageState) => dispatch(confirmPlayerTranslation(player, language)),
+        unConfirmPlayerTranslationAction: (player: PlayerState, language: LanguageState) => dispatch(unConfirmPlayerTranslation(player, language)),
+        rejectPlayerTranslationAction: (player: PlayerState, language: LanguageState) => dispatch(rejectPlayerTranslation(player, language)),
         statusAction: (status: StatusState) => dispatch(setStatus(status))
     };
 };
