@@ -1,10 +1,9 @@
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {connect} from "react-redux";
 import {StatusState} from "store/status/types";
 import {setStatus} from "store/status/actions";
-import {initialStatus} from "store/status/reducers";
 import {TranslationsStore} from "store/types";
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';

@@ -20,9 +20,13 @@ const fullScreenDialogStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
+/*const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-});
+});*/
+
+function SlideTransition(props: TransitionProps) {
+  return <Slide {...props} direction="up"/>;
+}
 
 interface PropsFullScreenDialog {
     title: string,
@@ -36,7 +40,8 @@ const FullScreenDialog: React.FC<any> = (props: PropsFullScreenDialog) => {
 
     return (
         <div>
-            <Dialog fullScreen open={props.dialog} onClose={props.openDialog} TransitionComponent={Transition}>
+            <Dialog fullScreen open={props.dialog} onClose={props.openDialog}
+                    TransitionComponent={SlideTransition}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <IconButton edge="start" color="secondary" onClick={props.openDialog} aria-label="close">
